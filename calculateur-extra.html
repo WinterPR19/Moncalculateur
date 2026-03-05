@@ -1,0 +1,2299 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur Extra & Intermittent 2026</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+        /* ============================================
+           THEME CYBERPUNK NEON - EXTRA/INTERMITTENT
+           Inspiré de l'image : oranges, bleus, roses néon
+           ============================================ */
+
+        :root {
+            /* Palette Cyberpunk City - Inspirée de l'image */
+            --neon-green: #00ff41;
+            --neon-orange: #ff6b00;
+            --neon-orange-light: #ff9d00;
+            --neon-blue: #00d4ff;
+            --neon-blue-dark: #0099cc;
+            --neon-pink: #ff00aa;
+            --neon-purple: #bf00ff;
+            --neon-yellow: #ffd500;
+            --neon-red: #ff0040;
+            --neon-cyan: #00ffff;
+            
+            /* Fonds sombres */
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-input: #0f0f15;
+            --bg-gradient-start: #1a0a00;
+            --bg-gradient-end: #000a1a;
+            
+            /* Texte */
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-muted: #606070;
+            
+            /* Gradients */
+            --gradient-fire: linear-gradient(135deg, #ff6b00 0%, #ff9d00 50%, #ffd500 100%);
+            --gradient-ice: linear-gradient(135deg, #00d4ff 0%, #0099cc 50%, #00ffff 100%);
+            --gradient-neon: linear-gradient(135deg, #ff6b00 0%, #ff00aa 50%, #00d4ff 100%);
+            --gradient-purple: linear-gradient(135deg, #bf00ff 0%, #ff00aa 100%);
+            --gradient-gold: linear-gradient(135deg, #ffd500 0%, #ff6b00 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Ambient background - City lights effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(255, 107, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(255, 0, 170, 0.1) 0%, transparent 50%),
+                linear-gradient(180deg, var(--bg-gradient-start) 0%, var(--bg-dark) 50%, var(--bg-gradient-end) 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float-particle 20s infinite linear;
+        }
+
+        .particle:nth-child(3n) {
+            background: var(--neon-orange);
+            box-shadow: 0 0 10px var(--neon-orange);
+        }
+
+        .particle:nth-child(3n+1) {
+            background: var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .particle:nth-child(3n+2) {
+            background: var(--neon-pink);
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+
+        @keyframes float-particle {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+
+        .calc-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(90deg, var(--neon-orange), var(--neon-blue), var(--neon-pink)) 1;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(255, 107, 0, 0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            filter: drop-shadow(0 0 15px rgba(255, 107, 0, 0.6));
+            animation: rgb-glow 4s ease-in-out infinite;
+        }
+
+        @keyframes rgb-glow {
+            0%, 100% { filter: drop-shadow(0 0 15px rgba(255, 107, 0, 0.8)); }
+            33% { filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.8)); }
+            66% { filter: drop-shadow(0 0 15px rgba(255, 0, 170, 0.8)); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-primary);
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.2), rgba(0, 212, 255, 0.2));
+            box-shadow: 0 0 20px rgba(255, 107, 0, 0.3);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 3px;
+            background: var(--gradient-neon);
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 15, 0.98);
+            padding: 20px;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 999;
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(90deg, var(--neon-orange), var(--neon-blue)) 1;
+        }
+
+        .mobile-menu a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .mobile-menu a.active {
+            color: var(--neon-orange);
+            background: rgba(255, 107, 0, 0.1);
+        }
+
+        /* ============================================
+           MAIN LAYOUT
+           ============================================ */
+
+        .calc-main {
+            padding: 100px 24px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .calc-wrapper.extra-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 1024px) {
+            .calc-wrapper.extra-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: flex;
+            }
+            
+            .mobile-menu.active {
+                display: flex;
+            }
+        }
+
+        /* ============================================
+           FORM SECTION (Left Column)
+           ============================================ */
+
+        .calc-form-section {
+            background: rgba(18, 18, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border: 2px solid transparent;
+            border-image: linear-gradient(135deg, var(--neon-orange), var(--neon-blue)) 1;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 0 40px rgba(255, 107, 0, 0.1), 0 0 80px rgba(0, 212, 255, 0.05);
+        }
+
+        .calc-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .badge-2026 {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.2), rgba(255, 0, 170, 0.2));
+            border: 1px solid var(--neon-orange);
+            color: var(--neon-orange);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            text-shadow: 0 0 10px var(--neon-orange);
+            box-shadow: 0 0 20px rgba(255, 107, 0, 0.3);
+            animation: pulse-orange 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-orange {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 107, 0, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(255, 107, 0, 0.6); }
+        }
+
+        .calc-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 0 20px rgba(255, 107, 0, 0.5));
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .calc-header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: var(--gradient-neon);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 107, 0, 0.3);
+        }
+
+        .calc-subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Mode Toggle - CORRIGÉ */
+.mode-toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.mode-label {
+    font-size: 13px;
+    color: var(--neon-blue);
+    font-weight: 600;
+    text-shadow: 0 0 10px var(--neon-blue);
+    white-space: nowrap;
+}
+
+.mode-toggle {
+    display: flex;
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid transparent;
+    border-image: linear-gradient(90deg, var(--neon-orange), var(--neon-pink)) 1;
+    border-radius: 12px;
+    padding: 4px;
+    position: relative;
+    cursor: pointer;
+    flex: 1;
+}
+
+.mode-option {
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-radius: 8px;
+    transition: all 0.3s;
+    z-index: 2;
+    white-space: nowrap;
+    position: relative;
+    flex: 1;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mode-option.active {
+    color: #000;
+}
+
+.mode-slider {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+}
+
+/* Slider pour Extra (orange) */
+.mode-slider.extra {
+    background: var(--gradient-fire);
+    box-shadow: 0 0 20px rgba(255, 107, 0, 0.5);
+}
+
+/* Slider pour Intermittent (bleu/cyan) - se déplace à droite */
+.mode-slider.intermittent {
+    left: calc(50% + 4px);
+    background: var(--gradient-ice);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+}
+        /* Slider pour Extra (orange) */
+        .mode-slider.extra {
+            width: calc(50% - 4px);
+            background: var(--gradient-fire);
+            box-shadow: 0 0 20px rgba(255, 107, 0, 0.5);
+        }
+
+        .mode-description {
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: rgba(255, 107, 0, 0.1);
+            border: 1px solid var(--neon-orange);
+            border-radius: 10px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .mode-description.intermittent {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.1);
+        }
+
+        .mode-badge {
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 11px;
+        }
+
+        .mode-badge.extra {
+            background: var(--gradient-fire);
+            color: #000;
+        }
+
+        .mode-badge.intermittent {
+            background: var(--gradient-ice);
+            color: #000;
+        }
+
+        /* Mission Form */
+        .mission-form {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 2px solid transparent;
+            border-image: linear-gradient(90deg, var(--neon-orange), transparent) 1;
+        }
+
+        .form-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: var(--gradient-fire);
+            border-radius: 2px;
+            box-shadow: 0 0 10px var(--neon-orange);
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        @media (max-width: 640px) {
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 5px rgba(0, 212, 255, 0.3);
+        }
+
+        .input-group input,
+        .input-group select {
+            padding: 14px 16px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid transparent;
+            border-image: linear-gradient(135deg, var(--neon-orange), var(--neon-blue)) 1;
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            border-image: linear-gradient(135deg, var(--neon-pink), var(--neon-purple)) 1;
+            box-shadow: 0 0 0 4px rgba(255, 0, 170, 0.1), 0 0 30px rgba(255, 0, 170, 0.2);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding-right: 40px;
+        }
+
+        .currency,
+        .unit {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neon-orange);
+            font-weight: 700;
+            text-shadow: 0 0 10px var(--neon-orange);
+        }
+
+        /* Buttons */
+        .calc-btn {
+            width: 100%;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Outfit', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-add {
+            background: var(--gradient-fire);
+            color: #000;
+            box-shadow: 0 4px 20px rgba(255, 107, 0, 0.4), 0 0 40px rgba(255, 157, 0, 0.2);
+            margin-top: 8px;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 107, 0, 0.6), 0 0 60px rgba(255, 157, 0, 0.3);
+            filter: brightness(1.1);
+        }
+
+        .refresh-btn {
+            background: transparent;
+            border: 2px solid transparent;
+            border-image: linear-gradient(135deg, var(--neon-red), var(--neon-pink)) 1;
+            color: var(--neon-red);
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 16px;
+            text-shadow: 0 0 10px rgba(255, 0, 64, 0.5);
+            font-family: 'Outfit', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .refresh-btn:hover {
+            background: rgba(255, 0, 64, 0.1);
+            box-shadow: 0 0 30px rgba(255, 0, 64, 0.3);
+        }
+
+        /* Missions List */
+        .missions-recentes {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 2px solid transparent;
+            border-image: linear-gradient(90deg, var(--neon-blue), transparent) 1;
+        }
+
+        .missions-empty {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .mission-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid var(--neon-orange);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+            animation: slide-in 0.3s ease;
+        }
+
+        @keyframes slide-in {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .mission-item:hover {
+            background: rgba(255, 107, 0, 0.1);
+            transform: translateX(4px);
+            box-shadow: 0 0 20px rgba(255, 107, 0, 0.1);
+        }
+
+        .mission-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .mission-date {
+            font-size: 12px;
+            color: var(--neon-blue);
+            font-weight: 600;
+            text-shadow: 0 0 5px rgba(0, 212, 255, 0.3);
+        }
+
+        .mission-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .mission-hours {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .mission-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .mission-badge.dimanche {
+            background: rgba(255, 213, 0, 0.2);
+            color: var(--neon-yellow);
+            border: 1px solid var(--neon-yellow);
+        }
+
+        .mission-badge.nuit {
+            background: rgba(191, 0, 255, 0.2);
+            color: var(--neon-purple);
+            border: 1px solid var(--neon-purple);
+        }
+
+        .mission-badge.ferie {
+            background: rgba(255, 0, 64, 0.2);
+            color: var(--neon-red);
+            border: 1px solid var(--neon-red);
+        }
+
+        .mission-delete {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255, 0, 64, 0.2);
+            color: var(--neon-red);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mission-delete:hover {
+            background: rgba(255, 0, 64, 0.4);
+            box-shadow: 0 0 20px rgba(255, 0, 64, 0.4);
+            transform: scale(1.1);
+        }
+
+        /* Data Management */
+        .data-management {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 2px solid transparent;
+            border-image: linear-gradient(90deg, var(--neon-purple), var(--neon-pink)) 1;
+        }
+
+        .data-info {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .data-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn-data {
+            padding: 12px;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-family: 'Outfit', sans-serif;
+            background: transparent;
+        }
+
+        .btn-export-data {
+            border-color: var(--neon-blue);
+            color: var(--neon-blue);
+        }
+
+        .btn-export-data:hover {
+            background: rgba(0, 212, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-import-data {
+            border-color: var(--neon-orange);
+            color: var(--neon-orange);
+        }
+
+        .btn-import-data:hover {
+            background: rgba(255, 107, 0, 0.2);
+            box-shadow: 0 0 20px rgba(255, 107, 0, 0.3);
+        }
+
+        .btn-csv {
+            width: 100%;
+            border-color: var(--neon-pink);
+            color: var(--neon-pink);
+        }
+
+        .btn-csv:hover {
+            background: rgba(255, 0, 170, 0.2);
+            box-shadow: 0 0 20px rgba(255, 0, 170, 0.3);
+        }
+
+        /* ============================================
+           RESULTS SECTION (Right Column) - CORRIGÉ
+           ============================================ */
+
+        .calc-results-section {
+            background: rgba(18, 18, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border: 2px solid transparent;
+            border-image: linear-gradient(135deg, var(--neon-blue), var(--neon-purple)) 1;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.1), 0 0 80px rgba(191, 0, 255, 0.05);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .calc-results-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(90deg, var(--neon-blue), transparent) 1;
+        }
+
+        .results-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        .period-selector {
+            display: flex;
+            gap: 8px;
+        }
+
+        .period-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--neon-blue);
+            background: transparent;
+            color: var(--neon-blue);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .period-btn.active,
+        .period-btn:hover {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+        }
+
+        /* Cumul Card */
+        .cumul-card {
+            background: var(--gradient-neon);
+            border-radius: 20px;
+            padding: 28px;
+            text-align: center;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(255, 107, 0, 0.3), 0 0 100px rgba(0, 212, 255, 0.2);
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            animation: rollIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .cumul-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes rollIn {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .cumul-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .cumul-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cumul-period {
+            font-size: 12px;
+            color: rgba(0,0,0,0.7);
+            font-weight: 600;
+        }
+
+        .cumul-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 42px;
+            font-weight: 800;
+            color: #000;
+            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+            position: relative;
+            letter-spacing: -1px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: rollUp 0.5s ease-out 0.3s forwards;
+        }
+
+        @keyframes rollUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cumul-details {
+            font-size: 13px;
+            color: rgba(0,0,0,0.8);
+            margin-top: 8px;
+            font-weight: 600;
+            position: relative;
+            opacity: 0;
+            animation: fadeIn 0.4s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Chart Container */
+        .chart-container {
+            height: 200px;
+            margin-bottom: 24px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        /* Breakdown Section */
+        .breakdown-section {
+            margin-bottom: 24px;
+        }
+
+        .breakdown-section h4 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            color: var(--neon-orange);
+            margin-bottom: 16px;
+            text-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
+        }
+
+        .breakdown-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border-left: 3px solid var(--neon-blue);
+            transition: all 0.3s;
+            opacity: 0;
+            transform: translateX(-30px);
+            animation: slideInRight 0.4s ease-out forwards;
+        }
+
+        .breakdown-item:nth-child(1) { animation-delay: 0.1s; }
+        .breakdown-item:nth-child(2) { 
+            animation-delay: 0.2s; 
+            border-left-color: var(--neon-orange);
+        }
+        .breakdown-item:nth-child(2):hover {
+            background: rgba(255, 107, 0, 0.1);
+        }
+        .breakdown-item:nth-child(3) { 
+            animation-delay: 0.3s;
+            border-left-color: var(--neon-yellow);
+        }
+        .breakdown-item:nth-child(3):hover {
+            background: rgba(255, 213, 0, 0.1);
+        }
+        .breakdown-item:nth-child(4) { 
+            animation-delay: 0.4s;
+            border-left-color: var(--neon-red);
+        }
+        .breakdown-item:nth-child(4):hover {
+            background: rgba(255, 0, 64, 0.1);
+        }
+
+        @keyframes slideInRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .breakdown-item:hover {
+            transform: translateX(4px);
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .breakdown-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .breakdown-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .breakdown-value.positive {
+            color: var(--neon-orange);
+            text-shadow: 0 0 10px rgba(255, 107, 0, 0.5);
+        }
+
+        .breakdown-value.negative {
+            color: var(--neon-red);
+            text-shadow: 0 0 10px rgba(255, 0, 64, 0.5);
+        }
+
+        /* Details Section */
+        .details-section h4 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            color: var(--neon-purple);
+            margin-bottom: 16px;
+            text-shadow: 0 0 10px rgba(191, 0, 255, 0.3);
+        }
+
+        .details-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .details-empty {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+            opacity: 0;
+            animation: slideInRight 0.4s ease-out forwards;
+        }
+
+        .detail-row:nth-child(1) { animation-delay: 0.5s; }
+        .detail-row:nth-child(2) { animation-delay: 0.6s; }
+        .detail-row:nth-child(3) { animation-delay: 0.7s; }
+        .detail-row:nth-child(4) { animation-delay: 0.8s; }
+        .detail-row:nth-child(5) { animation-delay: 0.9s; }
+
+        .detail-row:hover {
+            border-color: rgba(0, 212, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+        }
+
+        .detail-main {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .detail-date {
+            font-size: 12px;
+            color: var(--neon-blue);
+            font-weight: 600;
+            text-shadow: 0 0 5px rgba(0, 212, 255, 0.3);
+        }
+
+        .detail-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .detail-calc {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 2px;
+            font-size: 12px;
+        }
+
+        .detail-brut {
+            color: var(--text-secondary);
+        }
+
+        .detail-maj {
+            color: var(--neon-orange);
+            font-weight: 600;
+        }
+
+        .detail-repas {
+            color: var(--neon-yellow);
+        }
+
+        .detail-charges {
+            color: var(--neon-red);
+        }
+
+        .detail-net {
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--neon-green);
+            text-shadow: 0 0 10px rgba(0, 255, 100, 0.5);
+        }
+
+        /* Empty State */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        /* ============================================
+           NOTIFICATIONS
+           ============================================ */
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            color: #000;
+            font-weight: 700;
+            z-index: 10000;
+            animation: slide-in-right 0.3s ease;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            border: 2px solid transparent;
+        }
+
+        .notification.success {
+            background: var(--neon-orange);
+            border-color: var(--neon-orange-light);
+            box-shadow: 0 0 30px rgba(255, 107, 0, 0.4);
+        }
+
+        .notification.warning {
+            background: var(--neon-yellow);
+            border-color: var(--neon-orange);
+            box-shadow: 0 0 30px rgba(255, 213, 0, 0.4);
+        }
+
+        .notification.info {
+            background: var(--neon-blue);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+        }
+
+        .notification.error {
+            background: var(--neon-red);
+            border-color: #ff0040;
+            box-shadow: 0 0 30px rgba(255, 0, 64, 0.4);
+        }
+
+        @keyframes slide-in-right {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Scrollbar personnalisée */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-fire);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gradient-neon);
+        }
+
+        /* Sélection de texte */
+        ::selection {
+            background: var(--neon-orange);
+            color: #000;
+        }
+
+        /* Animations d'entrée */
+        @keyframes slide-in-up {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slide-in-left {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes scale-in {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .calc-form-section { animation: slide-in-left 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .calc-results-section { animation: slide-in-left 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
+        .calc-header { animation: scale-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both; }
+        .mode-toggle-container { animation: slide-in-up 0.5s ease-out 0.3s both; }
+        .mission-form { animation: slide-in-up 0.5s ease-out 0.4s both; }
+        .missions-recentes { animation: slide-in-up 0.5s ease-out 0.5s both; }
+        .data-management { animation: slide-in-up 0.5s ease-out 0.6s both; }
+
+        /* Mode Toggle - CORRIGÉ */
+.mode-toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.mode-label {
+    font-size: 13px;
+    color: var(--neon-blue);
+    font-weight: 600;
+    text-shadow: 0 0 10px var(--neon-blue);
+    white-space: nowrap;
+}
+
+.mode-toggle {
+    display: flex;
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid transparent;
+    border-image: linear-gradient(90deg, var(--neon-orange), var(--neon-pink)) 1;
+    border-radius: 12px;
+    padding: 4px;
+    position: relative;
+    cursor: pointer;
+    flex: 1;
+    min-width: 0; /* Important pour que flex fonctionne avec texte long */
+}
+
+.mode-option {
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-radius: 8px;
+    transition: all 0.3s;
+    z-index: 2;
+    white-space: nowrap;
+    position: relative;
+    flex: 1;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mode-option.active {
+    color: #000;
+}
+
+.mode-slider {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    height: calc(100% - 8px);
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+}
+
+/* Slider pour Extra (orange) - prend 50% */
+.mode-slider.extra {
+    width: calc(50% - 4px);
+    background: var(--gradient-fire);
+    box-shadow: 0 0 20px rgba(255, 107, 0, 0.5);
+}
+
+/* Slider pour Intermittent (bleu/cyan) - prend 50% aussi */
+.mode-slider.intermittent {
+    width: calc(50% - 4px);
+    left: 50%;
+    background: var(--gradient-ice);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+}
+
+.mode-description {
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: rgba(255, 107, 0, 0.1);
+    border: 1px solid var(--neon-orange);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 0 15px rgba(255, 107, 0, 0.1);
+    transition: all 0.3s;
+}
+
+.mode-description.intermittent {
+    background: rgba(0, 212, 255, 0.1);
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.1);
+}
+
+.mode-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 11px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.mode-badge.extra {
+    background: var(--gradient-fire);
+    color: #000;
+}
+
+.mode-badge.intermittent {
+    background: var(--gradient-ice);
+    color: #000;
+}
+    </style>
+</head>
+<body class="calc-page">
+    <!-- Navigation -->
+    <nav class="calc-nav">
+        <a href="./accueil.html" class="logo">
+            <svg class="logo-icon" width="40" height="40" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="extraGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#ff6b00;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#ff00aa;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#00d4ff;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <rect x="5" y="5" width="50" height="50" rx="14" fill="url(#extraGrad)"/>
+                <path d="M30 12 L32 20 L40 20 L34 26 L36 34 L30 30 L24 34 L26 26 L20 20 L28 20 Z" fill="rgba(255,255,255,0.95)"/>
+                <rect x="22" y="36" width="16" height="14" rx="3" fill="rgba(255,255,255,0.9)"/>
+                <rect x="24" y="38" width="12" height="3" rx="1" fill="#ff00aa"/>
+                <rect x="24" y="43" width="5" height="5" rx="1" fill="#00d4ff"/>
+                <rect x="31" y="43" width="5" height="5" rx="1" fill="#00d4ff"/>
+            </svg>
+            <span>MonCalculateur</span>
+        </a>
+        <div class="nav-links">
+            <a href="./accueil.html">Accueil</a>
+            <a href="./calculateur.html">Calculateur Salaire</a>
+            <a href="./calculateur-heures.html">Décompte Heures</a>
+            <a href="./calculateur-extra.html" class="active">Extra/Intermittent</a>
+            <a href="./Calculateur-Salaire-par-Semaine.html">Calculateur par semaine</a>
+            <a href="./calculateur-expert.html" class="mode-switch" style="background: linear-gradient(135deg, rgba(255, 191, 0, 0.2), rgba(255, 183, 0, 0.2)); color: #ff9900; text-shadow: 0 0 10px #ff9d00;">Mode Expert →</a>
+        </div>
+        <button class="mobile-menu-btn" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="./accueil.html">Accueil</a>
+        <a href="./calculateur.html">Calculateur Salaire</a>
+        <a href="./calculateur-heures.html">Décompte Heures</a>
+        <a href="./calculateur-extra.html" class="active">Extra/Intermittent</a>
+        <a href="./Calculateur-Salaire-par-Semaine.html">Calculateur Impôts</a>
+        <a href="./calculateur-expert.html" class="mode-switch" style="background: linear-gradient(135deg, rgba(255, 187, 0, 0.2), rgba(255, 179, 0, 0.2)); color: #ffaa00; text-shadow: 0 0 10px #ffaa00;">Mode Expert →</a>
+    </div>
+
+    <!-- Particules -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Main Content -->
+    <main class="calc-main">
+        <div class="calc-wrapper extra-layout">
+            
+            <!-- Colonne Gauche : Saisie -->
+            <div class="calc-form-section">
+                <div class="calc-header">
+                    <div class="badge-2026">Extra 2026</div>
+                    <div class="calc-icon">🎭</div>
+                    <h1>Calculateur Extra & Intermittent</h1>
+                    <p class="calc-subtitle">Calculez vos revenus mission par mission</p>
+                </div>
+
+                <!-- Mode Toggle - CORRIGÉ -->
+<div class="mode-toggle-container">
+    <span class="mode-label">Profil :</span>
+    <div class="mode-toggle" id="mode-toggle" onclick="toggleMode()">
+        <div class="mode-option active" data-mode="extra">Extra</div>
+        <div class="mode-option" data-mode="intermittent">Intermittent du spectacle</div>
+        <div class="mode-slider extra" id="mode-slider"></div>
+    </div>
+</div>
+                <p class="mode-description" id="mode-desc">
+                    <span class="mode-badge extra">22%</span> de charges (régime extra)
+                </p>
+
+                <!-- Formulaire Mission -->
+                <div class="mission-form">
+                    <h3 class="form-title">📝 Nouvelle mission</h3>
+                    
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Date</label>
+                            <input type="date" id="mission-date" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Nom (optionnel)</label>
+                            <input type="text" id="mission-nom" placeholder="Soirée du 15...">
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Taux horaire</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="mission-taux" placeholder="11.88" step="0.01" min="0">
+                                <span class="currency">€</span>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Heures travaillées</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="mission-heures" placeholder="8" step="0.5" min="0">
+                                <span class="unit">h</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Type</label>
+                            <select id="mission-type">
+                                <option value="normal">Jour normal</option>
+                                <option value="dimanche">Dimanche (+25%)</option>
+                                <option value="nuit">Nuit (+50%)</option>
+                                <option value="ferie">Jour férié (+100%)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Indemnités repas</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="mission-repas" placeholder="0" step="0.01" min="0">
+                                <span class="currency">€</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="calc-btn btn-add" onclick="ajouterMission()">
+                        <span>➕ Ajouter la mission</span>
+                    </button>
+                </div>
+
+                <!-- Missions récentes -->
+                <div class="missions-recentes" id="missions-list">
+                    <h3 class="form-title">📋 Missions ajoutées</h3>
+                    <div class="missions-empty" id="missions-empty">
+                        <span>Aucune mission ajoutée</span>
+                    </div>
+                    <div class="missions-container" id="missions-container"></div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="refresh-btn" onclick="toutEffacer()" title="Tout effacer">
+                        <span>🗑️ Tout effacer</span>
+                    </button>
+                </div>
+
+                <!-- Gestion des données -->
+                <div class="data-management">
+                    <h3 class="form-title">💾 Mes données</h3>
+                    <p class="data-info">Vos missions sont stockées uniquement sur cet appareil.</p>
+                    <div class="data-buttons">
+                        <button class="btn-data btn-export-data" onclick="exporterMesDonnees()">
+                            <span>💾 Sauvegarder (JSON)</span>
+                        </button>
+                        <button class="btn-data btn-import-data" onclick="importerMesDonnees()">
+                            <span>📁 Restaurer</span>
+                        </button>
+                        <input type="file" id="import-file" accept=".json" style="display: none;" onchange="traiterImport(this)">
+                    </div>
+                    <button class="btn-data btn-csv" onclick="exporterCSV()">
+                        <span>📊 Exporter Excel/CSV</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Colonne Droite : Résultats - CORRIGÉ -->
+            <div class="calc-results-section visible" id="results-section">
+                
+                <!-- Header -->
+                <div class="results-header">
+                    <span class="results-title">📊 Vos revenus</span>
+                    <div class="period-selector">
+                        <button class="period-btn active" onclick="changePeriod('mois')">Ce mois</button>
+                        <button class="period-btn" onclick="changePeriod('annee')">Cette année</button>
+                    </div>
+                </div>
+
+                <!-- Cumul Global -->
+                <div class="cumul-card" id="cumul-card">
+                    <div class="cumul-header">
+                        <span class="cumul-label">Total net estimé</span>
+                        <span class="cumul-period" id="cumul-period">Janvier 2026</span>
+                    </div>
+                    <div class="cumul-value" id="cumul-total">0,00 €</div>
+                    <div class="cumul-details">
+                        <span id="cumul-missions">0 mission</span> • 
+                        <span id="cumul-heures">0 heures</span>
+                    </div>
+                </div>
+
+                <!-- Graphique -->
+                <div class="chart-container">
+                    <canvas id="revenus-chart"></canvas>
+                </div>
+
+                <!-- Breakdown -->
+                <div class="breakdown-section">
+                    <h4>💰 Détail du calcul</h4>
+                    <div class="breakdown-grid">
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Total brut</span>
+                            <span class="breakdown-value" id="breakdown-brut">0,00 €</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Majorations</span>
+                            <span class="breakdown-value positive" id="breakdown-maj">+0,00 €</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Indemnités</span>
+                            <span class="breakdown-value" id="breakdown-repas">0,00 €</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Charges (22%)</span>
+                            <span class="breakdown-value negative" id="breakdown-charges">-0,00 €</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Liste détaillée -->
+                <div class="details-section">
+                    <h4>📋 Détail des missions</h4>
+                    <div class="details-list" id="details-list">
+                        <div class="details-empty">Ajoutez des missions pour voir le détail</div>
+                    </div>
+                </div>
+
+                <!-- État vide -->
+                <div class="empty-state" id="empty-state">
+                    <div class="empty-icon">🎭</div>
+                    <p>Ajoutez vos missions pour calculer vos revenus d'extra</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Chart.js pour le graphique -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        // ============================================
+        // SYSTÈME DE STOCKAGE LOCAL SÉCURISÉ
+        // ============================================
+        
+        const StorageManager = {
+            KEYS: {
+                MISSIONS: 'extra_missions_v1',
+                MODE: 'extra_mode_v1',
+                USER_ID: 'extra_user_id'
+            },
+
+            getUserId() {
+                let userId = localStorage.getItem(this.KEYS.USER_ID);
+                if (!userId) {
+                    userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                    localStorage.setItem(this.KEYS.USER_ID, userId);
+                }
+                return userId;
+            },
+
+            loadMissions() {
+                try {
+                    const data = localStorage.getItem(this.KEYS.MISSIONS);
+                    return data ? JSON.parse(data) : [];
+                } catch (e) {
+                    console.error('Erreur chargement:', e);
+                    return [];
+                }
+            },
+
+            saveMissions(missions) {
+                try {
+                    localStorage.setItem(this.KEYS.MISSIONS, JSON.stringify(missions));
+                    return true;
+                } catch (e) {
+                    console.error('Erreur sauvegarde:', e);
+                    alert('Erreur de sauvegarde. Stockage peut-être plein.');
+                    return false;
+                }
+            },
+
+            loadMode() {
+                return localStorage.getItem(this.KEYS.MODE) === 'true';
+            },
+
+            saveMode(isIntermittent) {
+                localStorage.setItem(this.KEYS.MODE, isIntermittent);
+            },
+
+            clearAll() {
+                localStorage.removeItem(this.KEYS.MISSIONS);
+                localStorage.removeItem(this.KEYS.MODE);
+            },
+
+            exportAll() {
+                return {
+                    version: '1.0',
+                    exportDate: new Date().toISOString(),
+                    userId: this.getUserId(),
+                    modeIntermittent: modeIntermittent,
+                    missions: missions,
+                    stats: {
+                        totalMissions: missions.length,
+                        totalHeures: missions.reduce((s, m) => s + m.heures, 0)
+                    }
+                };
+            },
+
+            importAll(data) {
+                if (!data || !Array.isArray(data.missions)) {
+                    throw new Error('Format de fichier invalide');
+                }
+                const validMissions = data.missions.filter(m => 
+                    m.id && m.date && m.heures > 0 && m.taux > 0
+                );
+                return validMissions;
+            }
+        };
+
+        // ============================================
+        // DONNÉES ET CONSTANTES
+        // ============================================
+
+        let missions = [];
+        let modeIntermittent = false;
+        let currentPeriod = 'mois';
+        
+        const TAUX_CHARGES_EXTRA = 0.22;
+        const TAUX_CHARGES_INTERMITTENT = 0.21;
+        
+        const MAJORATION = {
+            normal: 1,
+            dimanche: 1.25,
+            nuit: 1.50,
+            ferie: 2.00
+        };
+
+        // ============================================
+        // INITIALISATION
+        // ============================================
+
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            
+            missions = StorageManager.loadMissions();
+            modeIntermittent = StorageManager.loadMode();
+            
+            if (modeIntermittent) {
+                applyModeVisual(true);
+            }
+            
+            document.getElementById('mission-date').valueAsDate = new Date();
+            
+            afficherMissions();
+            recalculerTout();
+            initChart();
+        });
+
+        // ============================================
+        // FONCTIONS VISUELLES
+        // ============================================
+
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const colors = ['#ff6b00', '#ff00aa', '#00d4ff', '#ffd500', '#bf00ff'];
+            
+            for (let i = 0; i < 40; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.top = Math.random() * 100 + '%';
+                p.style.animationDelay = Math.random() * 20 + 's';
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                container.appendChild(p);
+            }
+        }
+
+        function applyModeVisual(isIntermittent) {
+            const toggle = document.getElementById('mode-toggle');
+            const options = toggle.querySelectorAll('.mode-option');
+            const slider = document.getElementById('mode-slider');
+            const desc = document.getElementById('mode-desc');
+            
+            if (isIntermittent) {
+                options[0].classList.remove('active');
+                options[1].classList.add('active');
+                slider.classList.remove('extra');
+                slider.classList.add('intermittent');
+                desc.innerHTML = '<span class="mode-badge intermittent">21%</span> de charges (régime intermittent spectacle)';
+                desc.classList.add('intermittent');
+            } else {
+                options[0].classList.add('active');
+                options[1].classList.remove('active');
+                slider.classList.remove('intermittent');
+                slider.classList.add('extra');
+                desc.innerHTML = '<span class="mode-badge extra">22%</span> de charges (régime extra)';
+                desc.classList.remove('intermittent');
+            }
+        }
+
+        // ============================================
+        // GESTION DES MISSIONS
+        // ============================================
+
+        function toggleMode() {
+            modeIntermittent = !modeIntermittent;
+            applyModeVisual(modeIntermittent);
+            StorageManager.saveMode(modeIntermittent);
+            recalculerTout();
+        }
+
+        function ajouterMission() {
+            const date = document.getElementById('mission-date').value;
+            const nom = document.getElementById('mission-nom').value || 'Mission';
+            const taux = parseFloat(document.getElementById('mission-taux').value) || 11.88;
+            const heures = parseFloat(document.getElementById('mission-heures').value) || 0;
+            const type = document.getElementById('mission-type').value;
+            const repas = parseFloat(document.getElementById('mission-repas').value) || 0;
+
+            if (!date || heures <= 0) {
+                alert('Veuillez remplir la date et les heures travaillées');
+                return;
+            }
+
+            const mission = {
+                id: Date.now(),
+                date,
+                nom,
+                taux,
+                heures,
+                type,
+                repas,
+                majoration: MAJORATION[type]
+            };
+
+            missions.push(mission);
+            missions.sort((a, b) => new Date(a.date) - new Date(b.date));
+            
+            StorageManager.saveMissions(missions);
+            
+            afficherMissions();
+            recalculerTout();
+            resetForm();
+            
+            showNotification('Mission ajoutée !', 'success');
+        }
+
+        function afficherMissions() {
+            const container = document.getElementById('missions-container');
+            const empty = document.getElementById('missions-empty');
+            
+            if (missions.length === 0) {
+                empty.style.display = 'block';
+                container.innerHTML = '';
+                return;
+            }
+            
+            empty.style.display = 'none';
+            container.innerHTML = missions.map(m => `
+                <div class="mission-item" data-id="${m.id}">
+                    <div class="mission-info">
+                        <span class="mission-date">${formatDate(m.date)}</span>
+                        <span class="mission-name">${escapeHtml(m.nom)}</span>
+                        <span class="mission-hours">${m.heures}h × ${m.taux.toFixed(2)}€</span>
+                        ${m.type !== 'normal' ? `<span class="mission-badge ${m.type}">${getTypeLabel(m.type)}</span>` : ''}
+                    </div>
+                    <button class="mission-delete" onclick="supprimerMission(${m.id})" title="Supprimer">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function supprimerMission(id) {
+            if (!confirm('Supprimer cette mission ?')) return;
+            
+            missions = missions.filter(m => m.id !== id);
+            StorageManager.saveMissions(missions);
+            
+            afficherMissions();
+            recalculerTout();
+            showNotification('Mission supprimée', 'info');
+        }
+
+        function toutEffacer() {
+            if (missions.length === 0) return;
+            if (!confirm('⚠️ Supprimer TOUTES les missions ? Cette action est irréversible.')) return;
+            
+            missions = [];
+            StorageManager.clearAll();
+            
+            afficherMissions();
+            recalculerTout();
+            showNotification('Toutes les missions ont été supprimées', 'warning');
+        }
+
+        // ============================================
+        // CALCULS ET AFFICHAGE - CORRIGÉ
+        // ============================================
+
+        function recalculerTout() {
+            const tauxCharges = modeIntermittent ? TAUX_CHARGES_INTERMITTENT : TAUX_CHARGES_EXTRA;
+            
+            const now = new Date();
+            const missionsFiltrees = missions.filter(m => {
+                const d = new Date(m.date);
+                if (currentPeriod === 'mois') {
+                    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+                }
+                return d.getFullYear() === now.getFullYear();
+            });
+
+            const totalHeures = missionsFiltrees.reduce((sum, m) => sum + m.heures, 0);
+            const totalRepas = missionsFiltrees.reduce((sum, m) => sum + m.repas, 0);
+            
+            let brutNormal = 0;
+            let majorations = 0;
+            
+            missionsFiltrees.forEach(m => {
+                const base = m.heures * m.taux;
+                brutNormal += base;
+                majorations += base * (m.majoration - 1);
+            });
+            
+            const brutTotal = brutNormal + majorations + totalRepas;
+            const charges = (brutNormal + majorations) * tauxCharges;
+            const net = brutTotal - charges;
+
+            // Animation des résultats
+            const resultsSection = document.getElementById('results-section');
+            const cumulCard = document.getElementById('cumul-card');
+            
+            // Reset animations
+            cumulCard.style.animation = 'none';
+            cumulCard.offsetHeight; // Trigger reflow
+            
+            // Mise à jour des valeurs
+            document.getElementById('cumul-total').textContent = formatMoney(net);
+            document.getElementById('cumul-missions').textContent = missionsFiltrees.length + ' mission' + (missionsFiltrees.length > 1 ? 's' : '');
+            document.getElementById('cumul-heures').textContent = totalHeures.toFixed(1) + ' heures';
+            
+            document.getElementById('breakdown-brut').textContent = formatMoney(brutNormal);
+            document.getElementById('breakdown-maj').textContent = '+' + formatMoney(majorations);
+            document.getElementById('breakdown-repas').textContent = formatMoney(totalRepas);
+            document.getElementById('breakdown-charges').textContent = '-' + formatMoney(charges);
+
+            const mois = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+            document.getElementById('cumul-period').textContent = currentPeriod === 'mois' 
+                ? mois[now.getMonth()] + ' 2026'
+                : '2026';
+
+            updateDetailsList(missionsFiltrees);
+            updateChart(missionsFiltrees);
+            
+            // Animation smooth
+            const emptyState = document.getElementById('empty-state');
+            if (missionsFiltrees.length > 0) {
+                emptyState.style.display = 'none';
+                cumulCard.style.animation = 'rollIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards';
+            } else {
+                emptyState.style.display = 'flex';
+            }
+        }
+
+        function updateDetailsList(missionsFiltrees) {
+            const list = document.getElementById('details-list');
+            
+            if (missionsFiltrees.length === 0) {
+                list.innerHTML = '<div class="details-empty">Ajoutez des missions pour voir le détail</div>';
+                return;
+            }
+            
+            const tauxCharges = modeIntermittent ? TAUX_CHARGES_INTERMITTENT : TAUX_CHARGES_EXTRA;
+            
+            list.innerHTML = missionsFiltrees.map((m, index) => {
+                const base = m.heures * m.taux;
+                const maj = base * (m.majoration - 1);
+                const brut = base + maj + m.repas;
+                const charges = (base + maj) * tauxCharges;
+                const net = brut - charges;
+                
+                return `
+                    <div class="detail-row" style="animation-delay: ${0.5 + index * 0.1}s">
+                        <div class="detail-main">
+                            <span class="detail-date">${formatDate(m.date)}</span>
+                            <span class="detail-name">${escapeHtml(m.nom)}</span>
+                        </div>
+                        <div class="detail-calc">
+                            <span class="detail-brut">${m.heures}h × ${m.taux.toFixed(2)}€</span>
+                            ${maj > 0 ? `<span class="detail-maj">+${formatMoney(maj)}</span>` : ''}
+                            ${m.repas > 0 ? `<span class="detail-repas">+${formatMoney(m.repas)}</span>` : ''}
+                            <span class="detail-charges">-${formatMoney(charges)}</span>
+                            <span class="detail-net">${formatMoney(net)}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function changePeriod(period) {
+            currentPeriod = period;
+            document.querySelectorAll('.period-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            recalculerTout();
+        }
+
+        // ============================================
+        // GRAPHIQUE
+        // ============================================
+
+        let chart;
+        function initChart() {
+            const ctx = document.getElementById('revenus-chart').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Revenus nets',
+                        data: [],
+                        backgroundColor: 'rgba(255, 107, 0, 0.6)',
+                        borderColor: 'rgba(255, 107, 0, 1)',
+                        borderWidth: 1,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: 'rgba(255,255,255,0.6)',
+                                callback: function(value) {
+                                    return value + '€';
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(255,255,255,0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: { color: 'rgba(255,255,255,0.6)' },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateChart(missionsFiltrees) {
+            if (!chart) return;
+            
+            const parJour = {};
+            const tauxCharges = modeIntermittent ? TAUX_CHARGES_INTERMITTENT : TAUX_CHARGES_EXTRA;
+            
+            missionsFiltrees.forEach(m => {
+                const base = m.heures * m.taux;
+                const maj = base * (m.majoration - 1);
+                const brut = base + maj + m.repas;
+                const net = brut - (base + maj) * tauxCharges;
+                
+                parJour[m.date] = (parJour[m.date] || 0) + net;
+            });
+            
+            const dates = Object.keys(parJour).sort();
+            const valeurs = dates.map(d => parJour[d].toFixed(2));
+            
+            chart.data.labels = dates.map(d => {
+                const date = new Date(d);
+                return date.getDate() + '/' + (date.getMonth() + 1);
+            });
+            chart.data.datasets[0].data = valeurs;
+            chart.update();
+        }
+
+        // ============================================
+        // EXPORT / IMPORT DES DONNÉES
+        // ============================================
+
+        function exporterMesDonnees() {
+            const data = StorageManager.exportAll();
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `mes-missions-extra-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification('Sauvegarde téléchargée !', 'success');
+        }
+
+        function importerMesDonnees() {
+            document.getElementById('import-file').click();
+        }
+
+        function traiterImport(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    const importedMissions = StorageManager.importAll(data);
+                    
+                    if (importedMissions.length === 0) {
+                        alert('Aucune mission valide trouvée dans le fichier.');
+                        return;
+                    }
+                    
+                    if (confirm(`Importer ${importedMissions.length} missions ?\n\n⚠️ Cela remplacera vos missions actuelles (${missions.length}).`)) {
+                        missions = importedMissions;
+                        StorageManager.saveMissions(missions);
+                        
+                        if (typeof data.modeIntermittent === 'boolean') {
+                            modeIntermittent = data.modeIntermittent;
+                            StorageManager.saveMode(modeIntermittent);
+                            applyModeVisual(modeIntermittent);
+                        }
+                        
+                        afficherMissions();
+                        recalculerTout();
+                        showNotification(`${importedMissions.length} missions restaurées !`, 'success');
+                    }
+                } catch (err) {
+                    alert('Erreur lors de l\'import : ' + err.message);
+                }
+            };
+            reader.readAsText(file);
+            input.value = '';
+        }
+
+        function exporterCSV() {
+            if (missions.length === 0) {
+                alert('Aucune mission à exporter');
+                return;
+            }
+            
+            const tauxCharges = modeIntermittent ? TAUX_CHARGES_INTERMITTENT : TAUX_CHARGES_EXTRA;
+            
+            let csv = 'Date,Nom,Heures,Taux horaire,Type,Majoration,Indemnités repas,Brut,Charges,Net\n';
+            
+            missions.forEach(m => {
+                const base = m.heures * m.taux;
+                const maj = base * (m.majoration - 1);
+                const brut = base + maj + m.repas;
+                const charges = (base + maj) * tauxCharges;
+                const net = brut - charges;
+                
+                csv += `${m.date},${escapeCsv(m.nom)},${m.heures},${m.taux},${getTypeLabel(m.type)},${(m.majoration - 1) * 100}%,${m.repas},${brut.toFixed(2)},${charges.toFixed(2)},${net.toFixed(2)}\n`;
+            });
+            
+            csv += `\nTOTAL,,${missions.reduce((s,m)=>s+m.heures,0)},,,,${missions.reduce((s,m)=>s+m.repas,0)}`;
+            
+            const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `missions-extra-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification('Export Excel/CSV réussi !', 'success');
+        }
+
+        // ============================================
+        // UTILITAIRES
+        // ============================================
+
+        function formatMoney(amount) {
+            return amount.toLocaleString('fr-FR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }) + ' €';
+        }
+
+        function formatDate(dateStr) {
+            const d = new Date(dateStr);
+            return d.getDate().toString().padStart(2, '0') + '/' + 
+                   (d.getMonth() + 1).toString().padStart(2, '0');
+        }
+
+        function getTypeLabel(type) {
+            const labels = {
+                dimanche: '+25%',
+                nuit: '+50%',
+                ferie: '+100%'
+            };
+            return labels[type] || '';
+        }
+
+        function resetForm() {
+            document.getElementById('mission-nom').value = '';
+            document.getElementById('mission-heures').value = '';
+            document.getElementById('mission-repas').value = '';
+            document.getElementById('mission-type').value = 'normal';
+        }
+
+        function toggleMenu() {
+            document.getElementById('mobile-menu').classList.toggle('active');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function escapeCsv(text) {
+            if (!text) return '';
+            if (text.includes(',') || text.includes('"') || text.includes('\n')) {
+                return '"' + text.replace(/"/g, '""') + '"';
+            }
+            return text;
+        }
+
+        function showNotification(message, type = 'info') {
+            const notif = document.createElement('div');
+            notif.className = `notification ${type}`;
+            notif.textContent = message;
+            document.body.appendChild(notif);
+            
+            setTimeout(() => {
+                notif.style.opacity = '0';
+                notif.style.transform = 'translateY(20px)';
+                setTimeout(() => notif.remove(), 300);
+            }, 3000);
+        }
+
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }
+
+
+        function applyModeVisual(isIntermittent) {
+    const toggle = document.getElementById('mode-toggle');
+    const options = toggle.querySelectorAll('.mode-option');
+    const slider = document.getElementById('mode-slider');
+    const desc = document.getElementById('mode-desc');
+    
+    if (isIntermittent) {
+        options[0].classList.remove('active');
+        options[1].classList.add('active');
+        slider.classList.remove('extra');
+        slider.classList.add('intermittent');
+        desc.innerHTML = '<span class="mode-badge intermittent">21%</span><span>de charges (régime intermittent spectacle)</span>';
+        desc.classList.add('intermittent');
+    } else {
+        options[0].classList.add('active');
+        options[1].classList.remove('active');
+        slider.classList.remove('intermittent');
+        slider.classList.add('extra');
+        desc.innerHTML = '<span class="mode-badge extra">22%</span><span>de charges (régime extra)</span>';
+        desc.classList.remove('intermittent');
+    }
+}
+
+function ajouterMission() {
+    const date = document.getElementById('mission-date').value;
+    const nom = document.getElementById('mission-nom').value || 'Mission';
+    const taux = parseFloat(document.getElementById('mission-taux').value) || 11.88;
+    const heures = parseFloat(document.getElementById('mission-heures').value) || 0;
+    const type = document.getElementById('mission-type').value;
+    const repas = parseFloat(document.getElementById('mission-repas').value) || 0;
+
+    if (!date || heures <= 0) {
+        alert('Veuillez remplir la date et les heures travaillées');
+        return;
+    }
+
+    const mission = {
+        id: Date.now(),
+        date,
+        nom,
+        taux,
+        heures,
+        type,
+        repas,
+        majoration: MAJORATION[type]
+    };
+
+    missions.push(mission);
+    missions.sort((a, b) => new Date(a.date) - new Date(b.date));
+    
+    StorageManager.saveMissions(missions);
+    
+    afficherMissions();
+    recalculerTout();
+    resetForm();
+    
+    // Scroll vers les résultats
+    document.getElementById('results-section').scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+    });
+    
+    showNotification('Mission ajoutée !', 'success');
+}
+    </script>
+</body>
+</html>

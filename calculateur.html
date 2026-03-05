@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur de Salaire 2026 - Mode Simple | MonCalculateur</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+        :root {
+            /* Palette Cyberpunk Néon Multicolore */
+            --neon-green: #00ff41;
+            --neon-pink: #ff0080;
+            --neon-blue: #00d4ff;
+            --neon-purple: #bf00ff;
+            --neon-orange: #ff6600;
+            --neon-yellow: #ffff00;
+            --neon-cyan: #00ffff;
+            
+            --danger: #ff0040;
+            
+            /* Fonds sombres */
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-input: #0f0f15;
+            
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--white);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Ambient background - Multicolore néon */
+        .ambient-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(0, 255, 65, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(255, 0, 128, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 30% 70%, rgba(191, 0, 255, 0.1) 0%, transparent 50%);
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .blob-1 {
+            width: 500px; height: 500px;
+            background: linear-gradient(135deg, #00ff41, #00d4ff);
+            top: -200px; right: -100px;
+            animation-duration: 12s;
+        }
+
+        .blob-2 {
+            width: 400px; height: 400px;
+            background: linear-gradient(135deg, #ff0080, #bf00ff);
+            bottom: -150px; left: -100px;
+            animation-delay: -4s;
+            animation-duration: 18s;
+        }
+
+        .blob-3 {
+            width: 350px; height: 350px;
+            background: linear-gradient(135deg, #ff6600, #ffff00);
+            top: 50%; left: 50%;
+            margin-left: -175px; margin-top: -175px;
+            animation-delay: -8s;
+            animation-duration: 14s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            33% { transform: translate(30px, -30px) scale(1.1) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) scale(0.9) rotate(240deg); }
+        }
+
+        /* Navigation - Multicolore */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(90deg, #00ff41, #00d4ff, #ff0080, #bf00ff) 1;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, #00ff41, #00d4ff, #ff0080);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.5), 0 0 40px rgba(0, 212, 255, 0.3), 0 0 60px rgba(255, 0, 128, 0.2);
+            animation: rgb-glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes rgb-glow {
+            0% { box-shadow: 0 0 20px rgba(0, 255, 65, 0.5), 0 0 40px rgba(0, 212, 255, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(255, 0, 128, 0.5), 0 0 50px rgba(191, 0, 255, 0.3); }
+            100% { box-shadow: 0 0 20px rgba(255, 102, 0, 0.5), 0 0 40px rgba(255, 255, 0, 0.3); }
+        }
+
+        .logo-badge {
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.2), rgba(0, 212, 255, 0.2));
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-left: 8px;
+            text-shadow: 0 0 10px #00ff41;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 10px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--white);
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.2), rgba(0, 212, 255, 0.2));
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+        }
+
+        /* Main */
+        .main {
+            padding: 100px 32px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .wrapper { grid-template-columns: 1fr; }
+        }
+
+        /* Cards - Bordures multicolores */
+        .card {
+            background: rgba(18, 18, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border: 2px solid transparent;
+            border-image: linear-gradient(135deg, #00ff41, #00d4ff, #ff0080) 1;
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.1), 0 0 60px rgba(0, 212, 255, 0.05);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, #00ff41, #00d4ff, #ff0080, #bf00ff, #ff6600);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.8);
+        }
+
+        .card:hover {
+            box-shadow: 0 0 50px rgba(0, 255, 65, 0.2), 0 0 80px rgba(255, 0, 128, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .header-mascot {
+            width: 80px; height: 80px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .mascot-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #00ff41, #ff0080, #00d4ff);
+            border-radius: 24px;
+            transform: rotate(12deg);
+            opacity: 0.4;
+            animation: pulse-rgb 4s ease-in-out infinite;
+            filter: blur(10px);
+        }
+
+        @keyframes pulse-rgb {
+            0%, 100% { transform: rotate(12deg) scale(1); opacity: 0.4; filter: hue-rotate(0deg); }
+            50% { transform: rotate(12deg) scale(1.2); opacity: 0.7; filter: hue-rotate(180deg); }
+        }
+
+        .mascot-icon {
+            position: relative;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, #00ff41, #00d4ff, #ff0080);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            box-shadow: 0 10px 40px rgba(0, 255, 65, 0.4);
+        }
+
+        .badge-shine {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.2), rgba(255, 0, 128, 0.2));
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+            font-family: 'Outfit', sans-serif;
+            text-shadow: 0 0 10px #00ff41;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+        }
+
+        .header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #00ff41, #00d4ff, #ff0080);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 255, 65, 0.3);
+        }
+
+        .header p {
+            color: #888;
+            font-size: 16px;
+        }
+
+        /* Mode Toggle - Multicolore */
+        .mode-section {
+            margin-bottom: 28px;
+        }
+
+        .section-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: #00d4ff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: block;
+            text-shadow: 0 0 10px #00d4ff;
+        }
+
+        .mode-tabs {
+            display: flex;
+            background: rgba(10, 10, 15, 0.6);
+            border: 2px solid transparent;
+            border-image: linear-gradient(90deg, #00ff41, #00d4ff) 1;
+            border-radius: 16px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .mode-tab {
+            flex: 1;
+            padding: 14px 20px;
+            background: transparent;
+            border: none;
+            border-radius: 12px;
+            color: #888;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .mode-tab:hover {
+            color: var(--white);
+            background: rgba(0, 255, 65, 0.1);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+        }
+
+        .mode-tab.active {
+            background: linear-gradient(135deg, #00ff41, #00d4ff);
+            color: #000;
+            font-weight: 700;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.5);
+        }
+
+        .mode-description {
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: rgba(0, 255, 65, 0.1);
+            border: 1px solid #00ff41;
+            border-radius: 10px;
+            font-size: 13px;
+            color: #aaa;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
+        }
+
+        .mode-badge {
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 11px;
+        }
+
+        .mode-badge.standard {
+            background: linear-gradient(135deg, #00ff41, #00d4ff);
+            color: #000;
+        }
+
+        .mode-badge.etudiant {
+            background: linear-gradient(135deg, #ff0080, #bf00ff);
+            color: #fff;
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: 28px;
+            padding-bottom: 28px;
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(90deg, #00ff41, transparent) 1;
+            position: relative;
+        }
+
+        .form-section::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; left: 0;
+            width: 100px; height: 2px;
+            background: linear-gradient(90deg, #00ff41, #00d4ff, #ff0080);
+            border-radius: 2px;
+            box-shadow: 0 0 15px #00ff41;
+        }
+
+        .form-section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .form-section:last-of-type::after {
+            display: none;
+        }
+
+        .form-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-title span {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #00ff41, #00d4ff);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.4);
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 640px) {
+            .input-grid { grid-template-columns: 1fr; }
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #00d4ff;
+            display: flex;
+            justify-content: space-between;
+            text-shadow: 0 0 5px rgba(0, 212, 255, 0.3);
+        }
+
+        .input-hint {
+            font-size: 12px;
+            color: #ff6600;
+            text-shadow: 0 0 5px rgba(255, 102, 0, 0.3);
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(15, 15, 21, 0.8);
+            border: 2px solid transparent;
+            border-image: linear-gradient(135deg, #00ff41, #00d4ff) 1;
+            border-radius: 14px;
+            color: var(--white);
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .input:focus {
+            border-image: linear-gradient(135deg, #ff0080, #bf00ff) 1;
+            box-shadow: 0 0 0 4px rgba(255, 0, 128, 0.1), 0 0 30px rgba(255, 0, 128, 0.2);
+        }
+
+        select.input {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2300ff41' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+            padding-right: 45px;
+        }
+
+        .input-suffix {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ff0080;
+            font-weight: 600;
+            font-size: 14px;
+            text-shadow: 0 0 10px #ff0080;
+            pointer-events: none;
+        }
+
+        /* Buttons - Multicolores */
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 18px 28px;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Outfit', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00ff41, #00d4ff, #ff0080);
+            color: #000;
+            font-weight: 700;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.4), 0 0 60px rgba(255, 0, 128, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 50px rgba(0, 255, 65, 0.6), 0 0 80px rgba(255, 0, 128, 0.3);
+            filter: brightness(1.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid transparent;
+            border-image: linear-gradient(135deg, #ff0080, #bf00ff) 1;
+            color: #ff0080;
+            text-shadow: 0 0 10px rgba(255, 0, 128, 0.5);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 0, 128, 0.1);
+            box-shadow: 0 0 30px rgba(255, 0, 128, 0.3);
+            color: #ff0080;
+        }
+
+        /* Info Cards - Multicolores */
+        .info-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .info-card {
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            transition: all 0.3s;
+            color: #fff;
+        }
+
+        .info-card:nth-child(1) {
+            border-image: linear-gradient(135deg, #00ff41, #00d4ff) 1;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+        }
+
+        .info-card:nth-child(2) {
+            border-image: linear-gradient(135deg, #ff6600, #ffff00) 1;
+            box-shadow: 0 0 15px rgba(255, 102, 0, 0.2);
+        }
+
+        .info-card:nth-child(3) {
+            border-image: linear-gradient(135deg, #ff0080, #bf00ff) 1;
+            box-shadow: 0 0 15px rgba(255, 0, 128, 0.2);
+        }
+
+        .info-card:hover {
+            transform: translateY(-2px) scale(1.02);
+            filter: brightness(1.2);
+        }
+
+        .info-card-icon {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        .info-card:nth-child(1) .info-card-icon { background: #00ff41; box-shadow: 0 0 10px #00ff41; }
+        .info-card:nth-child(2) .info-card-icon { background: #ff6600; box-shadow: 0 0 10px #ff6600; }
+        .info-card:nth-child(3) .info-card-icon { background: #ff0080; box-shadow: 0 0 10px #ff0080; }
+
+        /* Results Card - Bordure multicolore */
+        .results-card {
+            background: rgba(18, 18, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border: 2px solid transparent;
+            border-image: linear-gradient(135deg, #ff0080, #bf00ff, #00d4ff) 1;
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            scroll-margin-top: 120px;
+            box-shadow: 0 0 40px rgba(255, 0, 128, 0.1), 0 0 80px rgba(0, 212, 255, 0.05);
+        }
+
+        .results-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff0080, #bf00ff, #00d4ff, #00ff41);
+            border-radius: 4px 4px 0 0;
+            box-shadow: 0 0 20px rgba(255, 0, 128, 0.8);
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 28px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(90deg, #ff0080, transparent) 1;
+        }
+
+        .results-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: #ff0080;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 10px #ff0080;
+        }
+
+        .results-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid transparent;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .results-badge:not(.etudiant) {
+            border-image: linear-gradient(135deg, #00ff41, #00d4ff) 1;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+            text-shadow: 0 0 10px #00ff41;
+        }
+
+        .results-badge.etudiant {
+            border-image: linear-gradient(135deg, #ff0080, #bf00ff) 1;
+            box-shadow: 0 0 15px rgba(255, 0, 128, 0.3);
+            text-shadow: 0 0 10px #ff0080;
+        }
+
+        .results-date {
+            font-size: 13px;
+            color: #888;
+            margin-top: 8px;
+        }
+
+        /* Main Result - RGB */
+        .result-hero {
+            background: linear-gradient(135deg, #00ff41, #00d4ff, #ff0080);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 255, 65, 0.4), 0 0 100px rgba(255, 0, 128, 0.2);
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            animation: rollIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .result-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes rollIn {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .result-hero.etudiant {
+            background: linear-gradient(135deg, #ff0080, #bf00ff, #00d4ff);
+            box-shadow: 0 20px 60px rgba(255, 0, 128, 0.4), 0 0 100px rgba(191, 0, 255, 0.2);
+        }
+
+        .result-label-main {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #000;
+            margin-bottom: 12px;
+            position: relative;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        .result-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 48px;
+            font-weight: 800;
+            color: #000;
+            margin-bottom: 8px;
+            position: relative;
+            text-shadow: 0 0 20px rgba(255,255,255,0.8);
+            letter-spacing: -1px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: rollUp 0.5s ease-out 0.3s forwards;
+        }
+
+        @keyframes rollUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-period {
+            font-size: 15px;
+            font-weight: 600;
+            color: #000;
+            position: relative;
+            opacity: 0;
+            animation: fadeIn 0.4s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Deduction Bar - Multicolore */
+        .deduction-bar-section {
+            margin-bottom: 28px;
+        }
+
+        .deduction-bar-container {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            padding: 4px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .deduction-bar {
+            display: flex;
+            height: 24px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .deduction-segment {
+            transition: width 0.6s ease;
+            position: relative;
+        }
+
+        .deduction-segment::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer-bar 1.5s infinite;
+        }
+
+        @keyframes shimmer-bar {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .deduction-segment.charges { 
+            background: linear-gradient(90deg, #00ff41, #00d4ff);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+        }
+        .deduction-segment.impot { 
+            background: linear-gradient(90deg, #ff6600, #ffff00);
+            box-shadow: 0 0 20px rgba(255, 102, 0, 0.5);
+        }
+        .deduction-segment.net { 
+            background: linear-gradient(90deg, #ff0080, #bf00ff);
+            box-shadow: 0 0 20px rgba(255, 0, 128, 0.5);
+        }
+
+        .deduction-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        .legend-color.charges { 
+            background: linear-gradient(135deg, #00ff41, #00d4ff);
+            box-shadow: 0 0 10px #00ff41;
+        }
+        .legend-color.impot { 
+            background: linear-gradient(135deg, #ff6600, #ffff00);
+            box-shadow: 0 0 10px #ff6600;
+        }
+        .legend-color.net { 
+            background: linear-gradient(135deg, #ff0080, #bf00ff);
+            box-shadow: 0 0 10px #ff0080;
+        }
+
+        /* Breakdown - Couleurs diverses */
+        .breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            transition: all 0.3s;
+            opacity: 0;
+            transform: translateX(-30px);
+            animation: slideInRight 0.4s ease-out forwards;
+        }
+
+        .breakdown-item:nth-child(1) { 
+            animation-delay: 0.1s;
+            border-left: 3px solid #00ff41;
+            border-top: 1px solid rgba(0, 255, 65, 0.3);
+            border-right: 1px solid rgba(0, 255, 65, 0.3);
+            border-bottom: 1px solid rgba(0, 255, 65, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+        }
+        .breakdown-item:nth-child(2) { 
+            animation-delay: 0.2s;
+            border-left: 3px solid #00d4ff;
+            border-top: 1px solid rgba(0, 212, 255, 0.3);
+            border-right: 1px solid rgba(0, 212, 255, 0.3);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+        }
+        .breakdown-item:nth-child(3) { 
+            animation-delay: 0.3s;
+            border-left: 3px solid #ff6600;
+            border-top: 1px solid rgba(255, 102, 0, 0.3);
+            border-right: 1px solid rgba(255, 102, 0, 0.3);
+            border-bottom: 1px solid rgba(255, 102, 0, 0.3);
+            box-shadow: 0 0 20px rgba(255, 102, 0, 0.1);
+        }
+
+        @keyframes slideInRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .breakdown-item:hover {
+            transform: translateX(4px);
+            filter: brightness(1.2);
+        }
+
+        .breakdown-label {
+            font-size: 14px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        .breakdown-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .breakdown-item:nth-child(1) .breakdown-value { color: #00ff41; text-shadow: 0 0 10px #00ff41; }
+        .breakdown-item:nth-child(2) .breakdown-value { color: #00d4ff; text-shadow: 0 0 10px #00d4ff; }
+        .breakdown-item:nth-child(3) .breakdown-value { color: #ff6600; text-shadow: 0 0 10px #ff6600; }
+
+        /* Stats Grid - 3 couleurs différentes */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-box {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s;
+            opacity: 0;
+            transform: scale(0.9);
+            animation: popIn 0.3s ease-out forwards;
+        }
+
+        .stat-box:nth-child(1) { 
+            animation-delay: 0.5s;
+            border: 2px solid transparent;
+            border-image: linear-gradient(135deg, #00ff41, #00d4ff) 1;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+        }
+        .stat-box:nth-child(2) { 
+            animation-delay: 0.6s;
+            border: 2px solid transparent;
+            border-image: linear-gradient(135deg, #ff0080, #bf00ff) 1;
+            box-shadow: 0 0 20px rgba(255, 0, 128, 0.2);
+        }
+        .stat-box:nth-child(3) { 
+            animation-delay: 0.7s;
+            border: 2px solid transparent;
+            border-image: linear-gradient(135deg, #ff6600, #ffff00) 1;
+            box-shadow: 0 0 20px rgba(255, 102, 0, 0.2);
+        }
+
+        @keyframes popIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .stat-box:hover {
+            transform: translateY(-2px) scale(1.05);
+            filter: brightness(1.2);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .stat-box:nth-child(1) .stat-value { color: #00ff41; text-shadow: 0 0 10px #00ff41; }
+        .stat-box:nth-child(2) .stat-value { color: #ff0080; text-shadow: 0 0 10px #ff0080; }
+        .stat-box:nth-child(3) .stat-value { color: #ff6600; text-shadow: 0 0 10px #ff6600; }
+
+        /* Detail Table - Multicolore */
+        .detail-table {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid transparent;
+            border-image: linear-gradient(135deg, #00d4ff, #ff0080) 1;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+        }
+
+        .table-header {
+            padding: 16px 20px;
+            background: linear-gradient(90deg, rgba(0, 212, 255, 0.2), rgba(255, 0, 128, 0.1));
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(90deg, #00d4ff, #ff0080) 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            color: #00d4ff;
+            text-shadow: 0 0 10px #00d4ff;
+        }
+
+        .table-body {
+            padding: 12px;
+        }
+
+        .table-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .table-row:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .table-row.total {
+            margin-top: 8px;
+            padding-top: 16px;
+            border-top: 2px solid transparent;
+            border-image: linear-gradient(90deg, #00ff41, #00d4ff) 1;
+            font-weight: 700;
+        }
+
+        .table-label {
+            color: #aaa;
+        }
+
+        .table-value {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+        }
+
+        .table-row:nth-child(1) .table-value { color: #fff; }
+        .table-row:nth-child(2) .table-value { color: #00d4ff; text-shadow: 0 0 10px #00d4ff; }
+        .table-row:nth-child(3) .table-value { color: #ff6600; text-shadow: 0 0 10px #ff6600; }
+        .table-row.total .table-value { color: #00ff41; text-shadow: 0 0 10px #00ff41; font-size: 1.1em; }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-illustration {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.2), rgba(255, 0, 128, 0.2));
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            border: 2px solid transparent;
+            border-image: linear-gradient(135deg, #00ff41, #ff0080) 1;
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.3);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .empty-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            color: var(--white);
+            margin-bottom: 8px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+
+        .empty-text {
+            color: #888;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Toast - Multicolore */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 16px 24px;
+            background: rgba(10, 10, 15, 0.95);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            color: var(--white);
+            font-weight: 600;
+            z-index: 1000;
+            animation: slideUp 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .toast.success { 
+            border-image: linear-gradient(135deg, #00ff41, #00d4ff) 1;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.4);
+            color: #00ff41;
+            text-shadow: 0 0 10px #00ff41;
+        }
+        .toast.error { 
+            border-image: linear-gradient(135deg, #ff0040, #ff0080) 1;
+            box-shadow: 0 0 30px rgba(255, 0, 64, 0.4);
+            color: #ff0040;
+            text-shadow: 0 0 10px #ff0040;
+        }
+        .toast.info { 
+            border-image: linear-gradient(135deg, #00d4ff, #bf00ff) 1;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+            color: #00d4ff;
+            text-shadow: 0 0 10px #00d4ff;
+        }
+
+        /* Animations d'entrée */
+        @keyframes slide-in-up {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slide-in-left {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slide-in-right {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes scale-in {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .card { animation: slide-in-left 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .results-card { animation: slide-in-right 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
+        .header-mascot { animation: scale-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both; }
+        .mode-tabs { animation: slide-in-up 0.5s ease-out 0.3s both; }
+        .form-section { animation: slide-in-up 0.5s ease-out 0.4s both; }
+        .actions { animation: slide-in-up 0.5s ease-out 0.5s both; }
+        .info-cards { animation: slide-in-up 0.5s ease-out 0.6s both; }
+        .toast { animation: slide-in-right 0.3s ease; }
+
+        /* Utility */
+        .hidden { display: none !important; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .results-card { position: relative; top: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .nav { padding: 12px 20px; }
+            .nav-links { display: none; }
+            .main { padding: 80px 20px 40px; }
+            .card, .results-card { padding: 28px; }
+            .result-value { font-size: 36px; }
+            .actions { flex-direction: column; }
+            .input-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .info-cards { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Ambient background -->
+    <div class="ambient-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="#" class="logo">
+            <div class="logo-icon">🧮</div>
+            <span>MonCalculateur</span>
+            <span class="logo-badge">Mode Simple</span>
+        </a>
+        <div class="nav-links">
+            <a href="accueil.html">Accueil</a>
+            <a href="calculateur.html" class="active">Salaire Simple</a>
+            <a href="calculateur-heures.html">Heures Simple</a>
+            <a href="calculateur-extra.html">Extra Simple</a>
+            <a href="Calculateur-Salaire-par-Semaine.html">Semaine Simple</a>
+            <a href="calculateur-expert.html" class="mode-switch" style="background: linear-gradient(135deg, rgba(0,255,65,0.2), rgba(0,212,255,0.2)); color: #00ff41; text-shadow: 0 0 10px #00ff41;">Mode Expert →</a>
+        </div>
+    </nav>
+
+    <!-- Main -->
+    <main class="main">
+        <div class="wrapper">
+            
+            <!-- Form Column -->
+            <div class="card">
+                <div class="header">
+                    <div class="header-mascot">
+                        <div class="mascot-bg"></div>
+                        <div class="mascot-icon">🧮</div>
+                    </div>
+                    <div class="badge-shine">Calculateur Simple 2026</div>
+                    <h1>Calculateur de Salaire</h1>
+                    <p>Brut & Net avec déductions 2026</p>
+                </div>
+
+                <!-- Mode Selector -->
+                <div class="mode-section">
+                    <span class="section-label">Profil fiscal</span>
+                    <div class="mode-tabs">
+                        <button class="mode-tab active salarie" id="btn-salarie" onclick="setMode('salarie')">
+                            <span>👔</span> Salarié
+                        </button>
+                        <button class="mode-tab etudiant" id="btn-etudiant" onclick="setMode('etudiant')">
+                            <span>🎓</span> Étudiant
+                        </button>
+                    </div>
+                    <div class="mode-description" id="mode-desc">
+                        <span class="mode-badge standard">32%</span>
+                        <span>de prélèvements (charges + impôt)</span>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <form id="salary-form" onsubmit="event.preventDefault(); calculer();">
+                    
+                    <div class="form-section">
+                        <h3 class="form-title">
+                            <span>💼</span> Données salariales
+                        </h3>
+                        
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span>Taux horaire brut</span>
+                                    <span class="input-hint">SMIC 2026: 11.88€</span>
+                                </label>
+                                <div class="input-wrap">
+                                    <input type="number" class="input" id="taux" placeholder="11.88" step="0.01" min="0">
+                                    <span class="input-suffix">€</span>
+                                </div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span>Heures travaillées</span>
+                                </label>
+                                <div class="input-wrap">
+                                    <input type="number" class="input" id="heures" placeholder="35" step="0.5" min="0">
+                                    <span class="input-suffix">h</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-grid" style="margin-top: 20px;">
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span>Période de calcul</span>
+                                </label>
+                                <select class="input" id="periode">
+                                    <option value="semaine">Par semaine</option>
+                                    <option value="mois" selected>Par mois</option>
+                                    <option value="annee">Par an</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button type="submit" class="btn btn-primary">
+                            <span>✨</span> Calculer Brut & Net
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="rafraichir()">
+                            <span>↺</span> Réinitialiser
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Info Cards -->
+                <div class="info-cards">
+                    <div class="info-card">
+                        <div class="info-card-icon charges"></div>
+                        <span>Charges sociales: <strong>21.5%</strong></span>
+                    </div>
+                    <div class="info-card" id="info-impot">
+                        <div class="info-card-icon impot"></div>
+                        <span>Impôt sur le revenu: <strong>11%</strong></span>
+                    </div>
+                    <div class="info-card hidden" id="info-etudiant">
+                        <div class="info-card-icon etudiant"></div>
+                        <span>Réduction jeune: <strong>Exonéré</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Column -->
+            <div class="results-card" id="results-anchor">
+                <div class="results-header">
+                    <div class="results-label">Résultats du calcul</div>
+                    <div class="results-badge" id="result-badge">👔 Salarié 2026</div>
+                    <div class="results-date" id="calc-date">En attente de calcul...</div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-state" class="empty-state">
+                    <div class="empty-illustration">🧮</div>
+                    <div class="empty-title">Prêt à calculer ?</div>
+                    <div class="empty-text">
+                        Remplissez le formulaire et cliquez sur<br>
+                        <strong style="color: #00ff41; text-shadow: 0 0 10px #00ff41;">Calculer Brut & Net</strong>
+                    </div>
+                </div>
+
+                <!-- Results Content -->
+                <div id="results-content" class="hidden">
+                    
+                    <div class="result-hero" id="result-hero">
+                        <div class="result-label-main">Salaire Net Mensuel</div>
+                        <div class="result-value" id="net-mois">0,00 €</div>
+                        <div class="result-period" id="period-text">par mois</div>
+                    </div>
+
+                    <!-- Deduction Bar -->
+                    <div class="deduction-bar-section">
+                        <div class="deduction-bar-container">
+                            <div class="deduction-bar">
+                                <div class="deduction-segment charges" id="bar-charges" style="width: 21.5%"></div>
+                                <div class="deduction-segment impot" id="bar-impot" style="width: 11%"></div>
+                                <div class="deduction-segment net" id="bar-net" style="width: 67.5%"></div>
+                            </div>
+                        </div>
+                        <div class="deduction-legend">
+                            <div class="legend-item">
+                                <span class="legend-color charges"></span>
+                                <span class="legend-text">Charges (21.5%)</span>
+                            </div>
+                            <div class="legend-item" id="legend-impot">
+                                <span class="legend-color impot"></span>
+                                <span class="legend-text">Impôt (11%)</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color net"></span>
+                                <span class="legend-text">Net</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="breakdown">
+                        <div class="breakdown-item highlight">
+                            <span class="breakdown-label">
+                                <span style="color: #00ff41; text-shadow: 0 0 10px #00ff41;">◆</span> Salaire brut
+                            </span>
+                            <span class="breakdown-value highlight" id="brut-display">0,00 €</span>
+                        </div>
+                        
+                        <div class="breakdown-item negative">
+                            <span class="breakdown-label">
+                                <span style="color: #00d4ff; text-shadow: 0 0 10px #00d4ff;">◆</span> Charges sociales
+                            </span>
+                            <span class="breakdown-value negative" id="charges-display">-0,00 €</span>
+                        </div>
+                        
+                        <div class="breakdown-item negative" id="impot-breakdown">
+                            <span class="breakdown-label">
+                                <span style="color: #ff6600; text-shadow: 0 0 10px #ff6600;">◆</span> Impôt sur le revenu
+                            </span>
+                            <span class="breakdown-value negative" id="impot-display">-0,00 €</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-table">
+                        <div class="table-header">
+                            <span>🧾</span> Détail des prélèvements 2026
+                        </div>
+                        <div class="table-body">
+                            <div class="table-row">
+                                <span class="table-label">Salaire brut</span>
+                                <span class="table-value" id="detail-brut">0,00 €</span>
+                            </div>
+                            <div class="table-row">
+                                <span class="table-label">Charges sociales (21.5%)</span>
+                                <span class="table-value negative" id="detail-charges">-0,00 €</span>
+                            </div>
+                            <div class="table-row" id="row-impot-detail">
+                                <span class="table-label">Impôt sur le revenu (11%)</span>
+                                <span class="table-value negative" id="detail-impot">-0,00 €</span>
+                            </div>
+                            <div class="table-row total">
+                                <span class="table-label">Salaire net à percevoir</span>
+                                <span class="table-value positive" id="detail-net">0,00 €</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-label">Net / semaine</div>
+                            <div class="stat-value primary" id="net-semaine">0,00 €</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Net / mois</div>
+                            <div class="stat-value accent" id="net-mois-stat">0,00 €</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Net / an</div>
+                            <div class="stat-value secondary" id="net-an">0,00 €</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Données 2026
+        let modeEtudiant = false;
+        const SMIC_2026 = 11.88;
+        const CHARGES_2026 = 0.215;
+        const IMPOT_2026 = 0.11;
+        const TOTAL_SALARIE_2026 = CHARGES_2026 + IMPOT_2026;
+        const TOTAL_ETUDIANT_2026 = 0.18;
+
+        function setMode(mode) {
+            modeEtudiant = (mode === 'etudiant');
+            const btnSalarie = document.getElementById('btn-salarie');
+            const btnEtudiant = document.getElementById('btn-etudiant');
+            const modeDesc = document.getElementById('mode-desc');
+            const infoImpot = document.getElementById('info-impot');
+            const infoEtudiant = document.getElementById('info-etudiant');
+            
+            if (modeEtudiant) {
+                btnSalarie.classList.remove('active');
+                btnEtudiant.classList.add('active');
+                modeDesc.innerHTML = '<span class="mode-badge etudiant">18%</span><span>de prélèvements (charges réduites, pas d\'impôt)</span>';
+                infoImpot.classList.add('hidden');
+                infoEtudiant.classList.remove('hidden');
+            } else {
+                btnSalarie.classList.add('active');
+                btnEtudiant.classList.remove('active');
+                modeDesc.innerHTML = '<span class="mode-badge standard">32%</span><span>de prélèvements (charges + impôt)</span>';
+                infoImpot.classList.remove('hidden');
+                infoEtudiant.classList.add('hidden');
+            }
+        }
+
+        function calculer() {
+            const taux = parseFloat(document.getElementById('taux').value) || SMIC_2026;
+            const heures = parseFloat(document.getElementById('heures').value);
+            const periode = document.getElementById('periode').value;
+            
+            if (!heures || heures <= 0) {
+                shakeElement(document.getElementById('heures').parentElement);
+                showToast('Veuillez saisir les heures travaillées', 'error');
+                return;
+            }
+
+            // Calcul heures selon période
+            let h_sem, h_mois, h_an;
+            if (periode === 'semaine') {
+                h_sem = heures;
+                h_mois = heures * 4.33;
+                h_an = heures * 52;
+            } else if (periode === 'mois') {
+                h_sem = heures / 4.33;
+                h_mois = heures;
+                h_an = heures * 12;
+            } else {
+                h_sem = heures / 52;
+                h_mois = heures / 12;
+                h_an = heures;
+            }
+
+            // Calcul BRUT
+            const brut_sem = h_sem * taux;
+            const brut_mois = h_mois * taux;
+            const brut_an = h_an * taux;
+
+            // Calcul NET
+            const tauxPrelevement = modeEtudiant ? TOTAL_ETUDIANT_2026 : TOTAL_SALARIE_2026;
+            const net_sem = brut_sem * (1 - tauxPrelevement);
+            const net_mois = brut_mois * (1 - tauxPrelevement);
+            const net_an = brut_an * (1 - tauxPrelevement);
+
+            const charges = brut_mois * CHARGES_2026;
+            const impot = brut_mois * (modeEtudiant ? 0 : IMPOT_2026);
+
+            // Update UI
+            document.getElementById('net-mois').textContent = formatMoney(net_mois);
+            document.getElementById('brut-display').textContent = formatMoney(brut_mois);
+            document.getElementById('charges-display').textContent = '-' + formatMoney(charges);
+            document.getElementById('impot-display').textContent = '-' + formatMoney(impot);
+            
+            // Show/hide impôt
+            document.getElementById('impot-breakdown').style.display = modeEtudiant ? 'none' : 'flex';
+            document.getElementById('legend-impot').style.display = modeEtudiant ? 'none' : 'flex';
+            document.getElementById('row-impot-detail').style.display = modeEtudiant ? 'none' : 'flex';
+            
+            // Detail table
+            document.getElementById('detail-brut').textContent = formatMoney(brut_mois);
+            document.getElementById('detail-charges').textContent = '-' + formatMoney(charges);
+            document.getElementById('detail-impot').textContent = '-' + formatMoney(impot);
+            document.getElementById('detail-net').textContent = formatMoney(net_mois);
+            
+            // Stats
+            document.getElementById('net-semaine').textContent = formatMoney(net_sem);
+            document.getElementById('net-mois-stat').textContent = formatMoney(net_mois);
+            document.getElementById('net-an').textContent = formatMoney(net_an);
+            
+            // Badge & Bar
+            const badge = document.getElementById('result-badge');
+            const hero = document.getElementById('result-hero');
+            if (modeEtudiant) {
+                badge.textContent = '🎓 Étudiant 2026';
+                badge.classList.add('etudiant');
+                hero.classList.add('etudiant');
+                document.getElementById('bar-charges').style.width = '18%';
+                document.getElementById('bar-impot').style.width = '0%';
+                document.getElementById('bar-net').style.width = '82%';
+            } else {
+                badge.textContent = '👔 Salarié 2026';
+                badge.classList.remove('etudiant');
+                hero.classList.remove('etudiant');
+                document.getElementById('bar-charges').style.width = '21.5%';
+                document.getElementById('bar-impot').style.width = '11%';
+                document.getElementById('bar-net').style.width = '67.5%';
+            }
+            
+            document.getElementById('calc-date').textContent = 'Calcul effectué le ' + new Date().toLocaleDateString('fr-FR');
+            
+            // Show results
+            document.getElementById('empty-state').classList.add('hidden');
+            const results = document.getElementById('results-content');
+            results.classList.remove('hidden');
+            
+            // Reset animations
+            results.style.animation = 'none';
+            results.offsetHeight;
+            results.style.animation = null;
+            
+            // Scroll
+            setTimeout(() => {
+                document.getElementById('results-anchor').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            }, 100);
+            
+            showToast('Calcul effectué avec succès !', 'success');
+        }
+
+        function rafraichir() {
+            document.getElementById('taux').value = '';
+            document.getElementById('heures').value = '';
+            document.getElementById('periode').value = 'mois';
+            setMode('salarie');
+            
+            document.getElementById('empty-state').classList.remove('hidden');
+            document.getElementById('results-content').classList.add('hidden');
+            document.getElementById('calc-date').textContent = 'En attente de calcul...';
+            
+            showToast('Formulaire réinitialisé', 'info');
+        }
+
+        function formatMoney(amount) {
+            return amount.toLocaleString('fr-FR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }) + ' €';
+        }
+
+        function shakeElement(el) {
+            el.style.animation = 'shake 0.5s';
+            setTimeout(() => el.style.animation = '', 500);
+        }
+
+        function showToast(message, type = 'info') {
+            document.querySelectorAll('.toast').forEach(t => t.remove());
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast ' + type;
+            const icons = { success: '✓', error: '✕', info: 'ℹ' };
+            toast.innerHTML = `<span style="font-size: 18px;">${icons[type]}</span> ${message}`;
+            
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Keyboard shortcut
+        document.addEventListener('keypress', e => {
+            if (e.key === 'Enter') calculer();
+        });
+    </script>
+</body>
+</html>

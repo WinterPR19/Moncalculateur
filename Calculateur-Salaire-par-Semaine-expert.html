@@ -1,0 +1,1808 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur Salaire par Semaine 2026 | MonCalculateur</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+        :root {
+            --violet: #7c3aed;
+            --violet-light: #a78bfa;
+            --violet-dark: #5b21b6;
+            --rose: #ec4899;
+            --rose-light: #f9a8d4;
+            --cyan: #06b6d4;
+            --cyan-light: #67e8f9;
+            --amber: #f59e0b;
+            --emerald: #10b981;
+            --slate-900: #0f172a;
+            --slate-800: #1e293b;
+            --slate-700: #334155;
+            --slate-400: #94a3b8;
+            --white: #ffffff;
+            
+            --gradient-main: linear-gradient(135deg, var(--violet) 0%, var(--rose) 50%, var(--amber) 100%);
+            --gradient-cool: linear-gradient(135deg, var(--cyan) 0%, var(--violet) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--slate-900);
+            color: var(--white);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Ambient background */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .blob-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--violet);
+            top: -200px;
+            right: -100px;
+        }
+
+        .blob-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--rose);
+            bottom: -150px;
+            left: -100px;
+            animation-delay: -7s;
+        }
+
+        .blob-3 {
+            width: 300px;
+            height: 300px;
+            background: var(--cyan);
+            top: 50%;
+            left: 50%;
+            margin-left: -150px;
+            margin-top: -150px;
+            animation-delay: -14s;
+            opacity: 0.2;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.05); }
+            66% { transform: translate(-20px, 20px) scale(0.95); }
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-main);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+        }
+
+        .logo-badge {
+            background: rgba(236, 72, 153, 0.2);
+            border: 1px solid var(--rose);
+            color: var(--rose-light);
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            color: var(--slate-400);
+            text-decoration: none;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--white);
+            background: rgba(124, 58, 237, 0.2);
+        }
+
+        /* Main */
+        .main {
+            padding: 100px 32px 60px;
+            max-width: 1280px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .wrapper {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--violet-light), var(--rose-light), transparent);
+            opacity: 0.5;
+        }
+
+        .card:hover {
+            border-color: rgba(124, 58, 237, 0.3);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .header-mascot {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .mascot-bg {
+            position: absolute;
+            inset: 0;
+            background: var(--gradient-main);
+            border-radius: 24px;
+            transform: rotate(12deg);
+            opacity: 0.3;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: rotate(12deg) scale(1); opacity: 0.3; }
+            50% { transform: rotate(12deg) scale(1.1); opacity: 0.5; }
+        }
+
+        .mascot-icon {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-main);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            box-shadow: 0 10px 40px rgba(124, 58, 237, 0.3);
+        }
+
+        .badge-shine {
+            display: inline-block;
+            background: rgba(124, 58, 237, 0.2);
+            border: 1px solid var(--violet-light);
+            color: var(--violet-light);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: var(--slate-400);
+            font-size: 16px;
+        }
+
+        /* Profile Selector */
+        .profile-section {
+            margin-bottom: 28px;
+        }
+
+        .section-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--slate-400);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .profile-tabs {
+            display: flex;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .profile-tab {
+            flex: 1;
+            padding: 14px 20px;
+            background: transparent;
+            border: none;
+            border-radius: 12px;
+            color: var(--slate-400);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .profile-tab:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .profile-tab.active {
+            background: var(--white);
+            color: var(--slate-900);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-tab.active.salarie {
+            background: var(--gradient-main);
+            color: var(--white);
+        }
+
+        .profile-tab.active.etudiant {
+            background: var(--gradient-cool);
+            color: var(--white);
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: 28px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .form-section::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--gradient-main);
+            border-radius: 2px;
+        }
+
+        .form-section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .form-section:last-of-type::after {
+            display: none;
+        }
+
+        .form-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-title span {
+            width: 32px;
+            height: 32px;
+            background: rgba(124, 58, 237, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 640px) {
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--slate-400);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .input-hint {
+            font-size: 12px;
+            color: var(--slate-400);
+            opacity: 0.8;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            color: var(--white);
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .input:focus {
+            border-color: var(--violet-light);
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+        }
+
+        .input-suffix {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--violet-light);
+            font-weight: 600;
+            font-size: 14px;
+            pointer-events: none;
+        }
+
+        /* Parameters Accordion */
+        .params-accordion {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            margin-bottom: 28px;
+            overflow: hidden;
+            background: rgba(15, 23, 42, 0.4);
+        }
+
+        .params-header {
+            padding: 18px 24px;
+            background: rgba(124, 58, 237, 0.1);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .params-header:hover {
+            background: rgba(124, 58, 237, 0.15);
+        }
+
+        .params-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--violet-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .params-chevron {
+            color: var(--violet-light);
+            transition: transform 0.3s;
+            font-size: 12px;
+        }
+
+        .params-chevron.open {
+            transform: rotate(180deg);
+        }
+
+        .params-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+
+        .params-body.open {
+            max-height: 1000px;
+            padding: 24px;
+        }
+
+        /* Mode Selector */
+        .param-mode-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .mode-btn {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--slate-400);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mode-btn:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .mode-btn.active {
+            background: var(--violet);
+            color: var(--white);
+            border-color: var(--violet);
+        }
+
+        .param-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+        }
+
+        .param-row:hover {
+            padding-left: 8px;
+            border-bottom-color: rgba(124, 58, 237, 0.3);
+        }
+
+        .param-row:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .param-label {
+            font-size: 14px;
+            color: var(--slate-400);
+            transition: color 0.3s;
+        }
+
+        .param-row:hover .param-label {
+            color: var(--white);
+        }
+
+        .param-input-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .param-input {
+            width: 100px;
+            padding: 10px 14px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--white);
+            font-size: 15px;
+            text-align: right;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .param-input:focus {
+            border-color: var(--violet-light);
+            outline: none;
+        }
+
+        .param-unit {
+            color: var(--slate-400);
+            font-size: 13px;
+            min-width: 40px;
+            text-align: left;
+        }
+
+        .param-summary {
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(124, 58, 237, 0.1);
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .param-summary-label {
+            font-size: 14px;
+            color: var(--slate-400);
+        }
+
+        .param-summary-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--violet-light);
+        }
+
+        /* Buttons */
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 18px 28px;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Outfit', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--gradient-main);
+            color: var(--white);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.5);
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+            opacity: 0;
+        }
+
+        .btn-primary:hover::after {
+            animation: rollShine 0.8s ease-out;
+        }
+
+        @keyframes rollShine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); opacity: 0; }
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: var(--slate-400);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--rose);
+            color: var(--rose-light);
+            background: rgba(236, 72, 153, 0.1);
+        }
+
+        /* Results Card */
+        .results-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            scroll-margin-top: 120px;
+        }
+
+        .results-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-main);
+            border-radius: 4px 4px 0 0;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 28px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .results-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--slate-400);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .results-date {
+            font-size: 13px;
+            color: var(--slate-400);
+        }
+
+        /* Main Result */
+        .result-hero {
+            background: var(--gradient-main);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(124, 58, 237, 0.3);
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            animation: rollIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes rollIn {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .result-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+            animation: shimmer 8s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(10px, 10px) rotate(180deg); }
+        }
+
+        .result-hero.etudiant {
+            background: var(--gradient-cool);
+            box-shadow: 0 20px 60px rgba(6, 182, 212, 0.3);
+        }
+
+        .result-label-main {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .result-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 8px;
+            position: relative;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            letter-spacing: -1px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: rollUp 0.5s ease-out 0.3s forwards;
+        }
+
+        @keyframes rollUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-period {
+            font-size: 15px;
+            opacity: 0.9;
+            position: relative;
+            opacity: 0;
+            animation: fadeIn 0.4s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 0.9; }
+        }
+
+        /* Breakdown */
+        .breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            transition: all 0.3s;
+            opacity: 0;
+            transform: translateX(-30px);
+            animation: slideIn 0.4s ease-out forwards;
+        }
+
+        .breakdown-item:nth-child(1) { animation-delay: 0.1s; }
+        .breakdown-item:nth-child(2) { animation-delay: 0.2s; }
+        .breakdown-item:nth-child(3) { animation-delay: 0.3s; }
+        .breakdown-item:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .breakdown-item:hover {
+            background: rgba(15, 23, 42, 0.6);
+            border-color: rgba(124, 58, 237, 0.2);
+            transform: translateX(4px);
+        }
+
+        .breakdown-item.positive { border-left: 3px solid var(--emerald); }
+        .breakdown-item.negative { border-left: 3px solid var(--rose); }
+        .breakdown-item.highlight { 
+            border-left: 3px solid var(--violet);
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        .breakdown-label {
+            font-size: 14px;
+            color: var(--slate-400);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .breakdown-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .breakdown-value.positive { color: var(--emerald); }
+        .breakdown-value.negative { color: var(--rose); }
+        .breakdown-value.highlight { color: var(--violet-light); }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-box {
+            padding: 20px;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s;
+            opacity: 0;
+            transform: scale(0.9);
+            animation: popIn 0.3s ease-out forwards;
+        }
+
+        .stat-box:nth-child(1) { animation-delay: 0.5s; }
+        .stat-box:nth-child(2) { animation-delay: 0.6s; }
+        .stat-box:nth-child(3) { animation-delay: 0.7s; }
+        .stat-box:nth-child(4) { animation-delay: 0.8s; }
+
+        @keyframes popIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .stat-box:hover {
+            transform: translateY(-2px);
+            border-color: rgba(124, 58, 237, 0.2);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--slate-400);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .stat-value.violet { color: var(--violet-light); }
+        .stat-value.emerald { color: var(--emerald); }
+        .stat-value.amber { color: var(--amber); }
+        .stat-value.rose { color: var(--rose-light); }
+
+        /* Info Note */
+        .info-note {
+            padding: 20px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--emerald);
+            line-height: 1.6;
+            opacity: 0;
+            animation: fadeIn 0.4s ease-out 0.9s forwards;
+        }
+
+        .info-note.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: rgba(245, 158, 11, 0.2);
+            color: var(--amber);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-illustration {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 24px;
+            background: rgba(124, 58, 237, 0.1);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            opacity: 0.6;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .empty-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+
+        .empty-text {
+            color: var(--slate-400);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 16px 24px;
+            background: var(--slate-800);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--white);
+            font-weight: 500;
+            z-index: 1000;
+            animation: slideUp 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .toast.success { border-color: var(--emerald); }
+        .toast.error { border-color: var(--rose); }
+        .toast.info { border-color: var(--violet-light); }
+
+        /* ============================================
+           ANIMATIONS D'ENTRÉE SMOOTH - EXPERT
+           ============================================ */
+
+        @keyframes slide-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slide-in-left {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slide-in-right {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scale-in {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* Application des animations aux éléments */
+        .card {
+            animation: slide-in-left 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .results-card {
+            animation: slide-in-right 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+        }
+
+        .header-mascot {
+            animation: scale-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+        }
+
+        .profile-tabs {
+            animation: slide-in-up 0.5s ease-out 0.3s both;
+        }
+
+        .params-accordion {
+            animation: slide-in-up 0.5s ease-out 0.4s both;
+        }
+
+        .form-section {
+            animation: slide-in-up 0.5s ease-out 0.5s both;
+        }
+
+        .actions {
+            animation: slide-in-up 0.5s ease-out 0.6s both;
+        }
+
+        .info-note {
+            animation: fadeIn 0.4s ease-out 0.7s both;
+        }
+
+        /* Toast amélioré - slide depuis la droite */
+        .toast {
+            animation: slide-in-right 0.3s ease;
+        }
+
+        /* Utility */
+        .hidden { display: none !important; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .results-card {
+                position: relative;
+                top: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav { padding: 12px 20px; }
+            .nav-links { display: none; }
+            .main { padding: 80px 20px 40px; }
+            .card, .results-card { padding: 28px; }
+            .result-value { font-size: 36px; }
+            .actions { flex-direction: column; }
+            .input-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Auto-update indicator */
+        .auto-update-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--emerald);
+            background: rgba(16, 185, 129, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-left: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .auto-update-badge.active {
+            opacity: 1;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <!-- Ambient background -->
+    <div class="ambient-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="#" class="logo">
+            <div class="logo-icon">💰</div>
+            <span>MonCalculateur</span>
+            <span class="logo-badge">2026</span>
+        </a>
+        <div class="nav-links">
+            <a href="accueil.html">Accueil</a>
+            <a href="calculateur-expert.html">salaire calculateur expert</a>
+            <a href="Calculateur-Salaire-par-Semaine-expert.html" class="active">Semaine calculateur expert</a>
+            <a href="calculateur-extra-expert.html">Extra calculateur expert</a>
+            <a href="calculateur.html" class="mode-switch">Mode Simple →</a>
+        </div>
+    </nav>
+
+    <!-- Main -->
+    <main class="main">
+        <div class="wrapper">
+            
+            <!-- Form Column -->
+            <div class="card">
+                <div class="header">
+                    <div class="header-mascot">
+                        <div class="mascot-bg"></div>
+                        <div class="mascot-icon">📅</div>
+                    </div>
+                    <div class="badge-shine">Calculateur Expert 2026</div>
+                    <h1>Salaire par Semaine</h1>
+                    <p>Calculez votre rémunération avec précision</p>
+                </div>
+
+                <!-- Profile Selector -->
+                <div class="profile-section">
+                    <span class="section-label">Votre profil</span>
+                    <div class="profile-tabs">
+                        <button class="profile-tab active salarie" id="btn-salarie" onclick="setProfile('salarie')">
+                            <span>💼</span> Salarié
+                        </button>
+                        <button class="profile-tab etudiant" id="btn-etudiant" onclick="setProfile('etudiant')">
+                            <span>🎓</span> Étudiant
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Parameters Accordion -->
+                <div class="params-accordion">
+                    <div class="params-header" onclick="toggleParams()">
+                        <div class="params-title">
+                            <span>⚙️</span> Paramètres fiscaux avancés
+                            <span class="auto-update-badge" id="auto-update-badge">
+                                <span>⟳</span> Auto
+                            </span>
+                        </div>
+                        <span class="params-chevron" id="params-chevron">▼</span>
+                    </div>
+                    <div class="params-body" id="params-body">
+                        
+                        <!-- Mode Selector -->
+                        <div class="param-mode-selector">
+                            <button class="mode-btn active" id="mode-pourcent" onclick="setParamMode('pourcent')">
+                                En pourcentage (%)
+                            </button>
+                            <button class="mode-btn" id="mode-device" onclick="setParamMode('device')">
+                                En devise (€)
+                            </button>
+                        </div>
+
+                        <div class="param-row">
+                            <span class="param-label">SMIC horaire 2026</span>
+                            <div class="param-input-wrap">
+                                <input type="number" class="param-input" id="taux-smic" value="11.88" step="0.01" readonly>
+                                <span class="param-unit">€/h</span>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+                            <div class="param-row">
+                                <span class="param-label">Maladie</span>
+                                <div class="param-input-wrap">
+                                    <input type="number" class="param-input" id="taux-maladie" value="0" step="0.01">
+                                    <span class="param-unit" id="unit-maladie">%</span>
+                                </div>
+                            </div>
+                            <div class="param-row">
+                                <span class="param-label">Retraite de base</span>
+                                <div class="param-input-wrap">
+                                    <input type="number" class="param-input" id="taux-retraite-base" value="6.9" step="0.01">
+                                    <span class="param-unit" id="unit-retraite-base">%</span>
+                                </div>
+                            </div>
+                            <div class="param-row">
+                                <span class="param-label">Retraite complémentaire</span>
+                                <div class="param-input-wrap">
+                                    <input type="number" class="param-input" id="taux-retraite-comp" value="3.86" step="0.01">
+                                    <span class="param-unit" id="unit-retraite-comp">%</span>
+                                </div>
+                            </div>
+                            <div class="param-row">
+                                <span class="param-label">Assurance chômage</span>
+                                <div class="param-input-wrap">
+                                    <input type="number" class="param-input" id="taux-chomage" value="3.84" step="0.01">
+                                    <span class="param-unit" id="unit-chomage">%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="param-summary">
+                            <span class="param-summary-label">Total prélèvements</span>
+                            <span class="param-summary-value" id="total-prelevements">~24.44%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <form id="salary-form" onsubmit="event.preventDefault(); calculate();">
+                    
+                    <div class="form-section">
+                        <h3 class="form-title">
+                            <span>⏱️</span> Temps de travail
+                        </h3>
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span>Nombre de semaines</span>
+                                    <span class="input-hint">Période de calcul</span>
+                                </label>
+                                <div class="input-wrap">
+                                    <input type="number" class="input" id="semaines" min="1" max="52" value="4" step="1" required>
+                                    <span class="input-suffix">sem.</span>
+                                </div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span>Heures par semaine</span>
+                                    <span class="input-hint">Temps plein: 35h</span>
+                                </label>
+                                <div class="input-wrap">
+                                    <input type="number" class="input" id="heures-semaine" min="1" max="48" value="35" step="0.5" required>
+                                    <span class="input-suffix">h</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="form-title">
+                            <span>💶</span> Rémunération
+                        </h3>
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span>Salaire horaire brut</span>
+                                    <span class="input-hint">SMIC 2026: 11.88€</span>
+                                </label>
+                                <div class="input-wrap">
+                                    <input type="number" class="input" id="taux-horaire" min="11.88" value="11.88" step="0.01" required oninput="onSalaryChange()">
+                                    <span class="input-suffix">€</span>
+                                </div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span>Prime ancienneté</span>
+                                    <span class="input-hint">Optionnel</span>
+                                </label>
+                                <div class="input-wrap">
+                                    <input type="number" class="input" id="prime-anciennete" min="0" value="0" step="0.01">
+                                    <span class="input-suffix">€/mois</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="form-title">
+                            <span>🎁</span> Avantages en nature
+                        </h3>
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span>Tickets restaurant</span>
+                                    <span class="input-hint">Valeur faciale</span>
+                                </label>
+                                <div class="input-wrap">
+                                    <input type="number" class="input" id="tickets-restaurant" min="0" value="0" step="1">
+                                    <span class="input-suffix">€</span>
+                                </div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span>Remboursement transport</span>
+                                    <span class="input-hint">Abonnement</span>
+                                </label>
+                                <div class="input-wrap">
+                                    <input type="number" class="input" id="remboursement-transport" min="0" value="0" step="0.01">
+                                    <span class="input-suffix">€/mois</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button type="submit" class="btn btn-primary" id="submit-btn">
+                            <span>✨</span> Calculer mon salaire
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                            <span>↺</span> Réinitialiser
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Results Column -->
+            <div class="results-card" id="results-anchor">
+                <div class="results-header">
+                    <div class="results-label">Résultats du calcul</div>
+                    <div class="results-date" id="calc-date">En attente de calcul...</div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-state" class="empty-state">
+                    <div class="empty-illustration">📊</div>
+                    <div class="empty-title">Prêt à calculer ?</div>
+                    <div class="empty-text">
+                        Remplissez le formulaire et cliquez sur<br>
+                        <strong style="color: var(--violet-light);">Calculer mon salaire</strong>
+                    </div>
+                </div>
+
+                <!-- Results Content -->
+                <div id="results-content" class="hidden">
+                    
+                    <div class="result-hero" id="result-hero">
+                        <div class="result-label-main">Salaire Net à Payer</div>
+                        <div class="result-value" id="net-payer">0,00 €</div>
+                        <div class="result-period" id="period-text">pour 4 semaines</div>
+                    </div>
+
+                    <div class="breakdown">
+                        <div class="breakdown-item highlight">
+                            <span class="breakdown-label">
+                                <span style="color: var(--violet-light);">◆</span> Salaire brut total
+                            </span>
+                            <span class="breakdown-value highlight" id="brut-total">0,00 €</span>
+                        </div>
+                        
+                        <div class="breakdown-item negative">
+                            <span class="breakdown-label">
+                                <span style="color: var(--rose);">◆</span> Charges salariales
+                            </span>
+                            <span class="breakdown-value negative" id="charges-total">-0,00 €</span>
+                        </div>
+                        
+                        <div class="breakdown-item negative" id="impot-row" style="display: none;">
+                            <span class="breakdown-label">
+                                <span style="color: var(--amber);">◆</span> Impôt sur le revenu
+                            </span>
+                            <span class="breakdown-value negative" id="impot-montant">-0,00 €</span>
+                        </div>
+                        
+                        <div class="breakdown-item positive">
+                            <span class="breakdown-label">
+                                <span style="color: var(--emerald);">◆</span> Net avant impôt
+                            </span>
+                            <span class="breakdown-value positive" id="net-avant-impot">0,00 €</span>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-label">Heures totales</div>
+                            <div class="stat-value violet" id="heures-total">0h</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Taux horaire net</div>
+                            <div class="stat-value emerald" id="taux-net">0,00 €</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Coût employeur</div>
+                            <div class="stat-value amber" id="cout-employeur">0,00 €</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Charges patronales</div>
+                            <div class="stat-value rose" id="charges-patronales">0,00 €</div>
+                        </div>
+                    </div>
+
+                    <div class="info-note" id="info-box">
+                        <strong>💡 Bon à savoir :</strong> Ce calcul est basé sur les taux 2026 pour un contrat standard. Les avantages en nature sont inclus dans l'assiette brute de cotisation.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // State
+        let currentProfile = 'salarie';
+        let paramMode = 'pourcent';
+        let lastSalaryValue = 11.88;
+        
+        // Standard rates (percentages)
+        const standardRates = {
+            maladie: 0,
+            retraiteBase: 6.9,
+            retraiteComp: 3.86,
+            chomage: 3.84
+        };
+        
+        // Student rates (percentages)
+        const studentRates = {
+            maladie: 0,
+            retraiteBase: 0,
+            retraiteComp: 0,
+            chomage: 0
+        };
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            updateTotalPrelevements();
+            
+            document.querySelectorAll('.param-input').forEach(input => {
+                input.addEventListener('input', updateTotalPrelevements);
+            });
+        });
+
+        // Handle salary input change - auto update params
+        function onSalaryChange() {
+            const newSalary = parseFloat(document.getElementById('taux-horaire').value) || 11.88;
+            
+            // Only update if significant change (avoid micro updates while typing)
+            if (Math.abs(newSalary - lastSalaryValue) > 0.5) {
+                lastSalaryValue = newSalary;
+                updateParamsForSalary(newSalary);
+                
+                // Show auto-update indicator
+                const badge = document.getElementById('auto-update-badge');
+                badge.classList.add('active');
+                setTimeout(() => badge.classList.remove('active'), 2000);
+            }
+        }
+
+        // Update parameters based on new salary
+        function updateParamsForSalary(salary) {
+            if (paramMode === 'device') {
+                // Calculate new € values based on standard rates
+                const baseBrut = salary * 35 * 4; // Monthly base
+                
+                const rates = currentProfile === 'salarie' ? standardRates : studentRates;
+                
+                document.getElementById('taux-maladie').value = ((rates.maladie / 100) * baseBrut).toFixed(2);
+                document.getElementById('taux-retraite-base').value = ((rates.retraiteBase / 100) * baseBrut).toFixed(2);
+                document.getElementById('taux-retraite-comp').value = ((rates.retraiteComp / 100) * baseBrut).toFixed(2);
+                document.getElementById('taux-chomage').value = ((rates.chomage / 100) * baseBrut).toFixed(2);
+                
+                updateTotalPrelevements();
+            }
+            // In pourcent mode, rates stay the same (percentages don't change with salary)
+        }
+
+        // Toggle params
+        function toggleParams() {
+            const body = document.getElementById('params-body');
+            const chevron = document.getElementById('params-chevron');
+            body.classList.toggle('open');
+            chevron.classList.toggle('open');
+        }
+
+        // Set parameter mode (% or €)
+        function setParamMode(mode) {
+            paramMode = mode;
+            
+            document.getElementById('mode-pourcent').classList.toggle('active', mode === 'pourcent');
+            document.getElementById('mode-device').classList.toggle('active', mode === 'device');
+            
+            // Get current salary for calculations
+            const salary = parseFloat(document.getElementById('taux-horaire').value) || 11.88;
+            const baseBrut = salary * 35 * 4;
+            
+            const params = ['maladie', 'retraite-base', 'retraite-comp', 'chomage'];
+            const rates = currentProfile === 'salarie' ? standardRates : studentRates;
+            
+            params.forEach((param, index) => {
+                const input = document.getElementById('taux-' + param);
+                const unit = document.getElementById('unit-' + param);
+                const rateKey = Object.keys(rates)[index];
+                
+                if (mode === 'pourcent') {
+                    unit.textContent = '%';
+                    // Convert € to %
+                    input.value = rates[rateKey].toFixed(2);
+                } else {
+                    unit.textContent = '€';
+                    // Convert % to €
+                    input.value = ((rates[rateKey] / 100) * baseBrut).toFixed(2);
+                }
+                
+                input.dataset.mode = mode;
+            });
+            
+            updateTotalPrelevements();
+            showToast('Mode ' + (mode === 'pourcent' ? 'pourcentage' : 'devise') + ' activé', 'info');
+        }
+
+        // Set profile
+        function setProfile(profile) {
+            currentProfile = profile;
+            const btnSalarie = document.getElementById('btn-salarie');
+            const btnEtudiant = document.getElementById('btn-etudiant');
+            
+            const salary = parseFloat(document.getElementById('taux-horaire').value) || 11.88;
+            const baseBrut = salary * 35 * 4;
+            
+            if (profile === 'salarie') {
+                btnSalarie.classList.add('active');
+                btnEtudiant.classList.remove('active');
+                
+                if (paramMode === 'pourcent') {
+                    document.getElementById('taux-retraite-base').value = standardRates.retraiteBase.toFixed(2);
+                    document.getElementById('taux-retraite-comp').value = standardRates.retraiteComp.toFixed(2);
+                    document.getElementById('taux-chomage').value = standardRates.chomage.toFixed(2);
+                } else {
+                    document.getElementById('taux-retraite-base').value = ((standardRates.retraiteBase / 100) * baseBrut).toFixed(2);
+                    document.getElementById('taux-retraite-comp').value = ((standardRates.retraiteComp / 100) * baseBrut).toFixed(2);
+                    document.getElementById('taux-chomage').value = ((standardRates.chomage / 100) * baseBrut).toFixed(2);
+                }
+            } else {
+                btnSalarie.classList.remove('active');
+                btnEtudiant.classList.add('active');
+                
+                // Student exemptions
+                document.getElementById('taux-retraite-base').value = '0';
+                document.getElementById('taux-retraite-comp').value = '0';
+                document.getElementById('taux-chomage').value = '0';
+            }
+            
+            updateTotalPrelevements();
+            showToast('Profil ' + (profile === 'salarie' ? 'Salarié' : 'Étudiant') + ' activé', 'info');
+        }
+
+        // Update total
+        function updateTotalPrelevements() {
+            const fields = ['taux-maladie', 'taux-retraite-base', 'taux-retraite-comp', 'taux-chomage'];
+            let total = 0;
+            
+            fields.forEach(id => {
+                total += parseFloat(document.getElementById(id)?.value) || 0;
+            });
+            
+            // Add CSG/CRDS
+            if (paramMode === 'pourcent') {
+                total += 9.7;
+                document.getElementById('total-prelevements').textContent = '~' + total.toFixed(2) + '%';
+            } else {
+                const salary = parseFloat(document.getElementById('taux-horaire').value) || 11.88;
+                const baseBrut = salary * 35 * 4;
+                const csgEuro = (baseBrut * 0.9825) * 0.097;
+                total += csgEuro;
+                document.getElementById('total-prelevements').textContent = '~' + total.toFixed(2) + '€';
+            }
+        }
+
+        // Calculate with scroll
+        function calculate() {
+            try {
+                const semaines = parseFloat(document.getElementById('semaines').value) || 4;
+                const heuresSemaine = parseFloat(document.getElementById('heures-semaine').value) || 35;
+                const tauxHoraire = parseFloat(document.getElementById('taux-horaire').value) || 11.88;
+                const prime = parseFloat(document.getElementById('prime-anciennete').value) || 0;
+                const tickets = parseFloat(document.getElementById('tickets-restaurant').value) || 0;
+                const transport = parseFloat(document.getElementById('remboursement-transport').value) || 0;
+
+                const tauxMaladie = parseFloat(document.getElementById('taux-maladie').value) || 0;
+                const tauxRetraiteBase = parseFloat(document.getElementById('taux-retraite-base').value) || 0;
+                const tauxRetraiteComp = parseFloat(document.getElementById('taux-retraite-comp').value) || 0;
+                const tauxChomage = parseFloat(document.getElementById('taux-chomage').value) || 0;
+
+                const heuresTotal = semaines * heuresSemaine;
+                const brutBase = heuresTotal * tauxHoraire;
+                const avantages = tickets + transport;
+                const brutTotal = brutBase + prime + avantages;
+
+                // Calculate charges based on mode
+                let maladie, retraiteBase, retraiteComp, chomage;
+                
+                if (paramMode === 'pourcent') {
+                    maladie = brutTotal * (tauxMaladie / 100);
+                    retraiteBase = brutTotal * (tauxRetraiteBase / 100);
+                    retraiteComp = brutTotal * (tauxRetraiteComp / 100);
+                    chomage = brutTotal * (tauxChomage / 100);
+                } else {
+                    // € values are monthly, adjust for period
+                    const ratio = semaines / 4;
+                    maladie = tauxMaladie * ratio;
+                    retraiteBase = tauxRetraiteBase * ratio;
+                    retraiteComp = tauxRetraiteComp * ratio;
+                    chomage = tauxChomage * ratio;
+                }
+
+                // CSG/CRDS
+                const assietteCSG = brutTotal * 0.9825;
+                const csgCRDS = assietteCSG * 0.097;
+
+                const totalCharges = maladie + retraiteBase + retraiteComp + chomage + csgCRDS;
+                const netAvantImpot = brutTotal - totalCharges;
+                const netAPayer = netAvantImpot;
+
+                // Employer cost
+                const chargesPat = brutTotal * (currentProfile === 'etudiant' ? 0.25 : 0.45);
+                const coutEmployeur = brutTotal + chargesPat;
+
+                // Update UI
+                document.getElementById('net-payer').textContent = formatMoney(netAPayer);
+                document.getElementById('period-text').textContent = 'pour ' + semaines + ' semaine' + (semaines > 1 ? 's' : '');
+                document.getElementById('brut-total').textContent = formatMoney(brutTotal);
+                document.getElementById('charges-total').textContent = '-' + formatMoney(totalCharges);
+                document.getElementById('net-avant-impot').textContent = formatMoney(netAvantImpot);
+                
+                document.getElementById('heures-total').textContent = heuresTotal + 'h';
+                document.getElementById('taux-net').textContent = formatMoney(netAPayer / heuresTotal) + '/h';
+                document.getElementById('cout-employeur').textContent = formatMoney(coutEmployeur);
+                document.getElementById('charges-patronales').textContent = formatMoney(chargesPat);
+                
+                document.getElementById('calc-date').textContent = 'Calcul effectué le ' + new Date().toLocaleDateString('fr-FR');
+
+                // Update hero color
+                const hero = document.getElementById('result-hero');
+                if (currentProfile === 'etudiant') {
+                    hero.classList.add('etudiant');
+                } else {
+                    hero.classList.remove('etudiant');
+                }
+
+                // Info text
+                const infoBox = document.getElementById('info-box');
+                if (currentProfile === 'etudiant') {
+                    infoBox.innerHTML = '<strong>🎓 Mode Étudiant :</strong> Exonérations de cotisations retraite, chômage et réduction CSG/CRDS appliquées selon les conditions légales 2026.';
+                    infoBox.className = 'info-note warning';
+                } else {
+                    infoBox.innerHTML = '<strong>💡 Bon à savoir :</strong> Ce calcul est basé sur les taux 2026 pour un contrat standard. Les avantages en nature sont inclus dans l\'assiette brute.';
+                    infoBox.className = 'info-note';
+                }
+
+                // Show results
+                document.getElementById('empty-state').classList.add('hidden');
+                const results = document.getElementById('results-content');
+                results.classList.remove('hidden');
+                
+                // Reset animations
+                results.style.animation = 'none';
+                results.offsetHeight;
+                results.style.animation = null;
+
+                // Scroll to results
+                setTimeout(() => {
+                    document.getElementById('results-anchor').scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start' 
+                    });
+                }, 100);
+
+                showToast('Calcul effectué avec succès !', 'success');
+
+            } catch (e) {
+                console.error(e);
+                showToast('Erreur lors du calcul', 'error');
+            }
+        }
+
+        // Format
+        function formatMoney(amount) {
+            return amount.toFixed(2).replace('.', ',') + ' €';
+        }
+
+        // Reset
+        function resetForm() {
+            document.getElementById('salary-form').reset();
+            document.getElementById('semaines').value = 4;
+            document.getElementById('heures-semaine').value = 35;
+            document.getElementById('taux-horaire').value = 11.88;
+            lastSalaryValue = 11.88;
+            
+            document.getElementById('empty-state').classList.remove('hidden');
+            document.getElementById('results-content').classList.add('hidden');
+            document.getElementById('calc-date').textContent = 'En attente de calcul...';
+            
+            setProfile('salarie');
+            paramMode = 'pourcent';
+            setParamMode('pourcent');
+            
+            showToast('Formulaire réinitialisé', 'info');
+        }
+
+        // Toast
+        function showToast(message, type) {
+            document.querySelectorAll('.toast').forEach(t => t.remove());
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast ' + type;
+            const icons = { success: '✓', error: '✕', info: 'ℹ' };
+            toast.innerHTML = `<span style="font-size: 18px;">${icons[type]}</span> ${message}`;
+            
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

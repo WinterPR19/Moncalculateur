@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Décompte d'Heures 2026 - Salaire Net</title>
+    <link rel="stylesheet" href="styles-calculateur-heures.css">
+</head>
+<body class="calc-heures-page">
+    <!-- Navigation -->
+    <nav class="calc-nav">
+        <a href="accueil.html" class="logo">
+    <svg class="logo-icon" width="40" height="40" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 10px rgba(6, 214, 160, 0.5));">
+        <defs>
+            <linearGradient id="heuresGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#06d6a0;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#118ab2;stop-opacity:1" />
+            </linearGradient>
+            <linearGradient id="heuresGradAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#ffd166;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#ef476f;stop-opacity:1" />
+            </linearGradient>
+        </defs>
+        <circle cx="30" cy="30" r="26" fill="url(#heuresGrad)"/>
+        <circle cx="30" cy="30" r="20" fill="rgba(255,255,255,0.95)"/>
+        <rect x="28" y="14" width="4" height="8" rx="2" fill="#118ab2"/>
+        <rect x="28" y="38" width="4" height="8" rx="2" fill="#118ab2"/>
+        <rect x="14" y="28" width="8" height="4" rx="2" fill="#118ab2"/>
+        <rect x="38" y="28" width="8" height="4" rx="2" fill="#118ab2"/>
+        <rect x="29" y="18" width="2" height="12" rx="1" fill="#06d6a0"/>
+        <rect x="29" y="29" width="8" height="2" rx="1" fill="#06d6a0"/>
+        <circle cx="30" cy="30" r="3" fill="url(#heuresGradAccent)"/>
+    </svg>
+    <span>MonCalculateur</span>
+</a>
+        <div class="nav-links">
+            <a href="accueil.html">Accueil</a>
+            <a href="calculateur.html">Classique</a>
+            <a href="calculateur-heures.html" class="active">Décompte Heures</a>
+            <a href="calculateur-extra.html">Calculateur Extra</a>
+            <a href="Calculateur-Salaire-par-Semaine.html">Calculateur par semaine</a>
+            <a href="calculateur-expert.html" class="mode-switch" style="background: linear-gradient(135deg, rgba(243, 61, 143, 0.2), rgba(249, 201, 233, 0.2)); color: #d3119f; text-shadow: 0 0 10px #d40cba;">Mode Expert →</a>
+            
+        </div>
+    </nav>
+
+    <!-- Particules -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Contenu principal -->
+    <main class="calc-main">
+        <div class="calc-wrapper">
+            <!-- Formulaire -->
+            <div class="calc-form-section">
+                <div class="card-content">
+                    <div class="calc-header">
+                        <div class="badge-net">2026</div>
+                        <div class="calc-icon">⏱️</div>
+                        <h1>Combien d'heures ai-je travaillé ?</h1>
+                        <p class="calc-subtitle">Calculez vos heures réelles à partir de votre salaire net perçu</p>
+                    </div>
+
+                    <!-- Toggle Mode -->
+                   <div class="mode-toggle" id="mode-toggle" onclick="toggleMode()">
+    <div class="mode-slider"></div>
+    <div class="mode-option active" data-mode="standard">👔 Standard</div>
+    <div class="mode-option" data-mode="etudiant">🎓 Étudiant</div>
+</div>
+                    <p class="mode-description" id="mode-desc">👔 Salarié 2026 : ~32% de prélèvements (charges + impôt)</p>
+
+                    <div class="input-section">
+                        <div class="input-group animated-input highlight">
+                            <label for="salaire-net">
+                                <span class="label-icon">💶</span>
+                                <span>Salaire NET perçu</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="text" id="salaire-net" placeholder="Ex: 1450" autocomplete="off">
+                                <span class="currency">€</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group animated-input">
+                            <label for="periode-paie">
+                                <span class="label-icon">📅</span>
+                                <span>Période de paie</span>
+                            </label>
+                            <div class="select-wrapper">
+                                <select id="periode-paie">
+                                    <option value="mois">Mensuel</option>
+                                    <option value="semaine">Hebdomadaire</option>
+                                    <option value="annee">Annuel</option>
+                                </select>
+                                <span class="select-arrow">▼</span>
+                            </div>
+                        </div>
+
+                        <!-- Paramètres avancés -->
+                        <div class="smic-section">
+                            <div class="smic-header" onclick="toggleSmic()">
+                                <span class="smic-title">⚙️ Paramètres avancés (France 2026)</span>
+                                <span class="smic-toggle" id="smic-toggle">▼</span>
+                            </div>
+                            <div class="smic-content" id="smic-content">
+                                <div class="input-group">
+                                    <label for="taux-horaire-brut">
+                                        <span class="label-icon">💰</span>
+                                        <span>SMIC horaire brut 2026</span>
+                                    </label>
+                                    <div class="input-wrapper">
+                                        <input type="text" id="taux-horaire-brut" value="11.88" readonly>
+                                        <span class="currency">€/h</span>
+                                    </div>
+                                    <span class="input-note">Revalorisation estimée +2%</span>
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="charges-patronales">
+                                        <span class="label-icon">📉</span>
+                                        <span>Total prélèvements</span>
+                                        <span class="badge-charges" id="badge-charges">Standard 2026</span>
+                                    </label>
+                                    <div class="input-wrapper">
+                                        <input type="text" id="charges-patronales" value="32" readonly>
+                                        <span class="currency">%</span>
+                                    </div>
+                                    <span class="input-note" id="note-charges">Charges sociales (21.5%) + Impôt sur le revenu (~11%)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="calc-btn" onclick="calculerHeures()">
+                        <span class="btn-text">Calculer mes heures</span>
+                        <span class="btn-icon">→</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                    
+                    <button class="refresh-btn" onclick="rafraichirHeures()" title="Réinitialiser">
+                        <span class="btn-icon-refresh">↻</span>
+                    </button>
+                </div>
+
+                <div class="legal-note">
+                    <span>ℹ️</span>
+                    <p>Données 2026 : SMIC estimé 11.88€/h. Calcul indicatif selon la législation française en vigueur.</p>
+                </div>
+            </div>
+
+            <!-- Résultats -->
+            <div class="calc-results-section" id="resultat">
+                <div class="card-content">
+                    <div class="results-header">
+                        <span class="results-title">📊 Vos Heures Estimées</span>
+                        <div class="results-badge" id="result-mode">Standard 2026</div>
+                    </div>
+
+                    <!-- Résultat principal -->
+                    <div class="main-result-box">
+                        <div class="main-result-glow"></div>
+                        <div class="main-result-label">Heures par semaine</div>
+                        <div class="main-result-value" id="heures-semaine">-- h</div>
+                        <div class="main-result-sub" id="jours-travailles">-- jours (base 7h/j)</div>
+                    </div>
+
+                    <!-- Détails -->
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <span class="detail-icon">📅</span>
+                            <span class="detail-label">Par semaine</span>
+                            <span class="detail-value" id="detail-semaine">-- h</span>
+                        </div>
+                        <div class="detail-item highlight">
+                            <span class="detail-icon">📆</span>
+                            <span class="detail-label">Par mois</span>
+                            <span class="detail-value" id="detail-mois">-- h</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">🗓️</span>
+                            <span class="detail-label">Par an</span>
+                            <span class="detail-value" id="detail-annee">-- h</span>
+                        </div>
+                    </div>
+
+                    <!-- Récapitulatif -->
+                    <div class="recap-box">
+                        <h4>📝 Détail du calcul (2026)</h4>
+                        <div class="recap-row">
+                            <span>Salaire net perçu</span>
+                            <span id="recap-net">-- €</span>
+                        </div>
+                        <div class="recap-row">
+                            <span>Prélèvements 2026</span>
+                            <span id="recap-charges">-- %</span>
+                        </div>
+                        <div class="recap-row">
+                            <span>Salaire brut estimé</span>
+                            <span id="recap-brut">-- €</span>
+                        </div>
+                        <div class="recap-divider"></div>
+                        <div class="recap-row total">
+                            <span>Total heures</span>
+                            <span id="recap-total">-- h</span>
+                        </div>
+                    </div>
+
+                    <!-- Info étudiant -->
+                    <div class="etudiant-info" id="etudiant-info">
+                        <div class="etudiant-icon">🎓</div>
+                        <div class="etudiant-text">
+                            <strong>Mode Étudiant 2026</strong>
+                            <p>Vous bénéficiez de la réduction des cotisations jeunes (-3 points) et êtes exonéré d'impôt sur le revenu si vos revenus 2026 sont inférieurs à 16 500€.</p>
+                        </div>
+                    </div>
+
+                    <!-- Comparaison temps plein -->
+                    <div class="comparaison-box">
+                        <div class="comparaison-header">
+                            <span>📈 Comparaison temps plein SMIC 2026 (35h)</span>
+                        </div>
+                        <div class="comparaison-bar-container">
+                            <div class="comparaison-bar-bg">
+                                <div class="comparaison-bar-fill" id="bar-temps-plein"></div>
+                            </div>
+                            <div class="comparaison-labels">
+                                <span>Vous</span>
+                                <span id="pct-temps-plein">--%</span>
+                                <span>Temps plein (~151h/mois)</span>
+                            </div>
+                        </div>
+                        <p class="comparaison-text" id="text-comparaison">--</p>
+                    </div>
+
+                    <!-- État vide -->
+                    <div class="empty-state" id="empty-state">
+                        <div class="empty-icon">🧮</div>
+                        <p>Entrez votre salaire pour voir les résultats</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Particules
+        function createParticles() {
+            const container = document.getElementById('particles');
+            
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // Variables globales 2026
+        let modeEtudiant = false;
+        
+        // DONNÉES FRANCE 2026
+        const SMIC_2026 = 11.88;
+        const TOTAL_STANDARD_2026 = 32;
+        const TOTAL_ETUDIANT_2026 = 18;
+        const SEMAINES_PAR_MOIS = 4.33;
+        const MOIS_PAR_AN = 12;
+
+        // Toggle mode
+        function toggleMode() {
+            modeEtudiant = !modeEtudiant;
+            const toggle = document.getElementById('mode-toggle');
+            const options = toggle.querySelectorAll('.mode-option');
+            const desc = document.getElementById('mode-desc');
+            const chargesInput = document.getElementById('charges-patronales');
+            const badgeCharges = document.getElementById('badge-charges');
+            const noteCharges = document.getElementById('note-charges');
+            
+            if (modeEtudiant) {
+                options[0].classList.remove('active');
+                options[1].classList.add('active');
+                toggle.classList.add('etudiant');
+                desc.innerHTML = '🎓 Étudiant 2026 : ~18% de prélèvements (réduction cotisations + pas d\'impôt)';
+                desc.classList.add('etudiant');
+                chargesInput.value = TOTAL_ETUDIANT_2026;
+                badgeCharges.textContent = '🎓 Étudiant 2026';
+                badgeCharges.classList.add('etudiant');
+                noteCharges.innerHTML = 'Cotisations réduites jeunes (18%) + exonération d\'impôt 2026';
+            } else {
+                options[0].classList.add('active');
+                options[1].classList.remove('active');
+                toggle.classList.remove('etudiant');
+                desc.innerHTML = '👔 Salarié 2026 : ~32% (21.5% charges + ~11% impôt)';
+                desc.classList.remove('etudiant');
+                chargesInput.value = TOTAL_STANDARD_2026;
+                badgeCharges.textContent = 'Standard 2026';
+                badgeCharges.classList.remove('etudiant');
+                noteCharges.innerHTML = 'Charges sociales (21.5%) + Impôt sur le revenu (~11%)';
+            }
+        }
+
+        function toggleSmic() {
+            const content = document.getElementById('smic-content');
+            const toggle = document.getElementById('smic-toggle');
+            content.classList.toggle('open');
+            toggle.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        function calculerHeures() {
+            const salaireNetInput = document.getElementById('salaire-net');
+            const periode = document.getElementById('periode-paie').value;
+            const tauxBrut = parseFloat(document.getElementById('taux-horaire-brut').value) || SMIC_2026;
+            const prelevements = (parseFloat(document.getElementById('charges-patronales').value) || TOTAL_STANDARD_2026) / 100;
+            
+            const emptyState = document.getElementById('empty-state');
+            const etudiantInfo = document.getElementById('etudiant-info');
+            const resultMode = document.getElementById('result-mode');
+            const mainResult = document.querySelector('.main-result-box');
+            
+            let salaireNet = parseFloat(salaireNetInput.value.replace(',', '.'));
+
+            if (isNaN(salaireNet) || salaireNet <= 0) {
+                shakeElement(salaireNetInput.parentElement);
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            
+            // Style selon le mode
+            resultMode.textContent = modeEtudiant ? '🎓 Étudiant 2026' : 'Standard 2026';
+            resultMode.className = 'results-badge ' + (modeEtudiant ? 'etudiant' : '');
+            mainResult.classList.toggle('etudiant', modeEtudiant);
+            etudiantInfo.style.display = modeEtudiant ? 'flex' : 'none';
+
+            // Conversion en mensuel
+            let salaireNetMensuel;
+            if (periode === 'semaine') {
+                salaireNetMensuel = salaireNet * SEMAINES_PAR_MOIS;
+            } else if (periode === 'annee') {
+                salaireNetMensuel = salaireNet / MOIS_PAR_AN;
+            } else {
+                salaireNetMensuel = salaireNet;
+            }
+
+            // Reconstruction du brut
+            const salaireBrutMensuel = salaireNetMensuel / (1 - prelevements);
+            
+            // Calcul des heures
+            const heuresMois = salaireBrutMensuel / tauxBrut;
+            const heuresSemaine = heuresMois / SEMAINES_PAR_MOIS;
+            const heuresAnnee = heuresSemaine * 52;
+            const joursTravailles = heuresSemaine / 7;
+
+            // Affichage
+            document.getElementById('heures-semaine').textContent = heuresSemaine.toFixed(1) + ' h';
+            document.getElementById('jours-travailles').textContent = joursTravailles.toFixed(1) + ' jours (base 7h/j)';
+            
+            document.getElementById('detail-semaine').textContent = heuresSemaine.toFixed(1) + ' h';
+            document.getElementById('detail-mois').textContent = heuresMois.toFixed(1) + ' h';
+            document.getElementById('detail-annee').textContent = heuresAnnee.toFixed(0) + ' h';
+
+            // Récap
+            document.getElementById('recap-net').textContent = salaireNetMensuel.toLocaleString('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' €';
+            document.getElementById('recap-charges').textContent = (prelevements * 100).toFixed(0) + ' %';
+            document.getElementById('recap-brut').textContent = salaireBrutMensuel.toLocaleString('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' €';
+            document.getElementById('recap-total').textContent = heuresMois.toFixed(1) + ' h/mois';
+
+            // Comparaison temps plein
+            const heuresSmic2026 = 151.67;
+            const pctTempsPlein = (heuresMois / heuresSmic2026) * 100;
+            const barFill = document.getElementById('bar-temps-plein');
+            const pctLabel = document.getElementById('pct-temps-plein');
+            const textComp = document.getElementById('text-comparaison');
+
+            barFill.style.width = Math.min(pctTempsPlein, 100) + '%';
+            pctLabel.textContent = pctTempsPlein.toFixed(0) + '%';
+
+            if (pctTempsPlein < 50) {
+                barFill.style.background = 'linear-gradient(90deg, #ef4444, #f59e0b)';
+                textComp.textContent = 'Mi-temps ou moins (moins de 17h/semaine)';
+            } else if (pctTempsPlein < 80) {
+                barFill.style.background = 'linear-gradient(90deg, #f59e0b, #3b82f6)';
+                textComp.textContent = 'Temps partiel (entre 17h et 28h/semaine)';
+            } else if (pctTempsPlein <= 105) {
+                barFill.style.background = 'linear-gradient(90deg, #3b82f6, #10b981)';
+                textComp.textContent = 'Temps plein SMIC 2026 (~35h/semaine)';
+            } else {
+                barFill.style.background = 'linear-gradient(90deg, #10b981, #059669)';
+                textComp.textContent = 'Heures supplémentaires (plus de 35h/semaine)';
+            }
+
+            // Animations
+            document.querySelectorAll('.detail-item').forEach((el, i) => {
+                el.style.animation = 'none';
+                setTimeout(() => {
+                    el.style.animation = `slide-in-up 0.5s ease-out ${i * 0.1}s both`;
+                }, 10);
+            });
+        }
+
+        function rafraichirHeures() {
+            const btn = document.querySelector('.refresh-btn');
+            btn.classList.add('spinning');
+            setTimeout(() => btn.classList.remove('spinning'), 600);
+
+            document.getElementById('salaire-net').value = '';
+            document.getElementById('periode-paie').value = 'mois';
+            
+            if (modeEtudiant) toggleMode();
+            
+            document.getElementById('taux-horaire-brut').value = SMIC_2026;
+            document.getElementById('charges-patronales').value = TOTAL_STANDARD_2026;
+
+            document.getElementById('heures-semaine').textContent = '-- h';
+            document.getElementById('jours-travailles').textContent = '-- jours';
+            document.getElementById('detail-semaine').textContent = '-- h';
+            document.getElementById('detail-mois').textContent = '-- h';
+            document.getElementById('detail-annee').textContent = '-- h';
+            document.getElementById('recap-net').textContent = '-- €';
+            document.getElementById('recap-charges').textContent = '-- %';
+            document.getElementById('recap-brut').textContent = '-- €';
+            document.getElementById('recap-total').textContent = '-- h';
+            document.getElementById('bar-temps-plein').style.width = '0%';
+            document.getElementById('pct-temps-plein').textContent = '--%';
+            document.getElementById('text-comparaison').textContent = '--';
+            document.getElementById('etudiant-info').style.display = 'none';
+            document.getElementById('result-mode').textContent = 'Standard 2026';
+            document.getElementById('result-mode').className = 'results-badge';
+            document.querySelector('.main-result-box').classList.remove('etudiant');
+
+            document.getElementById('empty-state').style.display = 'flex';
+
+            setTimeout(() => document.getElementById('salaire-net').focus(), 400);
+        }
+
+        function shakeElement(el) {
+            el.style.animation = 'shake 0.5s';
+            setTimeout(() => el.style.animation = '', 500);
+        }
+
+        document.addEventListener('keypress', e => {
+            if (e.key === 'Enter') calculerHeures();
+        });
+
+        document.querySelectorAll('input, select').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.closest('.input-group')?.classList.add('focused');
+            });
+            input.addEventListener('blur', function() {
+                this.closest('.input-group')?.classList.remove('focused');
+            });
+        });
+    </script>
+</body>
+</html>

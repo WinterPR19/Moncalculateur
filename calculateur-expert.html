@@ -1,0 +1,2061 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur Salaire Expert 2026 | MonCalculateur</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+        :root {
+            --violet: #7c3aed;
+            --violet-light: #a78bfa;
+            --violet-dark: #5b21b6;
+            --rose: #ec4899;
+            --rose-light: #f9a8d4;
+            --cyan: #06b6d4;
+            --cyan-light: #67e8f9;
+            --amber: #f59e0b;
+            --emerald: #10b981;
+            --slate-900: #0f172a;
+            --slate-800: #1e293b;
+            --slate-700: #334155;
+            --slate-400: #94a3b8;
+            --white: #ffffff;
+
+            --gradient-main: linear-gradient(135deg, var(--violet) 0%, var(--rose) 50%, var(--amber) 100%);
+            --gradient-cool: linear-gradient(135deg, var(--cyan) 0%, var(--violet) 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--slate-900);
+            color: var(--white);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Ambient background */
+        .ambient-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .blob-1 {
+            width: 500px; height: 500px;
+            background: var(--violet);
+            top: -200px; right: -100px;
+        }
+
+        .blob-2 {
+            width: 400px; height: 400px;
+            background: var(--rose);
+            bottom: -150px; left: -100px;
+            animation-delay: -7s;
+        }
+
+        .blob-3 {
+            width: 300px; height: 300px;
+            background: var(--cyan);
+            top: 50%; left: 50%;
+            margin-left: -150px; margin-top: -150px;
+            animation-delay: -14s;
+            opacity: 0.2;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.05); }
+            66% { transform: translate(-20px, 20px) scale(0.95); }
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px; height: 40px;
+            background: var(--gradient-main);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+        }
+
+        .logo-badge {
+            background: rgba(236, 72, 153, 0.2);
+            border: 1px solid var(--rose);
+            color: var(--rose-light);
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            color: var(--slate-400);
+            text-decoration: none;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--white);
+            background: rgba(124, 58, 237, 0.2);
+        }
+
+        /* Main */
+        .main {
+            padding: 100px 32px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .wrapper { grid-template-columns: 1fr; }
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--violet-light), var(--rose-light), transparent);
+            opacity: 0.5;
+        }
+
+        .card:hover {
+            border-color: rgba(124, 58, 237, 0.3);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .header-mascot {
+            width: 80px; height: 80px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .mascot-bg {
+            position: absolute;
+            inset: 0;
+            background: var(--gradient-main);
+            border-radius: 24px;
+            transform: rotate(12deg);
+            opacity: 0.3;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: rotate(12deg) scale(1); opacity: 0.3; }
+            50% { transform: rotate(12deg) scale(1.1); opacity: 0.5; }
+        }
+
+        .mascot-icon {
+            position: relative;
+            width: 100%; height: 100%;
+            background: var(--gradient-main);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            box-shadow: 0 10px 40px rgba(124, 58, 237, 0.3);
+        }
+
+        .badge-shine {
+            display: inline-block;
+            background: rgba(124, 58, 237, 0.2);
+            border: 1px solid var(--violet-light);
+            color: var(--violet-light);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: var(--slate-400);
+            font-size: 16px;
+        }
+
+        /* Profile Selector */
+        .profile-section {
+            margin-bottom: 28px;
+        }
+
+        .section-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--slate-400);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .profile-tabs {
+            display: flex;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .profile-tab {
+            flex: 1;
+            padding: 14px 20px;
+            background: transparent;
+            border: none;
+            border-radius: 12px;
+            color: var(--slate-400);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .profile-tab:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .profile-tab.active {
+            background: var(--white);
+            color: var(--slate-900);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-tab.active.standard {
+            background: var(--gradient-main);
+            color: var(--white);
+        }
+
+        .profile-tab.active.etudiant {
+            background: var(--gradient-cool);
+            color: var(--white);
+        }
+
+        /* Parameters Accordion */
+        .params-accordion {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            margin-bottom: 28px;
+            overflow: hidden;
+            background: rgba(15, 23, 42, 0.4);
+        }
+
+        .params-header {
+            padding: 18px 24px;
+            background: rgba(124, 58, 237, 0.1);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .params-header:hover {
+            background: rgba(124, 58, 237, 0.15);
+        }
+
+        .params-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--violet-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .params-chevron {
+            color: var(--violet-light);
+            transition: transform 0.3s;
+            font-size: 12px;
+        }
+
+        .params-chevron.open {
+            transform: rotate(180deg);
+        }
+
+        .params-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+
+        .params-body.open {
+            max-height: 2000px;
+            padding: 24px;
+        }
+
+        /* Param Sections */
+        .param-section {
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .param-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .param-section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--violet-light);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .param-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+        }
+
+        .param-row:hover {
+            padding-left: 8px;
+            border-bottom-color: rgba(124, 58, 237, 0.3);
+        }
+
+        .param-row:last-child {
+            border-bottom: none;
+        }
+
+        .param-label {
+            font-size: 14px;
+            color: var(--slate-400);
+            transition: color 0.3s;
+        }
+
+        .param-row:hover .param-label {
+            color: var(--white);
+        }
+
+        .param-input-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .param-input {
+            width: 90px;
+            padding: 10px 14px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--white);
+            font-size: 15px;
+            text-align: right;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .param-input:focus {
+            border-color: var(--violet-light);
+            outline: none;
+        }
+
+        .param-unit {
+            color: var(--slate-400);
+            font-size: 13px;
+            min-width: 40px;
+            text-align: left;
+        }
+
+        .param-summary {
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(124, 58, 237, 0.1);
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .param-summary-label {
+            font-size: 14px;
+            color: var(--slate-400);
+        }
+
+        .param-summary-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--violet-light);
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: 28px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .form-section::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--gradient-main);
+            border-radius: 2px;
+        }
+
+        .form-section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .form-section:last-of-type::after {
+            display: none;
+        }
+
+        .form-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-title span {
+            width: 32px;
+            height: 32px;
+            background: rgba(124, 58, 237, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 640px) {
+            .input-grid { grid-template-columns: 1fr; }
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--slate-400);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .input-hint {
+            font-size: 12px;
+            color: var(--slate-400);
+            opacity: 0.8;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            color: var(--white);
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .input:focus {
+            border-color: var(--violet-light);
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+        }
+
+        select.input {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23a78bfa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+            padding-right: 45px;
+        }
+
+        .input-suffix {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--violet-light);
+            font-weight: 600;
+            font-size: 14px;
+            pointer-events: none;
+        }
+
+        /* Buttons */
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 18px 28px;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Outfit', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--gradient-main);
+            color: var(--white);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: var(--slate-400);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--rose);
+            color: var(--rose-light);
+            background: rgba(236, 72, 153, 0.1);
+        }
+
+        /* Profile Manager */
+        .profile-manager {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 28px;
+        }
+
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .profile-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--slate-400);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .profile-select-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .profile-select-row select {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--white);
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-icon-small {
+            width: 40px;
+            height: 40px;
+            background: rgba(124, 58, 237, 0.2);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 10px;
+            color: var(--white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .btn-icon-small:hover {
+            background: rgba(124, 58, 237, 0.3);
+        }
+
+        .btn-icon-small.delete {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+
+        .btn-icon-small.delete:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .save-profile-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .save-profile-row input {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--white);
+            font-size: 14px;
+        }
+
+        .btn-small {
+            padding: 12px 20px;
+            background: var(--gradient-main);
+            border: none;
+            border-radius: 10px;
+            color: var(--white);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Param Actions */
+        .param-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-reset {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--slate-400);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-reset:hover {
+            background: rgba(124, 58, 237, 0.1);
+            border-color: var(--violet-light);
+            color: var(--white);
+        }
+
+        /* Results Card */
+        .results-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            scroll-margin-top: 120px;
+        }
+
+        .results-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--gradient-main);
+            border-radius: 4px 4px 0 0;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 28px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .results-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--slate-400);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .results-date {
+            font-size: 13px;
+            color: var(--slate-400);
+        }
+
+        /* Main Result */
+        .result-hero {
+            background: var(--gradient-main);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(124, 58, 237, 0.3);
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            animation: rollIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes rollIn {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .result-hero.etudiant {
+            background: var(--gradient-cool);
+            box-shadow: 0 20px 60px rgba(6, 182, 212, 0.3);
+        }
+
+        .result-label-main {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .result-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 8px;
+            position: relative;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            letter-spacing: -1px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: rollUp 0.5s ease-out 0.3s forwards;
+        }
+
+        @keyframes rollUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-period {
+            font-size: 15px;
+            opacity: 0.9;
+            position: relative;
+            opacity: 0;
+            animation: fadeIn 0.4s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 0.9; }
+        }
+
+        /* Breakdown */
+        .breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            transition: all 0.3s;
+            opacity: 0;
+            transform: translateX(-30px);
+            animation: slideInRight 0.4s ease-out forwards;
+        }
+
+        .breakdown-item:nth-child(1) { animation-delay: 0.1s; }
+        .breakdown-item:nth-child(2) { animation-delay: 0.2s; }
+        .breakdown-item:nth-child(3) { animation-delay: 0.3s; }
+        .breakdown-item:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes slideInRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .breakdown-item:hover {
+            background: rgba(15, 23, 42, 0.6);
+            border-color: rgba(124, 58, 237, 0.2);
+            transform: translateX(4px);
+        }
+
+        .breakdown-item.positive { border-left: 3px solid var(--emerald); }
+        .breakdown-item.negative { border-left: 3px solid var(--rose); }
+        .breakdown-item.highlight { 
+            border-left: 3px solid var(--violet);
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        .breakdown-label {
+            font-size: 14px;
+            color: var(--slate-400);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .breakdown-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .breakdown-value.positive { color: var(--emerald); }
+        .breakdown-value.negative { color: var(--rose); }
+        .breakdown-value.highlight { color: var(--violet-light); }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-box {
+            padding: 20px;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s;
+            opacity: 0;
+            transform: scale(0.9);
+            animation: popIn 0.3s ease-out forwards;
+        }
+
+        .stat-box:nth-child(1) { animation-delay: 0.5s; }
+        .stat-box:nth-child(2) { animation-delay: 0.6s; }
+        .stat-box:nth-child(3) { animation-delay: 0.7s; }
+        .stat-box:nth-child(4) { animation-delay: 0.8s; }
+
+        @keyframes popIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .stat-box:hover {
+            transform: translateY(-2px);
+            border-color: rgba(124, 58, 237, 0.2);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--slate-400);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .stat-value.violet { color: var(--violet-light); }
+        .stat-value.emerald { color: var(--emerald); }
+        .stat-value.amber { color: var(--amber); }
+        .stat-value.rose { color: var(--rose-light); }
+
+        /* Detail Table */
+        .detail-table {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .table-header {
+            padding: 16px 20px;
+            background: rgba(124, 58, 237, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            color: var(--violet-light);
+        }
+
+        .table-body {
+            padding: 12px;
+        }
+
+        .table-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .table-row:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .table-row.sub {
+            padding-left: 24px;
+            font-size: 13px;
+        }
+
+        .table-row.total {
+            margin-top: 8px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+        }
+
+        .table-label {
+            color: var(--slate-400);
+        }
+
+        .table-value {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+        }
+
+        .table-value.negative { color: var(--rose); }
+        .table-value.positive { color: var(--emerald); }
+
+        .table-subheader {
+            padding: 8px 12px;
+            margin-top: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--slate-400);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Rates Summary */
+        .rates-summary {
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .rates-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--violet-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .rates-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .rate-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .rate-item span:first-child {
+            font-size: 11px;
+            color: var(--slate-400);
+        }
+
+        .rate-item strong {
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            color: var(--white);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-illustration {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 24px;
+            background: rgba(124, 58, 237, 0.1);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            opacity: 0.6;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .empty-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+
+        .empty-text {
+            color: var(--slate-400);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 16px 24px;
+            background: var(--slate-800);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--white);
+            font-weight: 500;
+            z-index: 1000;
+            animation: slideUp 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .toast.success { border-color: var(--emerald); }
+        .toast.error { border-color: var(--rose); }
+        .toast.info { border-color: var(--violet-light); }
+
+        /* Animations d'entrée */
+        @keyframes slide-in-up {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slide-in-left {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slide-in-right {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes scale-in {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .card { animation: slide-in-left 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .results-card { animation: slide-in-right 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
+        .header-mascot { animation: scale-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both; }
+        .profile-tabs { animation: slide-in-up 0.5s ease-out 0.3s both; }
+        .params-accordion { animation: slide-in-up 0.5s ease-out 0.4s both; }
+        .form-section { animation: slide-in-up 0.5s ease-out 0.5s both; }
+        .actions { animation: slide-in-up 0.5s ease-out 0.6s both; }
+        .profile-manager { animation: slide-in-up 0.5s ease-out 0.35s both; }
+        .toast { animation: slide-in-right 0.3s ease; }
+
+        /* Utility */
+        .hidden { display: none !important; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .results-card { position: relative; top: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .nav { padding: 12px 20px; }
+            .nav-links { display: none; }
+            .main { padding: 80px 20px 40px; }
+            .card, .results-card { padding: 28px; }
+            .result-value { font-size: 36px; }
+            .actions { flex-direction: column; }
+            .input-grid { grid-template-columns: 1fr; }
+            .rates-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <!-- Ambient background -->
+    <div class="ambient-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="#" class="logo">
+            <div class="logo-icon">🎯</div>
+            <span>MonCalculateur</span>
+            <span class="logo-badge">Expert 2026</span>
+        </a>
+        <div class="nav-links">
+            <a href="accueil.html">Accueil</a>
+            <a href="calculateur-expert.html" class="active">Salaire calculateur Expert</a>
+               <a href="Calculateur-Salaire-par-Semaine-expert.html">Semaine calculateur Expert</a>
+                <a href="calculateur-extra-expert.html">Extra calculateur Expert</a>
+            <a href="calculateur.html" class="mode-switch">Mode Simple →</a>
+        </div>
+    </nav>
+
+    <!-- Main -->
+    <main class="main">
+        <div class="wrapper">
+
+            <!-- Form Column -->
+            <div class="card">
+                <div class="header">
+                    <div class="header-mascot">
+                        <div class="mascot-bg"></div>
+                        <div class="mascot-icon">🎯</div>
+                    </div>
+                    <div class="badge-shine">Calculateur Expert 2026</div>
+                    <h1>Salaire Expert</h1>
+                    <p>Personnalisez tous les taux de cotisations</p>
+                </div>
+
+                <!-- Profile Manager -->
+                <div class="profile-manager">
+                    <div class="profile-header">
+                        <span class="profile-label">📁 Profils sauvegardés</span>
+                        <button class="btn-icon-small" onclick="sauvegarderProfil()" title="Sauvegarder">💾</button>
+                    </div>
+                    <div class="profile-select-row">
+                        <select id="profil-select" onchange="chargerProfil()">
+                            <option value="">-- Profil par défaut --</option>
+                        </select>
+                        <button class="btn-icon-small delete" onclick="supprimerProfil()" title="Supprimer">🗑️</button>
+                    </div>
+                    <div class="save-profile-row" id="save-row" style="display: none;">
+                        <input type="text" id="nom-profil" placeholder="Nom du profil...">
+                        <button class="btn-small" onclick="confirmerSauvegarde()">OK</button>
+                    </div>
+                </div>
+
+                <!-- Profile Selector -->
+                <div class="profile-section">
+                    <span class="section-label">Profil de calcul</span>
+                    <div class="profile-tabs">
+                        <button class="profile-tab active standard" id="btn-standard" onclick="setProfile('standard')">
+                            <span>💼</span> Standard
+                        </button>
+                        <button class="profile-tab etudiant" id="btn-etudiant" onclick="setProfile('etudiant')">
+                            <span>🎓</span> Étudiant
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Parameters Accordion -->
+                <div class="params-accordion">
+                    <div class="params-header" onclick="toggleParams()">
+                        <div class="params-title">
+                            <span>⚙️</span> Paramètres fiscaux avancés
+                        </div>
+                        <span class="params-chevron" id="params-chevron">▼</span>
+                    </div>
+                    <div class="params-body" id="params-body">
+
+                        <!-- Charges Sociales -->
+                        <div class="param-section">
+                            <div class="param-section-title">🛡️ Charges sociales salariales</div>
+
+                            <div class="param-row">
+                                <span class="param-label">Sécurité sociale - Maladie</span>
+                                <div class="param-input-wrap">
+                                    <input type="number" class="param-input" id="taux-maladie" value="0" step="0.01">
+                                    <span class="param-unit">%</span>
+                                </div>
+                            </div>
+
+                            <div class="param-row">
+                                <span class="param-label">Retraite de base</span>
+                                <div class="param-input-wrap">
+                                    <input type="number" class="param-input" id="taux-retraite-base" value="6.9" step="0.01">
+                                    <span class="param-unit">%</span>
+                                </div>
+                            </div>
+
+                            <div class="param-row">
+                                <span class="param-label">Retraite complémentaire</span>
+                                <div class="param-input-wrap">
+                                    <input type="number" class="param-input" id="taux-retraite-comp" value="3.86" step="0.01">
+                                    <span class="param-unit">%</span>
+                                </div>
+                            </div>
+
+                            <div class="param-row">
+                                <span class="param-label">Assurance chômage</span>
+                                <div class="param-input-wrap">
+                                    <input type="number" class="param-input" id="taux-chomage" value="3.84" step="0.01">
+                                    <span class="param-unit">%</span>
+                                </div>
+                            </div>
+
+                            <div class="param-row">
+                                <span class="param-label">Contribution CET</span>
+                                <div class="param-input-wrap">
+                                    <input type="number" class="param-input" id="taux-cet" value="0.14" step="0.01">
+                                    <span class="param-unit">%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CSG/CRDS -->
+                        <div class="param-section">
+                            <div class="param-section-title">🏛️ CSG / CRDS</div>
+
+                            <div class="param-row">
+                                <span class="param-label">CSG déductible</span>
+                                <div class="param-input-wrap">
+                                    <input type="number" class="param-input" id="taux-csg-ded" value="6.8" step="0.01">
+                                    <span class="param-unit">%</span>
+                                </div>
+                            </div>
+
+                            <div class="param-row">
+                                <span class="param-label">CSG non déductible</span>
+                                <div class="param-input-wrap">
+                                    <input type="number" class="param-input" id="taux-csg-non-ded" value="2.4" step="0.01">
+                                    <span class="param-unit">%</span>
+                                </div>
+                            </div>
+
+                            <div class="param-row">
+                                <span class="param-label">CRDS</span>
+                                <div class="param-input-wrap">
+                                    <input type="number" class="param-input" id="taux-crds" value="0.5" step="0.01">
+                                    <span class="param-unit">%</span>
+                                </div>
+                            </div>
+
+                            <div class="param-row">
+                                <span class="param-label">Assiette CSG/CRDS</span>
+                                <div class="param-input-wrap">
+                                    <input type="number" class="param-input" id="assiette-csg" value="98.25" step="0.01">
+                                    <span class="param-unit">%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Impôt -->
+                        <div class="param-section">
+                            <div class="param-section-title">💳 Impôt sur le revenu (PAS)</div>
+
+                            <div class="param-row">
+                                <span class="param-label">Taux de prélèvement</span>
+                                <div class="param-input-wrap">
+                                    <input type="number" class="param-input" id="taux-impot" value="0" step="0.1">
+                                    <span class="param-unit">%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="param-summary">
+                            <span class="param-summary-label">Total prélèvements</span>
+                            <span class="param-summary-value" id="total-prelevements">~24.44%</span>
+                        </div>
+
+                        <div class="param-actions">
+                            <button class="btn-reset" onclick="resetParams('standard')">↺ Standard</button>
+                            <button class="btn-reset" onclick="resetParams('etudiant')">↺ Étudiant</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <form id="salary-form" onsubmit="event.preventDefault(); calculer();">
+
+                    <div class="form-section">
+                        <h3 class="form-title">
+                            <span>💼</span> Données salariales
+                        </h3>
+
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span>Taux horaire brut</span>
+                                    <span class="input-hint">SMIC 2026: 11.88€</span>
+                                </label>
+                                <div class="input-wrap">
+                                    <input type="number" class="input" id="taux" placeholder="11.88" step="0.01" min="0">
+                                    <span class="input-suffix">€</span>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span>Heures travaillées</span>
+                                </label>
+                                <div class="input-wrap">
+                                    <input type="number" class="input" id="heures" placeholder="35" step="0.5" min="0">
+                                    <span class="input-suffix">h</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-grid" style="margin-top: 20px;">
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span>Période de calcul</span>
+                                </label>
+                                <select class="input" id="periode">
+                                    <option value="semaine">Par semaine</option>
+                                    <option value="mois" selected>Par mois</option>
+                                    <option value="annee">Par an</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button type="submit" class="btn btn-primary">
+                            <span>✨</span> Calculer Expert
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="rafraichir()">
+                            <span>↺</span> Réinitialiser
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Results Column -->
+            <div class="results-card" id="results-anchor">
+                <div class="results-header">
+                    <div class="results-label">Résultats du calcul</div>
+                    <div class="results-date" id="calc-date">En attente de calcul...</div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-state" class="empty-state">
+                    <div class="empty-illustration">🎯</div>
+                    <div class="empty-title">Prêt à calculer ?</div>
+                    <div class="empty-text">
+                        Configurez vos paramètres et cliquez sur<br>
+                        <strong style="color: var(--violet-light);">Calculer Expert</strong>
+                    </div>
+                </div>
+
+                <!-- Results Content -->
+                <div id="results-content" class="hidden">
+
+                    <div class="result-hero" id="result-hero">
+                        <div class="result-label-main">Salaire Net Mensuel</div>
+                        <div class="result-value" id="net-mois">0,00 €</div>
+                        <div class="result-period" id="period-text">par mois</div>
+                    </div>
+
+                    <div class="breakdown">
+                        <div class="breakdown-item highlight">
+                            <span class="breakdown-label">
+                                <span style="color: var(--violet-light);">◆</span> Salaire brut
+                            </span>
+                            <span class="breakdown-value highlight" id="brut-display">0,00 €</span>
+                        </div>
+
+                        <div class="breakdown-item negative">
+                            <span class="breakdown-label">
+                                <span style="color: var(--rose);">◆</span> Charges sociales
+                            </span>
+                            <span class="breakdown-value negative" id="charges-display">-0,00 €</span>
+                        </div>
+
+                        <div class="breakdown-item negative">
+                            <span class="breakdown-label">
+                                <span style="color: var(--amber);">◆</span> CSG / CRDS
+                            </span>
+                            <span class="breakdown-value negative" id="csg-display">-0,00 €</span>
+                        </div>
+
+                        <div class="breakdown-item negative" id="impot-row-breakdown">
+                            <span class="breakdown-label">
+                                <span style="color: #ef4444;">◆</span> Impôt sur le revenu
+                            </span>
+                            <span class="breakdown-value negative" id="impot-display">-0,00 €</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-table">
+                        <div class="table-header">
+                            <span>🧾</span> Détail expert des prélèvements
+                        </div>
+                        <div class="table-body">
+                            <div class="table-row">
+                                <span class="table-label">Salaire brut</span>
+                                <span class="table-value" id="detail-brut">0,00 €</span>
+                            </div>
+
+                            <div class="table-subheader">Charges sociales</div>
+                            <div class="table-row sub" id="row-maladie">
+                                <span class="table-label">Maladie</span>
+                                <span class="table-value negative" id="detail-maladie">-0,00 €</span>
+                            </div>
+                            <div class="table-row sub" id="row-retraite-base">
+                                <span class="table-label">Retraite base</span>
+                                <span class="table-value negative" id="detail-retraite-base">-0,00 €</span>
+                            </div>
+                            <div class="table-row sub" id="row-retraite-comp">
+                                <span class="table-label">Retraite complémentaire</span>
+                                <span class="table-value negative" id="detail-retraite-comp">-0,00 €</span>
+                            </div>
+                            <div class="table-row sub" id="row-chomage">
+                                <span class="table-label">Chômage</span>
+                                <span class="table-value negative" id="detail-chomage">-0,00 €</span>
+                            </div>
+                            <div class="table-row sub" id="row-cet">
+                                <span class="table-label">CET</span>
+                                <span class="table-value negative" id="detail-cet">-0,00 €</span>
+                            </div>
+
+                            <div class="table-subheader">CSG / CRDS</div>
+                            <div class="table-row sub" id="row-csg-ded">
+                                <span class="table-label">CSG déductible</span>
+                                <span class="table-value negative" id="detail-csg-ded">-0,00 €</span>
+                            </div>
+                            <div class="table-row sub" id="row-csg-non-ded">
+                                <span class="table-label">CSG non déductible</span>
+                                <span class="table-value negative" id="detail-csg-non-ded">-0,00 €</span>
+                            </div>
+                            <div class="table-row sub" id="row-crds">
+                                <span class="table-label">CRDS</span>
+                                <span class="table-value negative" id="detail-crds">-0,00 €</span>
+                            </div>
+
+                            <div class="table-subheader" id="impot-subheader">Impôt</div>
+                            <div class="table-row sub" id="row-impot">
+                                <span class="table-label">Impôt sur le revenu (PAS)</span>
+                                <span class="table-value negative" id="detail-impot">-0,00 €</span>
+                            </div>
+
+                            <div class="table-row total">
+                                <span class="table-label">Salaire net à percevoir</span>
+                                <span class="table-value positive" id="detail-net">0,00 €</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-label">Net / semaine</div>
+                            <div class="stat-value violet" id="net-semaine">0,00 €</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Net / mois</div>
+                            <div class="stat-value emerald" id="net-mois-stat">0,00 €</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Net / an</div>
+                            <div class="stat-value amber" id="net-an">0,00 €</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Taux prélèvements</div>
+                            <div class="stat-value rose" id="taux-prelevements">0%</div>
+                        </div>
+                    </div>
+
+                    <div class="rates-summary">
+                        <div class="rates-title">📋 Taux appliqués</div>
+                        <div class="rates-grid" id="rates-grid">
+                            <div class="rate-item">
+                                <span>Maladie</span>
+                                <strong id="rate-maladie">0%</strong>
+                            </div>
+                            <div class="rate-item">
+                                <span>Retraite base</span>
+                                <strong id="rate-retraite-base">6.9%</strong>
+                            </div>
+                            <div class="rate-item">
+                                <span>Retraite comp.</span>
+                                <strong id="rate-retraite-comp">3.86%</strong>
+                            </div>
+                            <div class="rate-item">
+                                <span>Chômage</span>
+                                <strong id="rate-chomage">3.84%</strong>
+                            </div>
+                            <div class="rate-item">
+                                <span>CSG/CRDS</span>
+                                <strong id="rate-csg-crds">9.7%</strong>
+                            </div>
+                            <div class="rate-item">
+                                <span>Impôt</span>
+                                <strong id="rate-impot">0%</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+
+        // Storage
+        const StorageExpert = {
+            PROFILS_KEY: 'expert_profils_salaire_v1',
+
+            getProfils() {
+                try {
+                    const data = localStorage.getItem(this.PROFILS_KEY);
+                    return data ? JSON.parse(data) : {};
+                } catch(e) {
+                    return {};
+                }
+            },
+
+            saveProfil(nom, data) {
+                const profils = this.getProfils();
+                profils[nom] = { ...data, date: new Date().toISOString() };
+                localStorage.setItem(this.PROFILS_KEY, JSON.stringify(profils));
+            },
+
+            deleteProfil(nom) {
+                const profils = this.getProfils();
+                delete profils[nom];
+                localStorage.setItem(this.PROFILS_KEY, JSON.stringify(profils));
+            },
+
+            getProfil(nom) {
+                return this.getProfils()[nom] || null;
+            }
+        };
+
+        let currentProfile = 'standard';
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            chargerListeProfils();
+            updateTotauxParams();
+
+            document.querySelectorAll('.param-input').forEach(input => {
+                input.addEventListener('input', updateTotauxParams);
+            });
+        });
+
+        // Profile functions
+        function chargerListeProfils() {
+            const select = document.getElementById('profil-select');
+            const profils = StorageExpert.getProfils();
+
+            select.innerHTML = '<option value="">-- Profil par défaut --</option>';
+            Object.keys(profils).forEach(nom => {
+                const option = document.createElement('option');
+                option.value = nom;
+                option.textContent = nom;
+                select.appendChild(option);
+            });
+        }
+
+        function sauvegarderProfil() {
+            document.getElementById('save-row').style.display = 'flex';
+            document.getElementById('nom-profil').focus();
+        }
+
+        function confirmerSauvegarde() {
+            const nom = document.getElementById('nom-profil').value.trim();
+            if (!nom) return;
+
+            const data = {
+                tauxMaladie: parseFloat(document.getElementById('taux-maladie').value) || 0,
+                tauxRetraiteBase: parseFloat(document.getElementById('taux-retraite-base').value) || 0,
+                tauxRetraiteComp: parseFloat(document.getElementById('taux-retraite-comp').value) || 0,
+                tauxChomage: parseFloat(document.getElementById('taux-chomage').value) || 0,
+                tauxCET: parseFloat(document.getElementById('taux-cet').value) || 0,
+                tauxCsgDed: parseFloat(document.getElementById('taux-csg-ded').value) || 0,
+                tauxCsgNonDed: parseFloat(document.getElementById('taux-csg-non-ded').value) || 0,
+                tauxCrds: parseFloat(document.getElementById('taux-crds').value) || 0,
+                assietteCsg: parseFloat(document.getElementById('assiette-csg').value) || 98.25,
+                tauxImpot: parseFloat(document.getElementById('taux-impot').value) || 0
+            };
+
+            StorageExpert.saveProfil(nom, data);
+            chargerListeProfils();
+            document.getElementById('profil-select').value = nom;
+            document.getElementById('save-row').style.display = 'none';
+            document.getElementById('nom-profil').value = '';
+
+            showToast('Profil sauvegardé !', 'success');
+        }
+
+        function chargerProfil() {
+            const nom = document.getElementById('profil-select').value;
+            if (!nom) {
+                resetParams('standard');
+                return;
+            }
+
+            const profil = StorageExpert.getProfil(nom);
+            if (!profil) return;
+
+            document.getElementById('taux-maladie').value = profil.tauxMaladie;
+            document.getElementById('taux-retraite-base').value = profil.tauxRetraiteBase;
+            document.getElementById('taux-retraite-comp').value = profil.tauxRetraiteComp;
+            document.getElementById('taux-chomage').value = profil.tauxChomage;
+            document.getElementById('taux-cet').value = profil.tauxCET;
+            document.getElementById('taux-csg-ded').value = profil.tauxCsgDed;
+            document.getElementById('taux-csg-non-ded').value = profil.tauxCsgNonDed;
+            document.getElementById('taux-crds').value = profil.tauxCrds;
+            document.getElementById('assiette-csg').value = profil.assietteCsg;
+            document.getElementById('taux-impot').value = profil.tauxImpot;
+
+            updateTotauxParams();
+            showToast('Profil chargé', 'info');
+        }
+
+        function supprimerProfil() {
+            const nom = document.getElementById('profil-select').value;
+            if (!nom) return;
+
+            if (!confirm(`Supprimer le profil "${nom}" ?`)) return;
+
+            StorageExpert.deleteProfil(nom);
+            chargerListeProfils();
+            resetParams('standard');
+            showToast('Profil supprimé', 'info');
+        }
+
+        // Toggle params
+        function toggleParams() {
+            const body = document.getElementById('params-body');
+            const chevron = document.getElementById('params-chevron');
+            body.classList.toggle('open');
+            chevron.classList.toggle('open');
+        }
+
+        // Set profile
+        function setProfile(profile) {
+            currentProfile = profile;
+            const btnStandard = document.getElementById('btn-standard');
+            const btnEtudiant = document.getElementById('btn-etudiant');
+
+            if (profile === 'standard') {
+                btnStandard.classList.add('active');
+                btnEtudiant.classList.remove('active');
+                resetParams('standard');
+            } else {
+                btnStandard.classList.remove('active');
+                btnEtudiant.classList.add('active');
+                resetParams('etudiant');
+            }
+        }
+
+        // Update total
+        function updateTotauxParams() {
+            const maladie = parseFloat(document.getElementById('taux-maladie').value) || 0;
+            const retraiteBase = parseFloat(document.getElementById('taux-retraite-base').value) || 0;
+            const retraiteComp = parseFloat(document.getElementById('taux-retraite-comp').value) || 0;
+            const chomage = parseFloat(document.getElementById('taux-chomage').value) || 0;
+            const cet = parseFloat(document.getElementById('taux-cet').value) || 0;
+
+            const csgDed = parseFloat(document.getElementById('taux-csg-ded').value) || 0;
+            const csgNonDed = parseFloat(document.getElementById('taux-csg-non-ded').value) || 0;
+            const crds = parseFloat(document.getElementById('taux-crds').value) || 0;
+            const impot = parseFloat(document.getElementById('taux-impot').value) || 0;
+
+            const totalCharges = maladie + retraiteBase + retraiteComp + chomage + cet;
+            const totalCsgCrds = csgDed + csgNonDed + crds;
+            const total = totalCharges + totalCsgCrds + impot;
+
+            document.getElementById('total-prelevements').textContent = total.toFixed(2) + '%';
+        }
+
+        // Reset params
+        function resetParams(type) {
+            if (type === 'standard') {
+                document.getElementById('taux-maladie').value = 0;
+                document.getElementById('taux-retraite-base').value = 6.9;
+                document.getElementById('taux-retraite-comp').value = 3.86;
+                document.getElementById('taux-chomage').value = 3.84;
+                document.getElementById('taux-cet').value = 0.14;
+                document.getElementById('taux-csg-ded').value = 6.8;
+                document.getElementById('taux-csg-non-ded').value = 2.4;
+                document.getElementById('taux-crds').value = 0.5;
+                document.getElementById('assiette-csg').value = 98.25;
+                document.getElementById('taux-impot').value = 0;
+            } else if (type === 'etudiant') {
+                document.getElementById('taux-maladie').value = 0;
+                document.getElementById('taux-retraite-base').value = 0;
+                document.getElementById('taux-retraite-comp').value = 0;
+                document.getElementById('taux-chomage').value = 0;
+                document.getElementById('taux-cet').value = 0;
+                document.getElementById('taux-csg-ded').value = 3.49;
+                document.getElementById('taux-csg-non-ded').value = 2.40;
+                document.getElementById('taux-crds').value = 0.50;
+                document.getElementById('assiette-csg').value = 98.25;
+                document.getElementById('taux-impot').value = 0;
+            }
+            updateTotauxParams();
+            showToast('Paramètres réinitialisés', 'info');
+        }
+
+        // Calculate
+        function calculer() {
+            const taux = parseFloat(document.getElementById('taux').value) || 11.88;
+            const heures = parseFloat(document.getElementById('heures').value);
+            const periode = document.getElementById('periode').value;
+
+            if (!heures || heures <= 0) {
+                shakeElement(document.getElementById('heures').parentElement);
+                showToast('Veuillez saisir les heures travaillées', 'error');
+                return;
+            }
+
+            // Get rates
+            const tauxMaladie = (parseFloat(document.getElementById('taux-maladie').value) || 0) / 100;
+            const tauxRetraiteBase = (parseFloat(document.getElementById('taux-retraite-base').value) || 0) / 100;
+            const tauxRetraiteComp = (parseFloat(document.getElementById('taux-retraite-comp').value) || 0) / 100;
+            const tauxChomage = (parseFloat(document.getElementById('taux-chomage').value) || 0) / 100;
+            const tauxCET = (parseFloat(document.getElementById('taux-cet').value) || 0) / 100;
+
+            const tauxCsgDed = (parseFloat(document.getElementById('taux-csg-ded').value) || 0) / 100;
+            const tauxCsgNonDed = (parseFloat(document.getElementById('taux-csg-non-ded').value) || 0) / 100;
+            const tauxCrds = (parseFloat(document.getElementById('taux-crds').value) || 0) / 100;
+            const assietteCsg = (parseFloat(document.getElementById('assiette-csg').value) || 98.25) / 100;
+
+            const tauxImpot = (parseFloat(document.getElementById('taux-impot').value) || 0) / 100;
+
+            // Calcul heures selon période
+            let h_sem, h_mois, h_an;
+            if (periode === 'semaine') {
+                h_sem = heures;
+                h_mois = heures * 4.33;
+                h_an = heures * 52;
+            } else if (periode === 'mois') {
+                h_sem = heures / 4.33;
+                h_mois = heures;
+                h_an = heures * 12;
+            } else {
+                h_sem = heures / 52;
+                h_mois = heures / 12;
+                h_an = heures;
+            }
+
+            // Calcul BRUT
+            const brut_sem = h_sem * taux;
+            const brut_mois = h_mois * taux;
+            const brut_an = h_an * taux;
+
+            // Calcul cotisations (mensuel comme référence)
+            const baseBrut = brut_mois;
+
+            const cotisMaladie = baseBrut * tauxMaladie;
+            const cotisRetraiteBase = baseBrut * tauxRetraiteBase;
+            const cotisRetraiteComp = baseBrut * tauxRetraiteComp;
+            const cotisChomage = baseBrut * tauxChomage;
+            const cotisCET = baseBrut * tauxCET;
+            const totalCharges = cotisMaladie + cotisRetraiteBase + cotisRetraiteComp + cotisChomage + cotisCET;
+
+            const assiette = baseBrut * assietteCsg;
+            const csgDed = assiette * tauxCsgDed;
+            const csgNonDed = assiette * tauxCsgNonDed;
+            const crds = assiette * tauxCrds;
+            const totalCsgCrds = csgDed + csgNonDed + crds;
+
+            const impot = baseBrut * tauxImpot;
+
+            const totalPrelevements = totalCharges + totalCsgCrds + impot;
+            const net_mois = baseBrut - totalPrelevements;
+            const net_sem = net_mois / 4.33;
+            const net_an = net_mois * 12;
+
+            // Update UI
+            document.getElementById('net-mois').textContent = formatMoney(net_mois);
+            document.getElementById('period-text').textContent = 'par mois';
+            document.getElementById('brut-display').textContent = formatMoney(brut_mois);
+            document.getElementById('charges-display').textContent = '-' + formatMoney(totalCharges);
+            document.getElementById('csg-display').textContent = '-' + formatMoney(totalCsgCrds);
+            document.getElementById('impot-display').textContent = '-' + formatMoney(impot);
+
+            // Show/hide impôt row
+            document.getElementById('impot-row-breakdown').style.display = impot > 0 ? 'flex' : 'none';
+
+            // Detail table
+            document.getElementById('detail-brut').textContent = formatMoney(brut_mois);
+            document.getElementById('detail-maladie').textContent = '-' + formatMoney(cotisMaladie);
+            document.getElementById('detail-retraite-base').textContent = '-' + formatMoney(cotisRetraiteBase);
+            document.getElementById('detail-retraite-comp').textContent = '-' + formatMoney(cotisRetraiteComp);
+            document.getElementById('detail-chomage').textContent = '-' + formatMoney(cotisChomage);
+            document.getElementById('detail-cet').textContent = '-' + formatMoney(cotisCET);
+            document.getElementById('detail-csg-ded').textContent = '-' + formatMoney(csgDed);
+            document.getElementById('detail-csg-non-ded').textContent = '-' + formatMoney(csgNonDed);
+            document.getElementById('detail-crds').textContent = '-' + formatMoney(crds);
+            document.getElementById('detail-impot').textContent = '-' + formatMoney(impot);
+            document.getElementById('detail-net').textContent = formatMoney(net_mois);
+
+            // Show/hide detail rows
+            document.getElementById('row-maladie').style.display = cotisMaladie > 0 ? 'flex' : 'none';
+            document.getElementById('row-retraite-base').style.display = cotisRetraiteBase > 0 ? 'flex' : 'none';
+            document.getElementById('row-retraite-comp').style.display = cotisRetraiteComp > 0 ? 'flex' : 'none';
+            document.getElementById('row-chomage').style.display = cotisChomage > 0 ? 'flex' : 'none';
+            document.getElementById('row-cet').style.display = cotisCET > 0 ? 'flex' : 'none';
+            document.getElementById('impot-subheader').style.display = impot > 0 ? 'block' : 'none';
+            document.getElementById('row-impot').style.display = impot > 0 ? 'flex' : 'none';
+
+            // Stats
+            document.getElementById('net-semaine').textContent = formatMoney(net_sem);
+            document.getElementById('net-mois-stat').textContent = formatMoney(net_mois);
+            document.getElementById('net-an').textContent = formatMoney(net_an);
+            document.getElementById('taux-prelevements').textContent = ((totalPrelevements / baseBrut) * 100).toFixed(1) + '%';
+
+            // Rates grid
+            document.getElementById('rate-maladie').textContent = (tauxMaladie * 100).toFixed(2) + '%';
+            document.getElementById('rate-retraite-base').textContent = (tauxRetraiteBase * 100).toFixed(2) + '%';
+            document.getElementById('rate-retraite-comp').textContent = (tauxRetraiteComp * 100).toFixed(2) + '%';
+            document.getElementById('rate-chomage').textContent = (tauxChomage * 100).toFixed(2) + '%';
+            document.getElementById('rate-csg-crds').textContent = ((tauxCsgDed + tauxCsgNonDed + tauxCrds) * 100).toFixed(2) + '%';
+            document.getElementById('rate-impot').textContent = (tauxImpot * 100).toFixed(1) + '%';
+
+            document.getElementById('calc-date').textContent = 'Calcul effectué le ' + new Date().toLocaleDateString('fr-FR');
+
+            // Update hero color
+            const hero = document.getElementById('result-hero');
+            if (currentProfile === 'etudiant') {
+                hero.classList.add('etudiant');
+            } else {
+                hero.classList.remove('etudiant');
+            }
+
+            // Show results
+            document.getElementById('empty-state').classList.add('hidden');
+            const results = document.getElementById('results-content');
+            results.classList.remove('hidden');
+
+            // Reset animations
+            results.style.animation = 'none';
+            results.offsetHeight;
+            results.style.animation = null;
+
+            // Scroll
+            setTimeout(() => {
+                document.getElementById('results-anchor').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            }, 100);
+
+            showToast('Calcul effectué avec succès !', 'success');
+        }
+
+        function rafraichir() {
+            document.getElementById('taux').value = '';
+            document.getElementById('heures').value = '';
+            document.getElementById('periode').value = 'mois';
+            document.getElementById('profil-select').value = '';
+
+            resetParams('standard');
+            setProfile('standard');
+
+            document.getElementById('empty-state').classList.remove('hidden');
+            document.getElementById('results-content').classList.add('hidden');
+            document.getElementById('calc-date').textContent = 'En attente de calcul...';
+
+            showToast('Formulaire réinitialisé', 'info');
+        }
+
+        function formatMoney(amount) {
+            return amount.toLocaleString('fr-FR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }) + ' €';
+        }
+
+        function shakeElement(el) {
+            el.style.animation = 'shake 0.5s';
+            setTimeout(() => el.style.animation = '', 500);
+        }
+
+        function showToast(message, type = 'info') {
+            document.querySelectorAll('.toast').forEach(t => t.remove());
+
+            const toast = document.createElement('div');
+            toast.className = 'toast ' + type;
+            const icons = { success: '✓', error: '✕', info: 'ℹ' };
+            toast.innerHTML = `<span style="font-size: 18px;">${icons[type]}</span> ${message}`;
+
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Keyboard shortcut
+        document.addEventListener('keypress', e => {
+            if (e.key === 'Enter') calculer();
+        });
+    </script>
+</body>
+</html>

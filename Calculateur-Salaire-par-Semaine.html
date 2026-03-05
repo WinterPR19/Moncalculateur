@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur Salaire par Semaine 2026</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            /* Palette Cyberpunk Orange/Bleu de l'image */
+            --neon-orange: #ff6b35;
+            --neon-orange-glow: #ff9e5e;
+            --neon-amber: #ffb347;
+            --neon-blue: #00d4ff;
+            --neon-blue-dark: #0099cc;
+            --neon-cyan: #5ce1e6;
+            --deep-blue: #0a1628;
+            --midnight: #050a10;
+            --fog: rgba(10, 22, 40, 0.7);
+            --glass: rgba(255, 107, 53, 0.05);
+            --glass-blue: rgba(0, 212, 255, 0.05);
+            --border-orange: rgba(255, 107, 53, 0.3);
+            --border-blue: rgba(0, 212, 255, 0.3);
+            --text: #e8f4f8;
+            --text-muted: rgba(232, 244, 248, 0.6);
+            --gradient-orange: linear-gradient(135deg, #ff6b35 0%, #ff9e5e 50%, #ffb347 100%);
+            --gradient-blue: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            --gradient-sunset: linear-gradient(180deg, #ff6b35 0%, #ffb347 30%, #5ce1e6 70%, #00d4ff 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--midnight);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Background atmosphérique style image cyberpunk */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                /* Soleil/coucher de soleil orange */
+                radial-gradient(ellipse 80% 50% at 20% 30%, rgba(255, 107, 53, 0.4) 0%, transparent 50%),
+                /* Glow bleu en haut à droite */
+                radial-gradient(ellipse 60% 40% at 80% 20%, rgba(0, 212, 255, 0.3) 0%, transparent 40%),
+                /* Brouillard orange en bas */
+                radial-gradient(ellipse 100% 40% at 50% 100%, rgba(255, 179, 71, 0.15) 0%, transparent 50%),
+                /* Dégradé principal nuit */
+                linear-gradient(180deg, #0a1628 0%, #050a10 40%, #080d14 60%, #0a1628 100%);
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        /* Couche de brume */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 100px,
+                    rgba(0, 212, 255, 0.02) 100px,
+                    rgba(0, 212, 255, 0.02) 200px
+                );
+            pointer-events: none;
+            z-index: -1;
+            animation: fogMove 20s linear infinite;
+        }
+
+        @keyframes fogMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-200px); }
+        }
+
+        /* Particules atmosphériques */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            opacity: 0;
+            animation: float 25s linear infinite;
+        }
+
+        .particle:nth-child(3n) {
+            background: var(--neon-orange);
+            box-shadow: 0 0 10px var(--neon-orange), 0 0 20px var(--neon-orange-glow);
+        }
+
+        .particle:nth-child(3n+1) {
+            background: var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-cyan);
+        }
+
+        .particle:nth-child(3n+2) {
+            background: var(--neon-amber);
+            box-shadow: 0 0 10px var(--neon-amber);
+        }
+
+        @keyframes float {
+            0% { 
+                transform: translateY(100vh) translateX(0) scale(0); 
+                opacity: 0; 
+            }
+            10% { 
+                opacity: 0.6; 
+                transform: scale(1); 
+            }
+            90% { 
+                opacity: 0.6; 
+            }
+            100% { 
+                transform: translateY(-100vh) translateX(30px) scale(0.5); 
+                opacity: 0; 
+            }
+        }
+
+        /* Navigation */
+        .calc-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(5, 10, 16, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-orange);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 0 30px rgba(255, 107, 53, 0.1);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            text-decoration: none;
+            animation: fadeIn 1s ease-out 0.2s both;
+        }
+
+        .logo-icon {
+            filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.8));
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.8)); }
+            50% { filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.8)); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            animation: fadeIn 1s ease-out 0.4s both;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 10px 18px;
+            font-weight: 500;
+            font-size: 14px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-orange);
+            transition: all 0.3s;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover::before,
+        .nav-links a.active::before {
+            width: 80%;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--neon-orange);
+            text-shadow: 0 0 15px rgba(255, 107, 53, 0.6);
+            background: rgba(255, 107, 53, 0.1);
+        }
+
+        /* Layout */
+        .calc-main {
+            padding: 100px 40px 40px;
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .calc-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            align-items: start;
+        }
+
+        @media (max-width: 1200px) {
+            .calc-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Cards Cyberpunk - Carrées avec bordures néon */
+        .calc-card,
+        .results-card {
+            background: var(--glass);
+            border: 2px solid var(--border-orange);
+            border-radius: 24px;
+            padding: 0;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+            width: 600px;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            animation: cardEntrance 0.8s ease-out forwards;
+            box-shadow: 
+                0 0 40px rgba(255, 107, 53, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .calc-card {
+            animation-delay: 0.3s;
+            border-color: var(--border-orange);
+        }
+
+        .results-card {
+            animation-delay: 0.5s;
+            border-color: var(--border-blue);
+            background: var(--glass-blue);
+            box-shadow: 
+                0 0 40px rgba(0, 212, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        @keyframes cardEntrance {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Glow animé sur les bordures */
+        .calc-card::before,
+        .results-card::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            background: var(--gradient-sunset);
+            border-radius: 26px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s;
+            filter: blur(15px);
+        }
+
+        .calc-card:hover::before {
+            opacity: 0.6;
+            animation: borderRotate 4s linear infinite;
+        }
+
+        .results-card:hover::before {
+            opacity: 0.6;
+            animation: borderRotate 4s linear infinite reverse;
+        }
+
+        @keyframes borderRotate {
+            0% { filter: blur(15px) hue-rotate(0deg); }
+            100% { filter: blur(15px) hue-rotate(360deg); }
+        }
+
+        /* Contenu scrollable */
+        .card-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 32px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 107, 53, 0.3) transparent;
+        }
+
+        .card-content::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .card-content::-webkit-scrollbar-thumb {
+            background: rgba(255, 107, 53, 0.3);
+            border-radius: 2px;
+        }
+
+        .results-card .card-content::-webkit-scrollbar-thumb {
+            background: rgba(0, 212, 255, 0.3);
+        }
+
+        /* Header */
+        .calc-header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-top: 4px;
+            animation: fadeInUp 0.6s ease-out 0.6s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .badge-year {
+            display: inline-block;
+            background: rgba(255, 107, 53, 0.15);
+            border: 1px solid rgba(255, 107, 53, 0.4);
+            color: var(--neon-orange);
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 14px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.8);
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.2);
+            animation: neonPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes neonPulse {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(255, 107, 53, 0.2);
+                text-shadow: 0 0 10px rgba(255, 107, 53, 0.8);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(255, 107, 53, 0.4);
+                text-shadow: 0 0 15px rgba(255, 107, 53, 1);
+            }
+        }
+
+        .calc-icon {
+            font-size: 44px;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 0 15px rgba(255, 179, 71, 0.6));
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .calc-header h1 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: var(--gradient-sunset);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textGlow 3s ease-in-out infinite;
+            line-height: 1.2;
+        }
+
+        @keyframes textGlow {
+            0%, 100% { filter: brightness(1) drop-shadow(0 0 10px rgba(255, 107, 53, 0.3)); }
+            50% { filter: brightness(1.2) drop-shadow(0 0 20px rgba(0, 212, 255, 0.5)); }
+        }
+
+        .calc-subtitle {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        /* Profile Toggle */
+        .profile-section {
+            margin-bottom: 20px;
+            animation: fadeInUp 0.6s ease-out 0.7s both;
+        }
+
+        .profile-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .profile-toggle {
+            display: flex;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-orange);
+            border-radius: 14px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .profile-btn {
+            flex: 1;
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            border-radius: 10px;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .profile-btn.active {
+            background: var(--gradient-orange);
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .profile-btn.student.active {
+            background: var(--gradient-blue);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 107, 53, 0.1);
+            animation: fadeInUp 0.6s ease-out 0.8s both;
+        }
+
+        .form-section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--neon-orange);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .input-group label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 8px rgba(0, 212, 255, 0.2);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            border-radius: 12px;
+            padding: 14px 16px;
+            color: white;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: var(--neon-orange);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1), 0 0 20px rgba(255, 107, 53, 0.2);
+        }
+
+        .input-group select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ff6b35' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+
+        .input-group select option {
+            background: #0a1628;
+            color: white;
+        }
+
+        .input-suffix {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neon-orange);
+            font-weight: 700;
+            font-size: 13px;
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+        }
+
+        .input-hint {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Buttons */
+        .buttons-container {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+            padding: 20px 32px 32px;
+            background: linear-gradient(to top, rgba(5, 10, 16, 0.9) 0%, transparent 100%);
+            animation: fadeInUp 0.6s ease-out 1s both;
+        }
+
+        .calc-btn {
+            flex: 1;
+            padding: 16px 24px;
+            background: var(--gradient-orange);
+            border: none;
+            border-radius: 14px;
+            color: white;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+            box-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .calc-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .calc-btn:hover::before {
+            left: 100%;
+        }
+
+        .calc-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 0 40px rgba(255, 107, 53, 0.5);
+        }
+
+        .calc-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .calc-btn.student {
+            background: var(--gradient-blue);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .calc-btn.student:hover {
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.5);
+        }
+
+        .refresh-btn {
+            padding: 16px 20px;
+            background: rgba(255, 107, 53, 0.1);
+            border: 1px solid var(--border-orange);
+            border-radius: 14px;
+            color: var(--neon-orange);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.3s;
+        }
+
+        .refresh-btn:hover {
+            background: rgba(255, 107, 53, 0.2);
+            transform: rotate(180deg) scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+        }
+
+        /* Results */
+        .results-header {
+            text-align: center;
+            padding: 32px 32px 20px;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+            animation: fadeInUp 0.6s ease-out 0.6s both;
+        }
+
+        .results-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+        }
+
+        /* Main Result */
+        .main-result {
+            background: var(--gradient-orange);
+            border-radius: 20px;
+            padding: 28px;
+            text-align: center;
+            margin: 20px 32px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(255, 107, 53, 0.3);
+            animation: resultGlowOrange 2s ease-in-out infinite alternate, fadeInUp 0.6s ease-out 0.7s both;
+            flex-shrink: 0;
+        }
+
+        .main-result.student {
+            background: var(--gradient-blue);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.3);
+            animation: resultGlowBlue 2s ease-in-out infinite alternate, fadeInUp 0.6s ease-out 0.7s both;
+        }
+
+        @keyframes resultGlowOrange {
+            from { box-shadow: 0 0 40px rgba(255, 107, 53, 0.3); }
+            to { box-shadow: 0 0 60px rgba(255, 107, 53, 0.5); }
+        }
+
+        @keyframes resultGlowBlue {
+            from { box-shadow: 0 0 40px rgba(0, 212, 255, 0.3); }
+            to { box-shadow: 0 0 60px rgba(0, 212, 255, 0.5); }
+        }
+
+        .main-result::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .result-label {
+            position: relative;
+            z-index: 1;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .result-amount {
+            position: relative;
+            z-index: 1;
+            font-size: 42px;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            margin-bottom: 8px;
+            animation: numberPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes numberPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        .result-period {
+            position: relative;
+            z-index: 1;
+            font-size: 13px;
+            opacity: 0.9;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Details Grid */
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 0 32px 20px;
+            animation: fadeInUp 0.6s ease-out 0.8s both;
+        }
+
+        .detail-box {
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 14px;
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .detail-box:hover {
+            transform: translateY(-3px);
+            border-color: rgba(0, 212, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.1);
+        }
+
+        .detail-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .detail-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Breakdown */
+        .breakdown-section {
+            margin: 0 32px 20px;
+            animation: fadeInUp 0.6s ease-out 0.9s both;
+        }
+
+        .breakdown-title {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            margin-bottom: 8px;
+            transition: all 0.3s;
+        }
+
+        .breakdown-item:hover {
+            border-color: rgba(0, 212, 255, 0.2);
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .breakdown-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breakdown-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .breakdown-value.negative {
+            color: #ff6b6b;
+            text-shadow: 0 0 8px rgba(255, 107, 107, 0.3);
+        }
+
+        .breakdown-value.highlight {
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
+        }
+
+        /* Info boxes */
+        .info-box {
+            padding: 14px;
+            background: rgba(255, 179, 71, 0.08);
+            border: 1px solid rgba(255, 179, 71, 0.2);
+            border-radius: 12px;
+            font-size: 12px;
+            color: var(--neon-amber);
+            line-height: 1.5;
+            margin: 0 32px 20px;
+            animation: fadeInUp 0.6s ease-out 1s both;
+        }
+
+        .info-box strong {
+            color: var(--neon-orange);
+        }
+
+        /* Empty state */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 40px;
+            text-align: center;
+            color: var(--text-muted);
+            animation: fadeIn 0.6s ease-out 0.6s both;
+            flex: 1;
+        }
+
+        .empty-icon {
+            font-size: 56px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+            animation: bounce 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.3));
+        }
+
+        /* Section étudiant cachée */
+        #section-etudiant {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 1300px) {
+            .calc-card,
+            .results-card {
+                width: 100%;
+                max-width: 600px;
+                height: auto;
+                min-height: 500px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .calc-main {
+                padding: 80px 20px 40px;
+            }
+
+            .card-content {
+                padding: 24px;
+            }
+
+            .buttons-container,
+            .results-header,
+            .main-result,
+            .details-grid,
+            .breakdown-section,
+            .info-box {
+                padding-left: 24px;
+                padding-right: 24px;
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .main-result {
+                margin: 20px 24px;
+            }
+
+            .details-grid {
+                margin: 0 24px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .result-amount {
+                font-size: 36px;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-orange);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gradient-sunset);
+        }
+
+        /* Selection */
+        ::selection {
+            background: rgba(255, 107, 53, 0.3);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Particules -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Navigation -->
+    <nav class="calc-nav">
+        <a href="./accueil.html" class="logo">
+            <svg class="logo-icon" width="40" height="40" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#ffb347;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#00d4ff;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <rect x="5" y="5" width="50" height="50" rx="14" fill="url(#logoGrad)"/>
+                <rect x="14" y="16" width="32" height="28" rx="4" fill="rgba(255,255,255,0.95)"/>
+                <rect x="14" y="16" width="32" height="8" rx="4" fill="url(#logoGrad)"/>
+                <rect x="17" y="28" width="6" height="6" rx="2" fill="#ff6b35" opacity="0.3"/>
+                <rect x="26" y="28" width="6" height="6" rx="2" fill="#ffb347" opacity="0.6"/>
+                <rect x="35" y="28" width="6" height="6" rx="2" fill="#00d4ff" opacity="0.8"/>
+                <rect x="17" y="36" width="6" height="6" rx="2" fill="#ffb347" opacity="0.6"/>
+                <rect x="26" y="36" width="6" height="6" rx="2" fill="#00d4ff" opacity="0.8"/>
+                <text x="30" y="22" font-family="Arial, sans-serif" font-size="8" font-weight="800" fill="white" text-anchor="middle">€</text>
+            </svg>
+            <span>MonCalculateur</span>
+        </a>
+        <div class="nav-links">
+            <a href="./accueil.html">Accueil</a>
+            <a href="./calculateur.html">Salaire Mensuel</a>
+            <a href="./calculateur-heures.html">Décompte Heures</a>
+            <a href="./calculateur-extra.html">Extra/Intermittent</a>
+            <a href="./Calculateur-Salaire-par-Semaine.html" class="active">Par Semaines</a>
+            <a href="calculateur-expert.html" class="mode-switch" style="background: linear-gradient(135deg, rgba(0, 238, 255, 0.2), rgba(0, 238, 255, 0.2)); color: #00e5ff; text-shadow: 0 0 10px #00ddff;">Mode Expert →</a>
+        </div>
+
+    </nav>
+
+    <!-- Main Content -->
+    <main class="calc-main">
+        <div class="calc-wrapper">
+            
+            <!-- Colonne Gauche : Formulaire -->
+            <div class="calc-card">
+                <div class="card-content">
+                    <div class="calc-header">
+                        <div class="badge-year">2026</div>
+                        <div class="calc-icon">📅</div>
+                        <h1>Calculateur par Semaines</h1>
+                        <p class="calc-subtitle">Calculez votre salaire sur plusieurs semaines</p>
+                    </div>
+
+                    <!-- Sélection du profil -->
+                    <div class="profile-section">
+                        <span class="profile-label">Votre profil</span>
+                        <div class="profile-toggle">
+                            <button class="profile-btn active" id="btn-salarie" onclick="setProfile('salarie')">
+                                <span>💼</span> Salarié
+                            </button>
+                            <button class="profile-btn student" id="btn-etudiant" onclick="setProfile('etudiant')">
+                                <span>🎓</span> Étudiant
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Formulaire -->
+                    <form id="salary-form" onsubmit="event.preventDefault(); calculateSalary();">
+                        
+                        <!-- Section Temps de travail -->
+                        <div class="form-section">
+                            <h3 class="section-title">⏱️ Temps de travail</h3>
+                            
+                            <div class="input-grid">
+                                <div class="input-group">
+                                    <label>Nombre de semaines</label>
+                                    <div class="input-wrapper">
+                                        <input type="number" id="semaines" min="1" max="52" value="4" step="1" required>
+                                        <span class="input-suffix">sem.</span>
+                                    </div>
+                                    <span class="input-hint">Ex: 4 semaines = 1 mois</span>
+                                </div>
+                                
+                                <div class="input-group">
+                                    <label>Heures par semaine</label>
+                                    <div class="input-wrapper">
+                                        <input type="number" id="heures-semaine" min="1" max="48" value="35" step="0.5" required>
+                                        <span class="input-suffix">h</span>
+                                    </div>
+                                    <span class="input-hint">Temps plein: 35h</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section Rémunération -->
+                        <div class="form-section">
+                            <h3 class="section-title">💶 Rémunération</h3>
+                            
+                            <div class="input-grid">
+                                <div class="input-group">
+                                    <label>Salaire horaire brut</label>
+                                    <div class="input-wrapper">
+                                        <input type="number" id="taux-horaire" min="11.88" value="11.88" step="0.01" required>
+                                        <span class="input-suffix">€</span>
+                                    </div>
+                                    <span class="input-hint">SMIC 2026: 11.88€/h</span>
+                                </div>
+                                
+                                <div class="input-group">
+                                    <label>Prime ancienneté</label>
+                                    <div class="input-wrapper">
+                                        <input type="number" id="prime-anciennete" min="0" value="0" step="0.01">
+                                        <span class="input-suffix">€/mois</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section Avantages -->
+                        <div class="form-section">
+                            <h3 class="section-title">🎁 Avantages</h3>
+                            
+                            <div class="input-grid">
+                                <div class="input-group">
+                                    <label>Tickets restaurant</label>
+                                    <div class="input-wrapper">
+                                        <input type="number" id="tickets-restaurant" min="0" value="0" step="1">
+                                        <span class="input-suffix">€</span>
+                                    </div>
+                                    <span class="input-hint">Valeur faciale</span>
+                                </div>
+                                
+                                <div class="input-group">
+                                    <label>Remb. transport</label>
+                                    <div class="input-wrapper">
+                                        <input type="number" id="remboursement-transport" min="0" value="0" step="0.01">
+                                        <span class="input-suffix">€/mois</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section Étudiant -->
+                        <div class="form-section" id="section-etudiant">
+                            <h3 class="section-title">🎓 Spécificités étudiant</h3>
+                            
+                            <div class="input-grid">
+                                <div class="input-group">
+                                    <label>Contrat</label>
+                                    <select id="type-contrat-etudiant">
+                                        <option value="cdd">CDD Étudiant</option>
+                                        <option value="alternance">Alternance</option>
+                                        <option value="job-etudiant">Job étudiant</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="input-group">
+                                    <label>Exonération</label>
+                                    <select id="exo-cotisations">
+                                        <option value="complete">Complète (-23%)</option>
+                                        <option value="partielle">Partielle (-15%)</option>
+                                        <option value="aucune">Aucune</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="info-box" style="margin-top: 15px;">
+                                ℹ️ Les étudiants bénéficient d'exonérations de cotisations selon leur type de contrat.
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Boutons -->
+                <div class="buttons-container">
+                    <button type="submit" class="calc-btn" id="submit-btn" onclick="calculateSalary()">
+                        <span>🧮</span> Calculer
+                    </button>
+                    <button type="button" class="refresh-btn" onclick="resetForm()" title="Tout effacer">
+                        <span>↻</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Colonne Droite : Résultats -->
+            <div class="results-card" id="results-card">
+                <div class="results-header">
+                    <div class="results-title">📊 Résultat de la simulation</div>
+                </div>
+
+                <div class="card-content" id="results-content-area">
+                    <div class="empty-state" id="empty-state">
+                        <div class="empty-icon">🧮</div>
+                        <p>Remplissez le formulaire et cliquez sur "Calculer"<br>pour voir votre salaire estimé</p>
+                    </div>
+
+                    <div id="results-display" style="display: none;">
+                        <!-- Résultat principal -->
+                        <div class="main-result" id="main-result">
+                            <div class="result-label">Salaire net estimé</div>
+                            <div class="result-amount" id="net-total">0 €</div>
+                            <div class="result-period" id="result-period">sur 4 semaines</div>
+                        </div>
+
+                        <!-- Détails -->
+                        <div class="details-grid">
+                            <div class="detail-box">
+                                <div class="detail-label">Total heures</div>
+                                <div class="detail-value" id="total-heures">0h</div>
+                            </div>
+                            <div class="detail-box">
+                                <div class="detail-label">Salaire brut</div>
+                                <div class="detail-value" id="brut-total">0 €</div>
+                            </div>
+                        </div>
+
+                        <!-- Détail des cotisations -->
+                        <div class="breakdown-section">
+                            <div class="breakdown-title">Détail des cotisations</div>
+                            
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">🛡️ Sécurité sociale</span>
+                                <span class="breakdown-value negative" id="cotisation-ss">-0 €</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">👴 Retraite</span>
+                                <span class="breakdown-value negative" id="cotisation-retraite">-0 €</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">😢 Chômage</span>
+                                <span class="breakdown-value negative" id="cotisation-chomage">-0 €</span>
+                            </div>
+                            <div class="breakdown-item" id="item-csg" style="display: none;">
+                                <span class="breakdown-label">🏛️ CSG/CRDS</span>
+                                <span class="breakdown-value negative" id="cotisation-csg">-0 €</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">✅ Total cotisations</span>
+                                <span class="breakdown-value negative" id="total-cotisations">-0 €</span>
+                            </div>
+                        </div>
+
+                        <!-- Info étudiant -->
+                        <div class="info-box" id="info-etudiant" style="display: none;">
+                            🎓 <strong>Exonération étudiante appliquée</strong><br>
+                            Vos cotisations sont réduites car vous êtes en contrat étudiant.
+                        </div>
+
+                        <!-- Récap -->
+                        <div class="breakdown-section" style="margin-top: 10px; padding-top: 15px; border-top: 1px solid rgba(0, 212, 255, 0.1);">
+                            <div class="breakdown-title">Équivalence</div>
+                            
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">📅 Mensuel (4.33 sem.)</span>
+                                <span class="breakdown-value highlight" id="equiv-mensuel">0 €</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-label">📆 Annuel (52 sem.)</span>
+                                <span class="breakdown-value highlight" id="equiv-annuel">0 €</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Configuration
+        const CONFIG = {
+            smic: { horaire: 11.88 },
+            cotisations: {
+                salarie: {
+                    securiteSociale: 0.069,
+                    retraiteBase: 0.069,
+                    retraiteComplementaire: 0.0386,
+                    retraiteComplementaireT2: 0.0972,
+                    chomage: 0.0384,
+                    csg: 0.0683,
+                    crds: 0.005
+                }
+            }
+        };
+
+        let currentProfile = 'salarie';
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+        });
+
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.top = Math.random() * 100 + '%';
+                p.style.animationDelay = Math.random() * 20 + 's';
+                p.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(p);
+            }
+        }
+
+        function setProfile(profile) {
+            currentProfile = profile;
+            document.getElementById('btn-salarie').classList.toggle('active', profile === 'salarie');
+            document.getElementById('btn-etudiant').classList.toggle('active', profile === 'etudiant');
+            
+            const sectionEtudiant = document.getElementById('section-etudiant');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            if (profile === 'etudiant') {
+                sectionEtudiant.style.display = 'block';
+                submitBtn.classList.add('student');
+                document.getElementById('heures-semaine').value = 20;
+            } else {
+                sectionEtudiant.style.display = 'none';
+                submitBtn.classList.remove('student');
+                document.getElementById('heures-semaine').value = 35;
+            }
+            
+            hideResults();
+        }
+
+        function resetForm() {
+            document.getElementById('semaines').value = 4;
+            document.getElementById('heures-semaine').value = currentProfile === 'etudiant' ? 20 : 35;
+            document.getElementById('taux-horaire').value = CONFIG.smic.horaire;
+            document.getElementById('prime-anciennete').value = 0;
+            document.getElementById('tickets-restaurant').value = 0;
+            document.getElementById('remboursement-transport').value = 0;
+            
+            if (currentProfile === 'etudiant') {
+                document.getElementById('type-contrat-etudiant').value = 'cdd';
+                document.getElementById('exo-cotisations').value = 'complete';
+            }
+            
+            hideResults();
+        }
+
+        function hideResults() {
+            document.getElementById('empty-state').style.display = 'flex';
+            document.getElementById('results-display').style.display = 'none';
+        }
+
+        function calculateSalary() {
+            const semaines = parseFloat(document.getElementById('semaines').value) || 0;
+            const heuresSemaine = parseFloat(document.getElementById('heures-semaine').value) || 0;
+            const tauxHoraire = parseFloat(document.getElementById('taux-horaire').value) || CONFIG.smic.horaire;
+            const primeAnciennete = parseFloat(document.getElementById('prime-anciennete').value) || 0;
+            const ticketsRestaurant = parseFloat(document.getElementById('tickets-restaurant').value) || 0;
+            const remboursementTransport = parseFloat(document.getElementById('remboursement-transport').value) || 0;
+
+            const totalHeures = semaines * heuresSemaine;
+            const salaireBrutHoraire = totalHeures * tauxHoraire;
+            const salaireBrut = salaireBrutHoraire + primeAnciennete;
+            const avantagesNature = ticketsRestaurant + remboursementTransport;
+            const assietteCotisations = salaireBrut + avantagesNature;
+
+            let cotisations = {};
+            
+            if (currentProfile === 'etudiant') {
+                const exoType = document.getElementById('exo-cotisations').value;
+                cotisations = calculerCotisationsEtudiant(assietteCotisations, exoType);
+            } else {
+                cotisations = calculerCotisationsSalarie(assietteCotisations);
+            }
+
+            const totalCotisations = Object.values(cotisations).reduce((a, b) => a + b, 0);
+            const netAPayer = salaireBrut - totalCotisations + avantagesNature;
+            const equivMensuel = (netAPayer / semaines) * 4.33;
+            const equivAnnuel = (netAPayer / semaines) * 52;
+
+            displayResults({
+                semaines,
+                totalHeures,
+                salaireBrut,
+                cotisations,
+                totalCotisations,
+                netAPayer,
+                equivMensuel,
+                equivAnnuel
+            });
+        }
+
+        function calculerCotisationsSalarie(assiette) {
+            const t = CONFIG.cotisations.salarie;
+            const plafondSS = 3864;
+            
+            let retraiteComp = 0;
+            if (assiette <= plafondSS) {
+                retraiteComp = assiette * t.retraiteComplementaire;
+            } else {
+                const t1 = plafondSS * t.retraiteComplementaire;
+                const t2 = (assiette - plafondSS) * t.retraiteComplementaireT2;
+                retraiteComp = t1 + t2;
+            }
+
+            const assietteCsg = assiette * 0.9825;
+            
+            return {
+                securiteSociale: assiette * t.securiteSociale,
+                retraiteBase: assiette * t.retraiteBase,
+                retraiteComplementaire: retraiteComp,
+                chomage: assiette * t.chomage,
+                csg: assietteCsg * (t.csg + t.crds)
+            };
+        }
+
+        function calculerCotisationsEtudiant(assiette, exoType) {
+            let t = { ...CONFIG.cotisations.salarie };
+            
+            if (exoType === 'complete') {
+                t.securiteSociale = 0;
+                t.retraiteBase = 0;
+                t.retraiteComplementaire = 0;
+                t.chomage = 0;
+                t.csg = 0;
+                t.crds = 0;
+            } else if (exoType === 'partielle') {
+                t.securiteSociale = 0.0349;
+                t.retraiteBase = 0.0345;
+                t.retraiteComplementaire = 0.0193;
+                t.chomage = 0;
+            }
+
+            const assietteCsg = assiette * 0.9825;
+            
+            return {
+                securiteSociale: assiette * t.securiteSociale,
+                retraiteBase: assiette * t.retraiteBase,
+                retraiteComplementaire: assiette * t.retraiteComplementaire,
+                chomage: assiette * t.chomage,
+                csg: t.csg > 0 ? assietteCsg * (t.csg + t.crds) : 0
+            };
+        }
+
+        function displayResults(data) {
+            document.getElementById('empty-state').style.display = 'none';
+            document.getElementById('results-display').style.display = 'block';
+
+            const mainResult = document.getElementById('main-result');
+            if (currentProfile === 'etudiant') {
+                mainResult.classList.add('student');
+                document.getElementById('info-etudiant').style.display = 'block';
+            } else {
+                mainResult.classList.remove('student');
+                document.getElementById('info-etudiant').style.display = 'none';
+            }
+
+            document.getElementById('net-total').textContent = formatMoney(data.netAPayer);
+            document.getElementById('result-period').textContent = `sur ${data.semaines} semaine${data.semaines > 1 ? 's' : ''}`;
+            document.getElementById('total-heures').textContent = data.totalHeures + 'h';
+            document.getElementById('brut-total').textContent = formatMoney(data.salaireBrut);
+
+            document.getElementById('cotisation-ss').textContent = '-' + formatMoney(data.cotisations.securiteSociale);
+            document.getElementById('cotisation-retraite').textContent = '-' + formatMoney(
+                data.cotisations.retraiteBase + data.cotisations.retraiteComplementaire
+            );
+            document.getElementById('cotisation-chomage').textContent = '-' + formatMoney(data.cotisations.chomage);
+            
+            const itemCsg = document.getElementById('item-csg');
+            if (data.cotisations.csg > 0) {
+                itemCsg.style.display = 'flex';
+                document.getElementById('cotisation-csg').textContent = '-' + formatMoney(data.cotisations.csg);
+            } else {
+                itemCsg.style.display = 'none';
+            }
+
+            document.getElementById('total-cotisations').textContent = '-' + formatMoney(data.totalCotisations);
+            document.getElementById('equiv-mensuel').textContent = formatMoney(data.equivMensuel);
+            document.getElementById('equiv-annuel').textContent = formatMoney(data.equivAnnuel);
+
+            // Scroll vers résultats sur mobile
+            if (window.innerWidth <= 1200) {
+                document.getElementById('results-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function formatMoney(amount) {
+            return amount.toLocaleString('fr-FR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }) + ' €';
+        }
+    </script>
+</body>
+</html>

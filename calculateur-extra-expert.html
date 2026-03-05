@@ -1,0 +1,2361 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur Extra & Intermittent 2026 | MonCalculateur</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+        :root {
+            --violet: #7c3aed;
+            --violet-light: #a78bfa;
+            --violet-dark: #5b21b6;
+            --rose: #ec4899;
+            --rose-light: #f9a8d4;
+            --cyan: #06b6d4;
+            --cyan-light: #67e8f9;
+            --amber: #f59e0b;
+            --emerald: #10b981;
+            --slate-900: #0f172a;
+            --slate-800: #1e293b;
+            --slate-700: #334155;
+            --slate-400: #94a3b8;
+            --white: #ffffff;
+            
+            --gradient-main: linear-gradient(135deg, var(--violet) 0%, var(--rose) 50%, var(--amber) 100%);
+            --gradient-cool: linear-gradient(135deg, var(--cyan) 0%, var(--violet) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--slate-900);
+            color: var(--white);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Ambient background */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .blob-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--violet);
+            top: -200px;
+            right: -100px;
+        }
+
+        .blob-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--rose);
+            bottom: -150px;
+            left: -100px;
+            animation-delay: -7s;
+        }
+
+        .blob-3 {
+            width: 300px;
+            height: 300px;
+            background: var(--cyan);
+            top: 50%;
+            left: 50%;
+            margin-left: -150px;
+            margin-top: -150px;
+            animation-delay: -14s;
+            opacity: 0.2;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.05); }
+            66% { transform: translate(-20px, 20px) scale(0.95); }
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-main);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+        }
+
+        .logo-badge {
+            background: rgba(236, 72, 153, 0.2);
+            border: 1px solid var(--rose);
+            color: var(--rose-light);
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            color: var(--slate-400);
+            text-decoration: none;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--white);
+            background: rgba(124, 58, 237, 0.2);
+        }
+
+        /* Main Layout */
+        .main {
+            padding: 100px 32px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--violet-light), var(--rose-light), transparent);
+            opacity: 0.5;
+        }
+
+        .card:hover {
+            border-color: rgba(124, 58, 237, 0.3);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .header-mascot {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .mascot-bg {
+            position: absolute;
+            inset: 0;
+            background: var(--gradient-main);
+            border-radius: 24px;
+            transform: rotate(12deg);
+            opacity: 0.3;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: rotate(12deg) scale(1); opacity: 0.3; }
+            50% { transform: rotate(12deg) scale(1.1); opacity: 0.5; }
+        }
+
+        .mascot-icon {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-main);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            box-shadow: 0 10px 40px rgba(124, 58, 237, 0.3);
+        }
+
+        .badge-shine {
+            display: inline-block;
+            background: rgba(124, 58, 237, 0.2);
+            border: 1px solid var(--violet-light);
+            color: var(--violet-light);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: var(--slate-400);
+            font-size: 16px;
+        }
+
+        /* Profile Selector */
+        .profile-section {
+            margin-bottom: 28px;
+        }
+
+        .section-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--slate-400);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .profile-tabs {
+            display: flex;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .profile-tab {
+            flex: 1;
+            padding: 14px 20px;
+            background: transparent;
+            border: none;
+            border-radius: 12px;
+            color: var(--slate-400);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .profile-tab:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .profile-tab.active {
+            background: var(--white);
+            color: var(--slate-900);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-tab.active.extra {
+            background: var(--gradient-main);
+            color: var(--white);
+        }
+
+        .profile-tab.active.intermittent {
+            background: var(--gradient-cool);
+            color: var(--white);
+        }
+
+        /* Parameters Accordion */
+        .params-accordion {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            margin-bottom: 28px;
+            overflow: hidden;
+            background: rgba(15, 23, 42, 0.4);
+        }
+
+        .params-header {
+            padding: 18px 24px;
+            background: rgba(124, 58, 237, 0.1);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .params-header:hover {
+            background: rgba(124, 58, 237, 0.15);
+        }
+
+        .params-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--violet-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .params-chevron {
+            color: var(--violet-light);
+            transition: transform 0.3s;
+            font-size: 12px;
+        }
+
+        .params-chevron.open {
+            transform: rotate(180deg);
+        }
+
+        .params-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+
+        .params-body.open {
+            max-height: 1000px;
+            padding: 24px;
+        }
+
+        /* Mode Selector */
+        .param-mode-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .mode-btn {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--slate-400);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mode-btn:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .mode-btn.active {
+            background: var(--violet);
+            color: var(--white);
+            border-color: var(--violet);
+        }
+
+        .param-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 640px) {
+            .param-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .param-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+        }
+
+        .param-row:hover {
+            padding-left: 8px;
+            border-bottom-color: rgba(124, 58, 237, 0.3);
+        }
+
+        .param-row:last-child {
+            border-bottom: none;
+        }
+
+        .param-label {
+            font-size: 14px;
+            color: var(--slate-400);
+            transition: color 0.3s;
+        }
+
+        .param-row:hover .param-label {
+            color: var(--white);
+        }
+
+        .param-input-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .param-input {
+            width: 90px;
+            padding: 10px 14px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--white);
+            font-size: 15px;
+            text-align: right;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .param-input:focus {
+            border-color: var(--violet-light);
+            outline: none;
+        }
+
+        .param-unit {
+            color: var(--slate-400);
+            font-size: 13px;
+            min-width: 40px;
+            text-align: left;
+        }
+
+        .param-summary {
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(124, 58, 237, 0.1);
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .param-summary-label {
+            font-size: 14px;
+            color: var(--slate-400);
+        }
+
+        .param-summary-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--violet-light);
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: 28px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .form-section::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--gradient-main);
+            border-radius: 2px;
+        }
+
+        .form-section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .form-section:last-of-type::after {
+            display: none;
+        }
+
+        .form-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-title span {
+            width: 32px;
+            height: 32px;
+            background: rgba(124, 58, 237, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 640px) {
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--slate-400);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .input-hint {
+            font-size: 12px;
+            color: var(--slate-400);
+            opacity: 0.8;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            color: var(--white);
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .input:focus {
+            border-color: var(--violet-light);
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+        }
+
+        select.input {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23a78bfa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+            padding-right: 45px;
+        }
+
+        .input-suffix {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--violet-light);
+            font-weight: 600;
+            font-size: 14px;
+            pointer-events: none;
+        }
+
+        /* Buttons */
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 18px 28px;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Outfit', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--gradient-main);
+            color: var(--white);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: var(--slate-400);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--rose);
+            color: var(--rose-light);
+            background: rgba(236, 72, 153, 0.1);
+        }
+
+        .btn-danger {
+            background: transparent;
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: #ef4444;
+        }
+
+        /* Missions List */
+        .missions-section {
+            margin-top: 28px;
+        }
+
+        .missions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .missions-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .missions-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        .missions-list::-webkit-scrollbar-thumb {
+            background: var(--violet);
+            border-radius: 3px;
+        }
+
+        .mission-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            transition: all 0.3s;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .mission-item:hover {
+            border-color: rgba(124, 58, 237, 0.2);
+            transform: translateX(4px);
+        }
+
+        .mission-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .mission-date {
+            font-size: 12px;
+            color: var(--slate-400);
+        }
+
+        .mission-name {
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .mission-details {
+            font-size: 13px;
+            color: var(--slate-400);
+        }
+
+        .mission-badges {
+            display: flex;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .badge {
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .badge-type {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--amber);
+        }
+
+        .badge-regime {
+            background: rgba(124, 58, 237, 0.2);
+            color: var(--violet-light);
+        }
+
+        .mission-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mission-net {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--emerald);
+        }
+
+        .mission-delete {
+            width: 32px;
+            height: 32px;
+            background: rgba(239, 68, 68, 0.1);
+            border: none;
+            border-radius: 8px;
+            color: #ef4444;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .mission-delete:hover {
+            background: rgba(239, 68, 68, 0.2);
+            transform: scale(1.1);
+        }
+
+        .empty-missions {
+            text-align: center;
+            padding: 40px;
+            color: var(--slate-400);
+            font-size: 14px;
+        }
+
+        /* Results Card */
+        .results-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            scroll-margin-top: 120px;
+        }
+
+        .results-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-main);
+            border-radius: 4px 4px 0 0;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 28px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .results-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--slate-400);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .results-date {
+            font-size: 13px;
+            color: var(--slate-400);
+        }
+
+        /* Main Result */
+        .result-hero {
+            background: var(--gradient-main);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(124, 58, 237, 0.3);
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            animation: rollIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes rollIn {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .result-hero.intermittent {
+            background: var(--gradient-cool);
+            box-shadow: 0 20px 60px rgba(6, 182, 212, 0.3);
+        }
+
+        .result-label-main {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .result-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 8px;
+            position: relative;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            letter-spacing: -1px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: rollUp 0.5s ease-out 0.3s forwards;
+        }
+
+        @keyframes rollUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-period {
+            font-size: 15px;
+            opacity: 0.9;
+            position: relative;
+            opacity: 0;
+            animation: fadeIn 0.4s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 0.9; }
+        }
+
+        /* Breakdown */
+        .breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            transition: all 0.3s;
+            opacity: 0;
+            transform: translateX(-30px);
+            animation: slideInRight 0.4s ease-out forwards;
+        }
+
+        .breakdown-item:nth-child(1) { animation-delay: 0.1s; }
+        .breakdown-item:nth-child(2) { animation-delay: 0.2s; }
+        .breakdown-item:nth-child(3) { animation-delay: 0.3s; }
+        .breakdown-item:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes slideInRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .breakdown-item:hover {
+            background: rgba(15, 23, 42, 0.6);
+            border-color: rgba(124, 58, 237, 0.2);
+            transform: translateX(4px);
+        }
+
+        .breakdown-item.positive { border-left: 3px solid var(--emerald); }
+        .breakdown-item.negative { border-left: 3px solid var(--rose); }
+        .breakdown-item.highlight { 
+            border-left: 3px solid var(--violet);
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        .breakdown-label {
+            font-size: 14px;
+            color: var(--slate-400);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .breakdown-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .breakdown-value.positive { color: var(--emerald); }
+        .breakdown-value.negative { color: var(--rose); }
+        .breakdown-value.highlight { color: var(--violet-light); }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-box {
+            padding: 20px;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s;
+            opacity: 0;
+            transform: scale(0.9);
+            animation: popIn 0.3s ease-out forwards;
+        }
+
+        .stat-box:nth-child(1) { animation-delay: 0.5s; }
+        .stat-box:nth-child(2) { animation-delay: 0.6s; }
+        .stat-box:nth-child(3) { animation-delay: 0.7s; }
+        .stat-box:nth-child(4) { animation-delay: 0.8s; }
+
+        @keyframes popIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .stat-box:hover {
+            transform: translateY(-2px);
+            border-color: rgba(124, 58, 237, 0.2);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--slate-400);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .stat-value.violet { color: var(--violet-light); }
+        .stat-value.emerald { color: var(--emerald); }
+        .stat-value.amber { color: var(--amber); }
+        .stat-value.rose { color: var(--rose-light); }
+
+        /* Applied Rates */
+        .rates-applied {
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .rates-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--violet-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .rates-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .rate-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .rate-label {
+            font-size: 11px;
+            color: var(--slate-400);
+        }
+
+        .rate-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        /* Data Management */
+        .data-section {
+            margin-top: 28px;
+            padding-top: 28px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .data-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .btn-data {
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--slate-400);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-data:hover {
+            background: rgba(124, 58, 237, 0.1);
+            border-color: var(--violet-light);
+            color: var(--white);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-illustration {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 24px;
+            background: rgba(124, 58, 237, 0.1);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            opacity: 0.6;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .empty-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+
+        .empty-text {
+            color: var(--slate-400);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 16px 24px;
+            background: var(--slate-800);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--white);
+            font-weight: 500;
+            z-index: 1000;
+            animation: slideUp 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .toast.success { border-color: var(--emerald); }
+        .toast.error { border-color: var(--rose); }
+        .toast.info { border-color: var(--violet-light); }
+
+        /* Auto-update indicator */
+        .auto-update-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--emerald);
+            background: rgba(16, 185, 129, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-left: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .auto-update-badge.active {
+            opacity: 1;
+            animation: pulse 2s infinite;
+        }
+
+        /* ============================================
+           ANIMATIONS D'ENTRÉE SMOOTH - EXPERT
+           ============================================ */
+
+        @keyframes slide-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slide-in-left {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slide-in-right {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scale-in {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* Application des animations aux éléments */
+        .card {
+            animation: slide-in-left 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .results-card {
+            animation: slide-in-right 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+        }
+
+        .header-mascot {
+            animation: scale-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+        }
+
+        .profile-tabs {
+            animation: slide-in-up 0.5s ease-out 0.3s both;
+        }
+
+        .params-accordion {
+            animation: slide-in-up 0.5s ease-out 0.4s both;
+        }
+
+        .form-section {
+            animation: slide-in-up 0.5s ease-out 0.5s both;
+        }
+
+        .actions {
+            animation: slide-in-up 0.5s ease-out 0.6s both;
+        }
+
+        .missions-section {
+            animation: slide-in-up 0.5s ease-out 0.7s both;
+        }
+
+        .data-section {
+            animation: slide-in-up 0.5s ease-out 0.8s both;
+        }
+
+        /* Toast amélioré - slide depuis la droite */
+        .toast {
+            animation: slide-in-right 0.3s ease;
+        }
+
+        /* Utility */
+        .hidden { display: none !important; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .results-card {
+                position: relative;
+                top: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav { padding: 12px 20px; }
+            .nav-links { display: none; }
+            .main { padding: 80px 20px 40px; }
+            .card, .results-card { padding: 28px; }
+            .result-value { font-size: 36px; }
+            .actions { flex-direction: column; }
+            .input-grid { grid-template-columns: 1fr; }
+            .param-grid { grid-template-columns: 1fr; }
+            .data-buttons { grid-template-columns: 1fr; }
+            .rates-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Ambient background -->
+    <div class="ambient-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="#" class="logo">
+            <div class="logo-icon">🎭</div>
+            <span>MonCalculateur</span>
+            <span class="logo-badge">Extra 2026</span>
+        </a>
+        <div class="nav-links">
+             <a href="accueil.html">Accueil</a>
+             <a href="calculateur-expert.html">salaire calculateur expert</a>
+            <a href="Calculateur-Salaire-par-Semaine-expert.html">Semaine calculateur expert </a>
+            <a href="calculateur-extra-expert.html" class="active">Extra calculateur expert</a>
+             <a href="calculateur.html" class="mode-switch">Mode Simple →</a>
+        </div>
+    </nav>
+
+    <!-- Main -->
+    <main class="main">
+        <div class="wrapper">
+            
+            <!-- Form Column -->
+            <div class="card">
+                <div class="header">
+                    <div class="header-mascot">
+                        <div class="mascot-bg"></div>
+                        <div class="mascot-icon">🎬</div>
+                    </div>
+                    <div class="badge-shine">Calculateur Extra & Intermittent 2026</div>
+                    <h1>Extra & Intermittent</h1>
+                    <p>Calculez vos revenus de mission avec précision</p>
+                </div>
+
+                <!-- Profile Selector -->
+                <div class="profile-section">
+                    <span class="section-label">Régime par défaut</span>
+                    <div class="profile-tabs">
+                        <button class="profile-tab active extra" id="btn-extra" onclick="setRegime('extra')">
+                            <span>💼</span> Extra
+                        </button>
+                        <button class="profile-tab intermittent" id="btn-intermittent" onclick="setRegime('intermittent')">
+                            <span>🎭</span> Intermittent
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Parameters Accordion -->
+                <div class="params-accordion">
+                    <div class="params-header" onclick="toggleParams()">
+                        <div class="params-title">
+                            <span>⚙️</span> Paramètres fiscaux avancés
+                            <span class="auto-update-badge" id="auto-update-badge">
+                                <span>⟳</span> Auto
+                            </span>
+                        </div>
+                        <span class="params-chevron" id="params-chevron">▼</span>
+                    </div>
+                    <div class="params-body" id="params-body">
+                        
+                        <!-- Mode Selector -->
+                        <div class="param-mode-selector">
+                            <button class="mode-btn active" id="mode-pourcent" onclick="setParamMode('pourcent')">
+                                En pourcentage (%)
+                            </button>
+                            <button class="mode-btn" id="mode-device" onclick="setParamMode('device')">
+                                En devise (€)
+                            </button>
+                        </div>
+
+                        <div class="param-grid">
+                            <div class="param-row">
+                                <span class="param-label">SMIC horaire 2026</span>
+                                <div class="param-input-wrap">
+                                    <input type="number" class="param-input" id="taux-smic" value="11.88" step="0.01" readonly>
+                                    <span class="param-unit">€/h</span>
+                                </div>
+                            </div>
+                            
+                            <div class="param-row">
+                                <span class="param-label">Charges Extra</span>
+                                <div class="param-input-wrap">
+                                    <input type="number" class="param-input" id="taux-extra" value="22" step="0.1">
+                                    <span class="param-unit" id="unit-extra">%</span>
+                                </div>
+                            </div>
+                            
+                            <div class="param-row">
+                                <span class="param-label">Charges Intermittent</span>
+                                <div class="param-input-wrap">
+                                    <input type="number" class="param-input" id="taux-intermittent" value="21" step="0.1">
+                                    <span class="param-unit" id="unit-intermittent">%</span>
+                                </div>
+                            </div>
+                            
+                            <div class="param-row">
+                                <span class="param-label">CSG/CRDS indemnités</span>
+                                <div class="param-input-wrap">
+                                    <input type="number" class="param-input" id="taux-csg" value="0" step="0.1">
+                                    <span class="param-unit" id="unit-csg">%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="param-summary">
+                            <span class="param-summary-label">Total charges sociales</span>
+                            <span class="param-summary-value" id="total-charges">~22%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mission Form -->
+                <form id="mission-form" onsubmit="event.preventDefault(); addMission();">
+                    
+                    <div class="form-section">
+                        <h3 class="form-title">
+                            <span>📝</span> Nouvelle mission
+                        </h3>
+                        
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span>Date</span>
+                                </label>
+                                <input type="date" class="input" id="mission-date" required>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span>Nom de la mission</span>
+                                    <span class="input-hint">Optionnel</span>
+                                </label>
+                                <input type="text" class="input" id="mission-nom" placeholder="Soirée du 15...">
+                            </div>
+                        </div>
+
+                        <div class="input-grid" style="margin-top: 20px;">
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span>Taux horaire</span>
+                                    <span class="input-hint">SMIC: 11.88€</span>
+                                </label>
+                                <div class="input-wrap">
+                                    <input type="number" class="input" id="mission-taux" value="11.88" step="0.01" min="11.88" required oninput="onSalaryChange()">
+                                    <span class="input-suffix">€</span>
+                                </div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span>Heures travaillées</span>
+                                </label>
+                                <div class="input-wrap">
+                                    <input type="number" class="input" id="mission-heures" placeholder="8" step="0.5" min="0" required>
+                                    <span class="input-suffix">h</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-grid" style="margin-top: 20px;">
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span>Type de journée</span>
+                                </label>
+                                <select class="input" id="mission-type">
+                                    <option value="normal">Jour normal</option>
+                                    <option value="dimanche">Dimanche (+25%)</option>
+                                    <option value="nuit">Nuit (+50%)</option>
+                                    <option value="ferie">Jour férié (+100%)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span>Régime applicable</span>
+                                </label>
+                                <select class="input" id="mission-regime">
+                                    <option value="extra">Extra (taux personnalisé)</option>
+                                    <option value="intermittent">Intermittent spectacle</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="input-grid" style="margin-top: 20px;">
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span>Indemnités repas</span>
+                                    <span class="input-hint">Optionnel</span>
+                                </label>
+                                <div class="input-wrap">
+                                    <input type="number" class="input" id="mission-repas" value="0" step="0.01" min="0">
+                                    <span class="input-suffix">€</span>
+                                </div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <span>Primes / Indemnités</span>
+                                    <span class="input-hint">Optionnel</span>
+                                </label>
+                                <div class="input-wrap">
+                                    <input type="number" class="input" id="mission-primes" value="0" step="0.01" min="0">
+                                    <span class="input-suffix">€</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button type="submit" class="btn btn-primary">
+                            <span>✨</span> Ajouter la mission
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                            <span>↺</span> Réinitialiser
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Missions List -->
+                <div class="missions-section">
+                    <h3 class="form-title">
+                        <span>📋</span> Missions ajoutées
+                    </h3>
+                    <div class="missions-list" id="missions-list">
+                        <div class="empty-missions">Aucune mission ajoutée</div>
+                    </div>
+                </div>
+
+                <!-- Data Management -->
+                <div class="data-section">
+                    <h3 class="form-title">
+                        <span>💾</span> Gestion des données
+                    </h3>
+                    <div class="data-buttons">
+                        <button class="btn-data" onclick="exportData()">
+                            <span>💾</span> Sauvegarder
+                        </button>
+                        <button class="btn-data" onclick="importData()">
+                            <span>📁</span> Restaurer
+                        </button>
+                        <button class="btn-data" onclick="exportCSV()">
+                            <span>📊</span> Export Excel
+                        </button>
+                        <button class="btn-data" onclick="clearAll()" style="color: #ef4444;">
+                            <span>🗑️</span> Tout effacer
+                        </button>
+                    </div>
+                    <input type="file" id="import-file" accept=".json" style="display: none;" onchange="processImport(this)">
+                </div>
+            </div>
+
+            <!-- Results Column -->
+            <div class="results-card" id="results-anchor">
+                <div class="results-header">
+                    <div class="results-label">Résultats du calcul</div>
+                    <div class="results-date" id="calc-date">En attente de calcul...</div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-state" class="empty-state">
+                    <div class="empty-illustration">🎬</div>
+                    <div class="empty-title">Prêt à calculer ?</div>
+                    <div class="empty-text">
+                        Ajoutez vos missions pour voir vos revenus<br>
+                        <strong style="color: var(--violet-light);">nets estimés</strong>
+                    </div>
+                </div>
+
+                <!-- Results Content -->
+                <div id="results-content" class="hidden">
+                    
+                    <div class="result-hero" id="result-hero">
+                        <div class="result-label-main">Total Net Estimé</div>
+                        <div class="result-value" id="net-total">0,00 €</div>
+                        <div class="result-period" id="result-period">Ce mois</div>
+                    </div>
+
+                    <!-- Applied Rates -->
+                    <div class="rates-applied">
+                        <div class="rates-title">Taux appliqués</div>
+                        <div class="rates-grid">
+                            <div class="rate-item">
+                                <span class="rate-label">Régime Extra</span>
+                                <span class="rate-value" id="rate-extra-display">22.0%</span>
+                            </div>
+                            <div class="rate-item">
+                                <span class="rate-label">Intermittent</span>
+                                <span class="rate-value" id="rate-intermittent-display">21.0%</span>
+                            </div>
+                            <div class="rate-item">
+                                <span class="rate-label">CSG/CRDS</span>
+                                <span class="rate-value" id="rate-csg-display">0.0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="breakdown">
+                        <div class="breakdown-item highlight">
+                            <span class="breakdown-label">
+                                <span style="color: var(--violet-light);">◆</span> Total brut missions
+                            </span>
+                            <span class="breakdown-value highlight" id="brut-total">0,00 €</span>
+                        </div>
+                        
+                        <div class="breakdown-item positive">
+                            <span class="breakdown-label">
+                                <span style="color: var(--emerald);">◆</span> Majorations (dimanche/nuit/férié)
+                            </span>
+                            <span class="breakdown-value positive" id="maj-total">+0,00 €</span>
+                        </div>
+                        
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">
+                                <span style="color: var(--amber);">◆</span> Indemnités & primes
+                            </span>
+                            <span class="breakdown-value" id="indemnites-total">0,00 €</span>
+                        </div>
+                        
+                        <div class="breakdown-item negative">
+                            <span class="breakdown-label">
+                                <span style="color: var(--rose);">◆</span> Charges sociales
+                            </span>
+                            <span class="breakdown-value negative" id="charges-total">-0,00 €</span>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-label">Missions</div>
+                            <div class="stat-value violet" id="stat-missions">0</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Heures totales</div>
+                            <div class="stat-value emerald" id="stat-heures">0h</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Taux moyen net/h</div>
+                            <div class="stat-value amber" id="stat-taux">0,00 €</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Coût total charges</div>
+                            <div class="stat-value rose" id="stat-charges">0,00 €</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // State
+        let missions = [];
+        let currentRegime = 'extra';
+        let paramMode = 'pourcent';
+        let lastSalaryValue = 11.88;
+
+        // Standard rates
+        const standardRates = {
+            extra: 22,
+            intermittent: 21,
+            csg: 0
+        };
+
+        // Majorations
+        const majorations = {
+            normal: 1,
+            dimanche: 1.25,
+            nuit: 1.50,
+            ferie: 2.00
+        };
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load saved data
+            loadData();
+            
+            // Set default date
+            document.getElementById('mission-date').valueAsDate = new Date();
+            
+            // Initial update
+            updateRatesDisplay();
+            updateTotalCharges();
+        });
+
+        // Handle salary change - auto update params
+        function onSalaryChange() {
+            const newSalary = parseFloat(document.getElementById('mission-taux').value) || 11.88;
+            
+            if (Math.abs(newSalary - lastSalaryValue) > 0.5) {
+                lastSalaryValue = newSalary;
+                updateParamsForSalary(newSalary);
+                
+                // Show auto-update indicator
+                const badge = document.getElementById('auto-update-badge');
+                badge.classList.add('active');
+                setTimeout(() => badge.classList.remove('active'), 2000);
+            }
+        }
+
+        // Update parameters based on salary
+        function updateParamsForSalary(salary) {
+            if (paramMode === 'device') {
+                // Calculate € values based on a standard mission (8 hours)
+                const baseBrut = salary * 8;
+                
+                document.getElementById('taux-extra').value = ((standardRates.extra / 100) * baseBrut).toFixed(2);
+                document.getElementById('taux-intermittent').value = ((standardRates.intermittent / 100) * baseBrut).toFixed(2);
+                document.getElementById('taux-csg').value = '0';
+                
+                updateTotalCharges();
+            }
+            // In % mode, rates stay constant
+        }
+
+        // Toggle parameters
+        function toggleParams() {
+            const body = document.getElementById('params-body');
+            const chevron = document.getElementById('params-chevron');
+            body.classList.toggle('open');
+            chevron.classList.toggle('open');
+        }
+
+        // Set parameter mode
+        function setParamMode(mode) {
+            paramMode = mode;
+            
+            document.getElementById('mode-pourcent').classList.toggle('active', mode === 'pourcent');
+            document.getElementById('mode-device').classList.toggle('active', mode === 'device');
+            
+            const salary = parseFloat(document.getElementById('mission-taux').value) || 11.88;
+            const baseBrut = salary * 8; // Reference: 8h mission
+            
+            const params = ['extra', 'intermittent', 'csg'];
+            
+            params.forEach(param => {
+                const input = document.getElementById('taux-' + param);
+                const unit = document.getElementById('unit-' + param);
+                
+                if (mode === 'pourcent') {
+                    unit.textContent = '%';
+                    input.value = standardRates[param].toFixed(1);
+                } else {
+                    unit.textContent = '€';
+                    if (param !== 'csg') {
+                        input.value = ((standardRates[param] / 100) * baseBrut).toFixed(2);
+                    } else {
+                        input.value = '0';
+                    }
+                }
+            });
+            
+            updateTotalCharges();
+            showToast('Mode ' + (mode === 'pourcent' ? 'pourcentage' : 'devise') + ' activé', 'info');
+        }
+
+        // Set regime profile
+        function setRegime(regime) {
+            currentRegime = regime;
+            const btnExtra = document.getElementById('btn-extra');
+            const btnIntermittent = document.getElementById('btn-intermittent');
+            
+            if (regime === 'extra') {
+                btnExtra.classList.add('active');
+                btnIntermittent.classList.remove('active');
+                document.getElementById('mission-regime').value = 'extra';
+            } else {
+                btnExtra.classList.remove('active');
+                btnIntermittent.classList.add('active');
+                document.getElementById('mission-regime').value = 'intermittent';
+            }
+        }
+
+        // Update rates display
+        function updateRatesDisplay() {
+            const extra = parseFloat(document.getElementById('taux-extra').value) || 22;
+            const intermittent = parseFloat(document.getElementById('taux-intermittent').value) || 21;
+            const csg = parseFloat(document.getElementById('taux-csg').value) || 0;
+            
+            document.getElementById('rate-extra-display').textContent = extra.toFixed(1) + '%';
+            document.getElementById('rate-intermittent-display').textContent = intermittent.toFixed(1) + '%';
+            document.getElementById('rate-csg-display').textContent = csg.toFixed(1) + '%';
+        }
+
+        // Update total charges display
+        function updateTotalCharges() {
+            const extra = parseFloat(document.getElementById('taux-extra').value) || 22;
+            const intermittent = parseFloat(document.getElementById('taux-intermittent').value) || 21;
+            
+            if (paramMode === 'pourcent') {
+                document.getElementById('total-charges').textContent = '~' + extra.toFixed(1) + '% / ' + intermittent.toFixed(1) + '%';
+            } else {
+                document.getElementById('total-charges').textContent = '~' + extra.toFixed(2) + '€ / ' + intermittent.toFixed(2) + '€';
+            }
+        }
+
+        // Animation shake pour erreurs de validation
+        function shakeElement(el) {
+            el.style.animation = 'shake 0.5s';
+            setTimeout(() => el.style.animation = '', 500);
+        }
+
+        // Add mission
+        function addMission() {
+            const date = document.getElementById('mission-date').value;
+            const nom = document.getElementById('mission-nom').value || 'Mission';
+            const taux = parseFloat(document.getElementById('mission-taux').value) || 11.88;
+            const heures = parseFloat(document.getElementById('mission-heures').value) || 0;
+            const type = document.getElementById('mission-type').value;
+            const regime = document.getElementById('mission-regime').value;
+            const repas = parseFloat(document.getElementById('mission-repas').value) || 0;
+            const primes = parseFloat(document.getElementById('mission-primes').value) || 0;
+
+            if (!date || heures <= 0) {
+                // Animation shake sur le champ problématique
+                if (!date) {
+                    shakeElement(document.getElementById('mission-date').closest('.input-group'));
+                } else {
+                    shakeElement(document.getElementById('mission-heures').closest('.input-group'));
+                }
+                showToast('Veuillez remplir la date et les heures', 'error');
+                return;
+            }
+
+            const mission = {
+                id: Date.now(),
+                date,
+                nom,
+                taux,
+                heures,
+                type,
+                regime,
+                repas,
+                primes,
+                majoration: majorations[type]
+            };
+
+            missions.push(mission);
+            missions.sort((a, b) => new Date(a.date) - new Date(b.date));
+            
+            saveData();
+            renderMissions();
+            calculate();
+            resetForm();
+            
+            showToast('Mission ajoutée !', 'success');
+        }
+
+        // Render missions list
+        function renderMissions() {
+            const list = document.getElementById('missions-list');
+            
+            if (missions.length === 0) {
+                list.innerHTML = '<div class="empty-missions">Aucune mission ajoutée</div>';
+                return;
+            }
+
+            const tauxExtra = parseFloat(document.getElementById('taux-extra').value) || 22;
+            const tauxIntermittent = parseFloat(document.getElementById('taux-intermittent').value) || 21;
+            
+            list.innerHTML = missions.map(m => {
+                const base = m.heures * m.taux;
+                const maj = base * (m.majoration - 1);
+                const taux = m.regime === 'extra' ? tauxExtra : tauxIntermittent;
+                const charges = (base + maj) * (taux / 100);
+                const net = base + maj + m.repas + m.primes - charges;
+                
+                const typeLabels = {
+                    normal: '',
+                    dimanche: '+25%',
+                    nuit: '+50%',
+                    ferie: '+100%'
+                };
+                
+                return `
+                    <div class="mission-item">
+                        <div class="mission-info">
+                            <span class="mission-date">${formatDate(m.date)}</span>
+                            <span class="mission-name">${escapeHtml(m.nom)}</span>
+                            <span class="mission-details">${m.heures}h × ${m.taux.toFixed(2)}€ = ${base.toFixed(2)}€</span>
+                            ${m.majoration > 1 ? `
+                                <div class="mission-badges">
+                                    <span class="badge badge-type">${typeLabels[m.type]}</span>
+                                </div>
+                            ` : ''}
+                            <div class="mission-badges">
+                                <span class="badge badge-regime">${m.regime === 'extra' ? 'Extra' : 'Intermittent'}</span>
+                            </div>
+                        </div>
+                        <div class="mission-actions">
+                            <span class="mission-net">${net.toFixed(2)} €</span>
+                            <button class="mission-delete" onclick="deleteMission(${m.id})">✕</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Delete mission
+        function deleteMission(id) {
+            if (!confirm('Supprimer cette mission ?')) return;
+            
+            missions = missions.filter(m => m.id !== id);
+            saveData();
+            renderMissions();
+            calculate();
+            showToast('Mission supprimée', 'info');
+        }
+
+        // Calculate and display results
+        function calculate() {
+            if (missions.length === 0) {
+                document.getElementById('empty-state').classList.remove('hidden');
+                document.getElementById('results-content').classList.add('hidden');
+                return;
+            }
+
+            const tauxExtra = parseFloat(document.getElementById('taux-extra').value) || 22;
+            const tauxIntermittent = parseFloat(document.getElementById('taux-intermittent').value) || 21;
+            const tauxCsg = parseFloat(document.getElementById('taux-csg').value) || 0;
+            
+            updateRatesDisplay();
+            
+            let totalHeures = 0;
+            let brutNormal = 0;
+            let majorationsTotal = 0;
+            let indemnitesTotal = 0;
+            let chargesTotal = 0;
+            
+            missions.forEach(m => {
+                const base = m.heures * m.taux;
+                const maj = base * (m.majoration - 1);
+                const taux = m.regime === 'extra' ? tauxExtra : tauxIntermittent;
+                
+                // Calculate charges based on mode
+                let charges;
+                if (paramMode === 'pourcent') {
+                    charges = (base + maj) * (taux / 100);
+                    charges += (m.repas + m.primes) * (tauxCsg / 100);
+                } else {
+                    // € mode: taux is absolute charge amount for reference mission, scale by ratio
+                    const refBrut = m.taux * 8; // reference 8h
+                    const ratio = (base + maj) / refBrut;
+                    charges = taux * ratio;
+                    charges += (m.repas + m.primes) * (tauxCsg / 100);
+                }
+                
+                totalHeures += m.heures;
+                brutNormal += base;
+                majorationsTotal += maj;
+                indemnitesTotal += m.repas + m.primes;
+                chargesTotal += charges;
+            });
+            
+            const netTotal = brutNormal + majorationsTotal + indemnitesTotal - chargesTotal;
+            
+            // Update UI
+            document.getElementById('net-total').textContent = formatMoney(netTotal);
+            document.getElementById('result-period').textContent = new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+            
+            document.getElementById('brut-total').textContent = formatMoney(brutNormal);
+            document.getElementById('maj-total').textContent = '+' + formatMoney(majorationsTotal);
+            document.getElementById('indemnites-total').textContent = formatMoney(indemnitesTotal);
+            document.getElementById('charges-total').textContent = '-' + formatMoney(chargesTotal);
+            
+            document.getElementById('stat-missions').textContent = missions.length;
+            document.getElementById('stat-heures').textContent = totalHeures + 'h';
+            document.getElementById('stat-taux').textContent = totalHeures > 0 ? formatMoney(netTotal / totalHeures) + '/h' : '0,00 €';
+            document.getElementById('stat-charges').textContent = formatMoney(chargesTotal);
+            
+            document.getElementById('calc-date').textContent = 'Calcul effectué le ' + new Date().toLocaleDateString('fr-FR');
+            
+            // Update hero color based on predominant regime
+            const extraCount = missions.filter(m => m.regime === 'extra').length;
+            const intermittentCount = missions.filter(m => m.regime === 'intermittent').length;
+            
+            const hero = document.getElementById('result-hero');
+            if (intermittentCount > extraCount) {
+                hero.classList.add('intermittent');
+            } else {
+                hero.classList.remove('intermittent');
+            }
+            
+            // Show results
+            document.getElementById('empty-state').classList.add('hidden');
+            const results = document.getElementById('results-content');
+            results.classList.remove('hidden');
+            
+            // Reset animations
+            results.style.animation = 'none';
+                       results.offsetHeight;
+            results.style.animation = null;
+            
+            // Scroll to results
+            setTimeout(() => {
+                document.getElementById('results-anchor').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            }, 100);
+        }
+
+        // Reset form
+        function resetForm() {
+            document.getElementById('mission-nom').value = '';
+            document.getElementById('mission-heures').value = '';
+            document.getElementById('mission-repas').value = '0';
+            document.getElementById('mission-primes').value = '0';
+            document.getElementById('mission-type').value = 'normal';
+            document.getElementById('mission-regime').value = currentRegime;
+        }
+
+        // Clear all
+        function clearAll() {
+            if (missions.length === 0) return;
+            if (!confirm('⚠️ Supprimer TOUTES les missions ?')) return;
+            
+            missions = [];
+            saveData();
+            renderMissions();
+            calculate();
+            showToast('Toutes les missions supprimées', 'warning');
+        }
+
+        // Export data
+        function exportData() {
+            const data = {
+                version: '1.0',
+                exportDate: new Date().toISOString(),
+                paramMode,
+                taux: {
+                    extra: document.getElementById('taux-extra').value,
+                    intermittent: document.getElementById('taux-intermittent').value,
+                    csg: document.getElementById('taux-csg').value
+                },
+                missions
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `missions-extra-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showToast('Données sauvegardées !', 'success');
+        }
+
+        // Import data
+        function importData() {
+            document.getElementById('import-file').click();
+        }
+
+        function processImport(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (!data.missions || !Array.isArray(data.missions)) {
+                        throw new Error('Format invalide');
+                    }
+                    
+                    if (confirm(`Importer ${data.missions.length} missions ?`)) {
+                        missions = data.missions.filter(m => m.id && m.date && m.heures > 0);
+                        
+                        // Restore rates if present
+                        if (data.taux) {
+                            document.getElementById('taux-extra').value = data.taux.extra || 22;
+                            document.getElementById('taux-intermittent').value = data.taux.intermittent || 21;
+                            document.getElementById('taux-csg').value = data.taux.csg || 0;
+                        }
+                        
+                        // Restore mode if present
+                        if (data.paramMode) {
+                            paramMode = data.paramMode;
+                            setParamMode(paramMode);
+                        }
+                        
+                        saveData();
+                        renderMissions();
+                        calculate();
+                        showToast(`${missions.length} missions restaurées !`, 'success');
+                    }
+                } catch (err) {
+                    showToast('Erreur lors de l\'import : ' + err.message, 'error');
+                }
+            };
+            reader.readAsText(file);
+            input.value = '';
+        }
+
+        // Export CSV
+        function exportCSV() {
+            if (missions.length === 0) {
+                showToast('Aucune mission à exporter', 'error');
+                return;
+            }
+            
+            const tauxExtra = parseFloat(document.getElementById('taux-extra').value) || 22;
+            const tauxIntermittent = parseFloat(document.getElementById('taux-intermittent').value) || 21;
+            const tauxCsg = parseFloat(document.getElementById('taux-csg').value) || 0;
+            
+            let csv = 'Date,Nom,Heures,Taux horaire,Type,Majoration,Régime,Brut,Majorations,Indemnités,Charges,Net\n';
+            
+            missions.forEach(m => {
+                const base = m.heures * m.taux;
+                const maj = base * (m.majoration - 1);
+                const taux = m.regime === 'extra' ? tauxExtra : tauxIntermittent;
+                
+                let charges;
+                if (paramMode === 'pourcent') {
+                    charges = (base + maj) * (taux / 100);
+                    charges += (m.repas + m.primes) * (tauxCsg / 100);
+                } else {
+                    const refBrut = m.taux * 8;
+                    const ratio = (base + maj) / refBrut;
+                    charges = taux * ratio;
+                    charges += (m.repas + m.primes) * (tauxCsg / 100);
+                }
+                
+                const net = base + maj + m.repas + m.primes - charges;
+                
+                const typeLabels = {
+                    normal: 'Normal',
+                    dimanche: 'Dimanche (+25%)',
+                    nuit: 'Nuit (+50%)',
+                    ferie: 'Férié (+100%)'
+                };
+                
+                csv += `${m.date},"${m.nom}",${m.heures},${m.taux.toFixed(2)},${typeLabels[m.type]},${((m.majoration - 1) * 100).toFixed(0)}%,${m.regime},${base.toFixed(2)},${maj.toFixed(2)},${(m.repas + m.primes).toFixed(2)},${charges.toFixed(2)},${net.toFixed(2)}\n`;
+            });
+            
+            // Add totals row
+            let totalBrut = 0, totalMaj = 0, totalIndem = 0, totalCharges = 0, totalNet = 0;
+            missions.forEach(m => {
+                const base = m.heures * m.taux;
+                const maj = base * (m.majoration - 1);
+                const taux = m.regime === 'extra' ? tauxExtra : tauxIntermittent;
+                
+                let charges;
+                if (paramMode === 'pourcent') {
+                    charges = (base + maj) * (taux / 100);
+                    charges += (m.repas + m.primes) * (tauxCsg / 100);
+                } else {
+                    const refBrut = m.taux * 8;
+                    const ratio = (base + maj) / refBrut;
+                    charges = taux * ratio;
+                    charges += (m.repas + m.primes) * (tauxCsg / 100);
+                }
+                
+                totalBrut += base;
+                totalMaj += maj;
+                totalIndem += m.repas + m.primes;
+                totalCharges += charges;
+                totalNet += base + maj + m.repas + m.primes - charges;
+            });
+            
+            csv += `\nTOTAL,,${missions.reduce((s,m) => s + m.heures, 0)},,,,,${totalBrut.toFixed(2)},${totalMaj.toFixed(2)},${totalIndem.toFixed(2)},${totalCharges.toFixed(2)},${totalNet.toFixed(2)}\n`;
+            
+            const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `missions-extra-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showToast('Export CSV réussi !', 'success');
+        }
+
+        // Storage functions
+        function saveData() {
+            const data = {
+                paramMode,
+                taux: {
+                    extra: document.getElementById('taux-extra').value,
+                    intermittent: document.getElementById('taux-intermittent').value,
+                    csg: document.getElementById('taux-csg').value
+                },
+                missions
+            };
+            localStorage.setItem('extra_calculator_data', JSON.stringify(data));
+        }
+
+        function loadData() {
+            try {
+                const saved = localStorage.getItem('extra_calculator_data');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    missions = data.missions || [];
+                    
+                    if (data.taux) {
+                        document.getElementById('taux-extra').value = data.taux.extra || 22;
+                        document.getElementById('taux-intermittent').value = data.taux.intermittent || 21;
+                        document.getElementById('taux-csg').value = data.taux.csg || 0;
+                    }
+                    
+                    if (data.paramMode) {
+                        paramMode = data.paramMode;
+                        // Update UI to reflect saved mode
+                        document.getElementById('mode-pourcent').classList.toggle('active', paramMode === 'pourcent');
+                        document.getElementById('mode-device').classList.toggle('active', paramMode === 'device');
+                        
+                        // Update units
+                        const units = ['extra', 'intermittent', 'csg'];
+                        units.forEach(u => {
+                            document.getElementById('unit-' + u).textContent = paramMode === 'pourcent' ? '%' : '€';
+                        });
+                    }
+                    
+                    renderMissions();
+                }
+            } catch (e) {
+                console.error('Error loading data:', e);
+            }
+        }
+
+        // Utilities
+        function formatMoney(amount) {
+            return amount.toFixed(2).replace('.', ',') + ' €';
+        }
+
+        function formatDate(dateStr) {
+            const d = new Date(dateStr);
+            return d.getDate().toString().padStart(2, '0') + '/' + 
+                   (d.getMonth() + 1).toString().padStart(2, '0') + '/' +
+                   d.getFullYear();
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Toast notification avec animation améliorée
+        function showToast(message, type = 'info') {
+            // Remove existing toasts
+            document.querySelectorAll('.toast').forEach(t => t.remove());
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast ' + type;
+            const icons = { success: '✓', error: '✕', info: 'ℹ', warning: '⚠' };
+            toast.innerHTML = `<span style="font-size: 18px;">${icons[type] || 'ℹ'}</span> ${message}`;
+            
+            document.body.appendChild(toast);
+            
+            // Animate out vers la droite
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100px)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                addMission();
+            }
+            if (e.ctrlKey && e.key === 'r') {
+                e.preventDefault();
+                resetForm();
+            }
+        });
+    </script>
+</body>
+</html> 

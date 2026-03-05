@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Décompte d'Heures Expert 2026 - MonCalculateur</title>
+    <link rel="stylesheet" href="styles-calculateur-heures.css">
+    <style>
+        /* Styles spécifiques Expert */
+        .expert-badge-nav {
+            background: linear-gradient(135deg, #a855f7, #6366f1);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            margin-left: 8px;
+            text-transform: uppercase;
+        }
+        
+        .params-section {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .params-header {
+            padding: 16px 20px;
+            background: rgba(168, 85, 247, 0.1);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .params-header:hover {
+            background: rgba(168, 85, 247, 0.15);
+        }
+        
+        .params-header h3 {
+            font-size: 14px;
+            color: #a855f7;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+        }
+        
+        .params-toggle {
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+        
+        .params-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            padding: 0 20px;
+        }
+        
+        .params-content.open {
+            max-height: 800px;
+            padding: 20px;
+        }
+        
+        .param-group {
+            margin-bottom: 16px;
+        }
+        
+        .param-group label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        
+        .param-input {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .param-input input {
+            flex: 1;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .param-input span {
+            color: var(--text-muted);
+            font-size: 13px;
+            min-width: 20px;
+        }
+        
+        .profile-manager {
+            background: rgba(168, 85, 247, 0.08);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .profile-label {
+            font-size: 13px;
+            color: #a855f7;
+            font-weight: 600;
+        }
+        
+        .profile-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .btn-icon:hover {
+            background: #a855f7;
+            transform: scale(1.1);
+        }
+        
+        .profile-select-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .profile-select {
+            flex: 1;
+            padding: 10px 14px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            font-size: 13px;
+        }
+        
+        .save-row {
+            display: none;
+            gap: 8px;
+        }
+        
+        .save-row.active {
+            display: flex;
+        }
+        
+        .btn-small {
+            padding: 8px 16px;
+            background: #a855f7;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .results-badge.expert {
+            background: rgba(168, 85, 247, 0.2);
+            color: #a855f7;
+            border-color: rgba(168, 85, 247, 0.4);
+        }
+        
+        .main-result-box.expert {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(99, 102, 241, 0.15));
+            border-color: rgba(168, 85, 247, 0.3);
+        }
+        
+        .main-result-box.expert .main-result-value {
+            background: linear-gradient(135deg, #a855f7, #6366f1);
+            -webkit-background-clip: text;
+        }
+        
+        .calc-btn.expert {
+            background: linear-gradient(135deg, #a855f7, #6366f1);
+            box-shadow: 0 4px 20px rgba(168, 85, 247, 0.4);
+        }
+        
+        .calc-btn.expert:hover {
+            box-shadow: 0 8px 30px rgba(168, 85, 247, 0.6);
+        }
+        
+        .detail-breakdown {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 15px;
+        }
+        
+        .detail-breakdown h4 {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+        
+        .breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .breakdown-row:last-child {
+            border-bottom: none;
+        }
+        
+        .breakdown-label {
+            color: var(--text-muted);
+        }
+        
+        .breakdown-value {
+            color: white;
+            font-weight: 500;
+        }
+        
+        .breakdown-value.negative {
+            color: var(--warning);
+        }
+        
+        .rates-summary {
+            background: rgba(168, 85, 247, 0.05);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 15px;
+        }
+        
+        .rates-summary h4 {
+            font-size: 12px;
+            color: #a855f7;
+            margin-bottom: 12px;
+        }
+        
+        .rates-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        
+        .rate-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            padding: 6px 0;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .notification.success { background: #06d6a0; }
+        .notification.error { background: #ef476f; }
+        .notification.info { background: #4facfe; }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body class="calc-heures-page">
+    <!-- Navigation -->
+    <nav class="calc-nav">
+        <a href="accueil.html" class="logo">
+            <svg class="logo-icon" width="40" height="40" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.5));">
+                <defs>
+                    <linearGradient id="expertGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#a855f7;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#6366f1;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#06d6a0;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <rect x="4" y="4" width="52" height="52" rx="16" fill="url(#expertGrad)"/>
+                <path d="M30 10 L34 22 L46 22 L36 30 L40 42 L30 34 L20 42 L24 30 L14 22 L26 22 Z" fill="rgba(255,255,255,0.95)"/>
+                <circle cx="30" cy="28" r="4" fill="#a855f7"/>
+            </svg>
+            <span>MonCalculateur <span class="expert-badge-nav">Expert</span></span>
+        </a>
+        <div class="nav-links">
+            <a href="accueil.html">Accueil</a>
+            <a href="calculateur-expert.html">Salaire Expert</a>
+            <a href="calculateur-heures-expert.html" class="active">Heures Expert</a>
+            <a href="calculateur-extra-expert.html">Extra Expert</a>
+            <a href="Calculateur-Salaire-par-Semaine-expert.html">Semaine Expert</a>
+            <a href="calculateur-heures.html" class="mode-switch">Mode Simple →</a>
+        </div>
+    </nav>
+
+    <!-- Particules -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Contenu principal -->
+    <main class="calc-main">
+        <div class="calc-wrapper">
+            <!-- Formulaire -->
+            <div class="calc-form-section">
+                <div class="calc-header">
+                    <div class="badge-net expert">Expert 2026</div>
+                    <div class="calc-icon">⏱️</div>
+                    <h1>Décompte d'Heures Expert</h1>
+                    <p class="calc-subtitle">Calculez vos heures avec paramètres fiscaux personnalisables</p>
+                </div>
+
+                <!-- Gestion des Profils -->
+                <div class="profile-manager">
+                    <div class="profile-header">
+                        <span class="profile-label">📁 Profils sauvegardés</span>
+                        <div class="profile-actions">
+                            <button class="btn-icon" onclick="sauvegarderProfil()" title="Sauvegarder">💾</button>
+                        </div>
+                    </div>
+                    <div class="profile-select-row">
+                        <select class="profile-select" id="profil-select" onchange="chargerProfil()">
+                            <option value="">-- Profil par défaut --</option>
+                        </select>
+                        <button class="btn-icon" onclick="supprimerProfil()" title="Supprimer" style="background: rgba(239, 71, 111, 0.2);">🗑️</button>
+                    </div>
+                    <div class="save-row" id="save-row">
+                        <input type="text" id="nom-profil" placeholder="Nom du profil..." style="flex:1; padding:8px 12px; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:8px; color:white; font-size:13px;">
+                        <button class="btn-small" onclick="confirmerSauvegarde()">OK</button>
+                    </div>
+                </div>
+
+                <!-- Toggle Mode -->
+                <div class="mode-toggle-container">
+                    <span class="mode-label">Profil :</span>
+                    <div class="mode-toggle" id="mode-toggle" onclick="toggleMode()">
+                        <div class="mode-option active" data-mode="standard">👔 Standard</div>
+                        <div class="mode-option" data-mode="etudiant">🎓 Étudiant</div>
+                        <div class="mode-slider"></div>
+                    </div>
+                </div>
+                <p class="mode-description" id="mode-desc">👔 Mode Expert : personnalisez tous les taux de cotisations</p>
+
+                <div class="input-section">
+                    <div class="input-group animated-input highlight">
+                        <label for="salaire-net">
+                            <span class="label-icon">💶</span>
+                            <span>Salaire NET perçu</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="text" id="salaire-net" placeholder="Ex: 1450" autocomplete="off">
+                            <span class="currency">€</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group animated-input">
+                        <label for="periode-paie">
+                            <span class="label-icon">📅</span>
+                            <span>Période de paie</span>
+                        </label>
+                        <div class="select-wrapper">
+                            <select id="periode-paie">
+                                <option value="mois">Mensuel</option>
+                                <option value="semaine">Hebdomadaire</option>
+                                <option value="annee">Annuel</option>
+                            </select>
+                            <span class="select-arrow">▼</span>
+                        </div>
+                    </div>
+
+                    <!-- Paramètres Expert -->
+                    <div class="params-section">
+                        <div class="params-header" onclick="toggleParams()">
+                            <h3>⚙️ Paramètres fiscaux avancés (2026)</h3>
+                            <span class="params-toggle" id="params-toggle">▼</span>
+                        </div>
+                        <div class="params-content" id="params-content">
+                            <div class="param-group">
+                                <label>SMIC horaire brut 2026</label>
+                                <div class="param-input">
+                                    <input type="number" id="taux-smic" value="12.02" step="0.01" min="0">
+                                    <span>€/h</span>
+                                </div>
+                            </div>
+
+                            <div style="margin: 20px 0; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px;">
+                                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Charges sociales</div>
+                                
+                                <div class="param-group">
+                                    <label>Sécurité sociale - Maladie</label>
+                                    <div class="param-input">
+                                        <input type="number" id="taux-maladie" value="0" step="0.01">
+                                        <span>%</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="param-group">
+                                    <label>Retraite de base</label>
+                                    <div class="param-input">
+                                        <input type="number" id="taux-retraite-base" value="6.9" step="0.01">
+                                        <span>%</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="param-group">
+                                    <label>Retraite complémentaire (AGIRC-ARRCO)</label>
+                                    <div class="param-input">
+                                        <input type="number" id="taux-retraite-comp" value="3.86" step="0.01">
+                                        <span>%</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="param-group">
+                                    <label>Assurance chômage</label>
+                                    <div class="param-input">
+                                        <input type="number" id="taux-chomage" value="3.84" step="0.01">
+                                        <span>%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="margin: 20px 0; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px;">
+                                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">CSG / CRDS</div>
+                                
+                                <div class="param-group">
+                                    <label>CSG déductible</label>
+                                    <div class="param-input">
+                                        <input type="number" id="taux-csg-ded" value="6.8" step="0.01">
+                                        <span>%</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="param-group">
+                                    <label>CSG non déductible</label>
+                                    <div class="param-input">
+                                        <input type="number" id="taux-csg-non-ded" value="2.4" step="0.01">
+                                        <span>%</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="param-group">
+                                    <label>CRDS</label>
+                                    <div class="param-input">
+                                        <input type="number" id="taux-crds" value="0.5" step="0.01">
+                                        <span>%</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="param-group">
+                                    <label>Assiette CSG/CRDS (% brut)</label>
+                                    <div class="param-input">
+                                        <input type="number" id="assiette-csg" value="98.25" step="0.01">
+                                        <span>%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="param-group">
+                                <label>Impôt sur le revenu (PAS)</label>
+                                <div class="param-input">
+                                    <input type="number" id="taux-impot" value="0" step="0.1" min="0" max="100">
+                                    <span>%</span>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 15px; padding: 12px; background: rgba(168, 85, 247, 0.1); border-radius: 8px; font-size: 12px; color: var(--text-muted);">
+                                <strong style="color: #a855f7;">Total prélèvements :</strong> <span id="total-prelevements">~24.44%</span>
+                            </div>
+
+                            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                <button type="button" onclick="resetParams('standard')" style="flex:1; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; color: white; font-size: 12px; cursor: pointer;">↺ Standard</button>
+                                <button type="button" onclick="resetParams('etudiant')" style="flex:1; padding: 10px; background: rgba(240, 147, 251, 0.1); border: 1px solid rgba(240, 147, 251, 0.3); border-radius: 8px; color: #f093fb; font-size: 12px; cursor: pointer;">↺ Étudiant</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="calc-btn expert" onclick="calculerHeures()">
+                        <span class="btn-text">Calculer Expert</span>
+                        <span class="btn-icon">→</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                    
+                    <button class="refresh-btn" onclick="rafraichirHeures()" title="Réinitialiser">
+                        <span class="btn-icon-refresh">↻</span>
+                    </button>
+                </div>
+
+                <div class="legal-note">
+                    <span>ℹ️</span>
+                    <p>Données 2026 : SMIC 12.02€/h. Calcul indicatif selon les paramètres personnalisés.</p>
+                </div>
+            </div>
+
+            <!-- Résultats -->
+            <div class="calc-results-section" id="resultat">
+                <div class="results-header">
+                    <span class="results-title">📊 Résultats Expert 2026</span>
+                    <div class="results-badge expert" id="result-mode">Expert</div>
+                </div>
+
+                <div class="main-result-box expert" id="main-result">
+                    <div class="main-result-glow"></div>
+                    <div class="main-result-label">Heures par semaine</div>
+                    <div class="main-result-value" id="heures-semaine">-- h</div>
+                    <div class="main-result-sub" id="jours-travailles">-- jours (base 7h/j)</div>
+                </div>
+
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <span class="detail-icon">📅</span>
+                        <span class="detail-label">Par semaine</span>
+                        <span class="detail-value" id="detail-semaine">-- h</span>
+                    </div>
+                    <div class="detail-item highlight">
+                        <span class="detail-icon">📆</span>
+                        <span class="detail-label">Par mois</span>
+                        <span class="detail-value" id="detail-mois">-- h</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-icon">🗓️</span>
+                        <span class="detail-label">Par an</span>
+                        <span class="detail-value" id="detail-annee">-- h</span>
+                    </div>
+                </div>
+
+                <div class="detail-breakdown" id="detail-breakdown" style="display: none;">
+                    <h4>🧾 Détail du calcul</h4>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Salaire net perçu</span>
+                        <span class="breakdown-value" id="breakdown-net">-- €</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Total prélèvements</span>
+                        <span class="breakdown-value" id="breakdown-taux">-- %</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Salaire brut estimé</span>
+                        <span class="breakdown-value" id="breakdown-brut">-- €</span>
+                    </div>
+                    <div class="breakdown-row" style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 8px; padding-top: 8px;">
+                        <span class="breakdown-label" style="color: #a855f7; font-weight: 600;">Total heures</span>
+                        <span class="breakdown-value" style="color: #a855f7; font-weight: 700;" id="breakdown-total">-- h</span>
+                    </div>
+                </div>
+
+                <div class="rates-summary" id="rates-summary" style="display: none;">
+                    <h4>📋 Taux appliqués</h4>
+                    <div class="rates-grid" id="rates-grid">
+                        <!-- Généré dynamiquement -->
+                    </div>
+                </div>
+
+                <div class="comparaison-box">
+                    <div class="comparaison-header">
+                        <span>📈 Comparaison temps plein SMIC 2026 (35h)</span>
+                    </div>
+                    <div class="comparaison-bar-container">
+                        <div class="comparaison-bar-bg">
+                            <div class="comparaison-bar-fill" id="bar-temps-plein"></div>
+                        </div>
+                        <div class="comparaison-labels">
+                            <span>Vous</span>
+                            <span id="pct-temps-plein">--%</span>
+                            <span>Temps plein (~151h/mois)</span>
+                        </div>
+                    </div>
+                    <p class="comparaison-text" id="text-comparaison">--</p>
+                </div>
+
+                <div class="empty-state" id="empty-state">
+                    <div class="empty-icon">🧮</div>
+                    <p>Remplissez le formulaire et cliquez sur Calculer pour voir vos heures estimées</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="dark-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <svg class="logo-icon" width="32" height="32" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="expertGradFooter" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#a855f7;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#6366f1;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect x="4" y="4" width="52" height="52" rx="16" fill="url(#expertGradFooter)"/>
+                        <path d="M30 10 L34 22 L46 22 L36 30 L40 42 L30 34 L20 42 L24 30 L14 22 L26 22 Z" fill="rgba(255,255,255,0.95)"/>
+                    </svg>
+                    <span>MonCalculateur Expert</span>
+                </div>
+                <p>Calculateurs salariaux avancés pour professionnels. Données fiscales France 2026.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Mode Expert</h4>
+                <a href="./calculateur-expert.html">Salaire Expert</a>
+                <a href="./calculateur-heures-expert.html">Heures Expert</a>
+                <a href="./calculateur-extra-expert.html">Extra Expert</a>
+                <a href="./Calculateur-Salaire-par-Semaine-expert.html">Semaine Expert</a>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Mode Simple</h4>
+                <a href="./calculateur.html">Salaire Simple</a>
+                <a href="./calculateur-heures.html">Heures Simple</a>
+                <a href="./calculateur-extra.html">Extra Simple</a>
+                <a href="./Calculateur-Salaire-par-Semaine.html">Semaine Simple</a>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Légal</h4>
+                <a href="./mentions-legales.html">Mentions légales</a>
+                <a href="mailto:diantalouaime242@gmail.com">Contact</a>
+                <span class="footer-version">Version Expert 2026.1</span>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2026 MonCalculateur Expert - Simulation à titre indicatif</p>
+            <p class="footer-disclaimer">Les calculs sont approximatifs selon les paramètres saisis.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================
+        // SYSTÈME DE STOCKAGE LOCAL
+        // ============================================
+        
+        const StorageExpert = {
+            PROFILS_KEY: 'expert_profils_heures_v1',
+            
+            getProfils() {
+                try {
+                    const data = localStorage.getItem(this.PROFILS_KEY);
+                    return data ? JSON.parse(data) : {};
+                } catch(e) {
+                    return {};
+                }
+            },
+            
+            saveProfil(nom, data) {
+                const profils = this.getProfils();
+                profils[nom] = {
+                    ...data,
+                    date: new Date().toISOString()
+                };
+                localStorage.setItem(this.PROFILS_KEY, JSON.stringify(profils));
+                return true;
+            },
+            
+            deleteProfil(nom) {
+                const profils = this.getProfils();
+                delete profils[nom];
+                localStorage.setItem(this.PROFILS_KEY, JSON.stringify(profils));
+            },
+            
+            getProfil(nom) {
+                return this.getProfils()[nom] || null;
+            }
+        };
+
+        // ============================================
+        // INITIALISATION
+        // ============================================
+
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            chargerListeProfils();
+            updateTotauxParams();
+            
+            document.querySelectorAll('.param-input input').forEach(input => {
+                input.addEventListener('input', updateTotauxParams);
+            });
+        });
+
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const colors = ['#a855f7', '#6366f1', '#06d6a0', '#f093fb'];
+            
+            for (let i = 0; i < 40; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.top = Math.random() * 100 + '%';
+                p.style.animationDelay = Math.random() * 20 + 's';
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                container.appendChild(p);
+            }
+        }
+
+        // ============================================
+        // GESTION DES PROFILS
+        // ============================================
+
+        function chargerListeProfils() {
+            const select = document.getElementById('profil-select');
+            const profils = StorageExpert.getProfils();
+            
+            select.innerHTML = '<option value="">-- Profil par défaut --</option>';
+            
+            Object.keys(profils).forEach(nom => {
+                const option = document.createElement('option');
+                option.value = nom;
+                option.textContent = nom;
+                select.appendChild(option);
+            });
+        }
+
+        function sauvegarderProfil() {
+            document.getElementById('save-row').classList.add('active');
+            document.getElementById('nom-profil').focus();
+        }
+
+        function confirmerSauvegarde() {
+            const nom = document.getElementById('nom-profil').value.trim();
+            if (!nom) return;
+            
+            const data = {
+                tauxSmic: parseFloat(document.getElementById('taux-smic').value) || 12.02,
+                tauxMaladie: parseFloat(document.getElementById('taux-maladie').value) || 0,
+                tauxRetraiteBase: parseFloat(document.getElementById('taux-retraite-base').value) || 6.9,
+                tauxRetraiteComp: parseFloat(document.getElementById('taux-retraite-comp').value) || 3.86,
+                tauxChomage: parseFloat(document.getElementById('taux-chomage').value) || 3.84,
+                tauxCsgDed: parseFloat(document.getElementById('taux-csg-ded').value) || 6.8,
+                tauxCsgNonDed: parseFloat(document.getElementById('taux-csg-non-ded').value) || 2.4,
+                tauxCrds: parseFloat(document.getElementById('taux-crds').value) || 0.5,
+                assietteCsg: parseFloat(document.getElementById('assiette-csg').value) || 98.25,
+                tauxImpot: parseFloat(document.getElementById('taux-impot').value) || 0
+            };
+            
+            StorageExpert.saveProfil(nom, data);
+            chargerListeProfils();
+            
+            document.getElementById('profil-select').value = nom;
+            document.getElementById('save-row').classList.remove('active');
+            document.getElementById('nom-profil').value = '';
+            
+            showNotification('Profil sauvegardé !', 'success');
+        }
+
+        function chargerProfil() {
+            const nom = document.getElementById('profil-select').value;
+            if (!nom) {
+                resetParams('standard');
+                return;
+            }
+            
+            const profil = StorageExpert.getProfil(nom);
+            if (!profil) return;
+            
+            document.getElementById('taux-smic').value = profil.tauxSmic;
+            document.getElementById('taux-maladie').value = profil.tauxMaladie;
+            document.getElementById('taux-retraite-base').value = profil.tauxRetraiteBase;
+            document.getElementById('taux-retraite-comp').value = profil.tauxRetraiteComp;
+            document.getElementById('taux-chomage').value = profil.tauxChomage;
+            document.getElementById('taux-csg-ded').value = profil.tauxCsgDed;
+            document.getElementById('taux-csg-non-ded').value = profil.tauxCsgNonDed;
+            document.getElementById('taux-crds').value = profil.tauxCrds;
+            document.getElementById('assiette-csg').value = profil.assietteCsg;
+            document.getElementById('taux-impot').value = profil.tauxImpot;
+            
+            updateTotauxParams();
+            showNotification('Profil chargé', 'info');
+        }
+
+        function supprimerProfil() {
+            const nom = document.getElementById('profil-select').value;
+            if (!nom) return;
+            
+            if (!confirm(`Supprimer le profil "${nom}" ?`)) return;
+            
+            StorageExpert.deleteProfil(nom);
+            chargerListeProfils();
+            resetParams('standard');
+            showNotification('Profil supprimé', 'warning');
+        }
+
+        // ============================================
+        // PARAMÈTRES
+        // ============================================
+
+        function toggleParams() {
+            const content = document.getElementById('params-content');
+            const toggle = document.getElementById('params-toggle');
+            content.classList.toggle('open');
+            toggle.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        function updateTotauxParams() {
+            const maladie = parseFloat(document.getElementById('taux-maladie').value) || 0;
+            const retraiteBase = parseFloat(document.getElementById('taux-retraite-base').value) || 0;
+            const retraiteComp = parseFloat(document.getElementById('taux-retraite-comp').value) || 0;
+            const chomage = parseFloat(document.getElementById('taux-chomage').value) || 0;
+            
+            const csgDed = parseFloat(document.getElementById('taux-csg-ded').value) || 0;
+            const csgNonDed = parseFloat(document.getElementById('taux-csg-non-ded').value) || 0;
+            const crds = parseFloat(document.getElementById('taux-crds').value) || 0;
+            
+            const totalCharges = maladie + retraiteBase + retraiteComp + chomage;
+            const totalCsgCrds = csgDed + csgNonDed + crds;
+            const impot = parseFloat(document.getElementById('taux-impot').value) || 0;
+            const total = totalCharges + totalCsgCrds + impot;
+            
+            document.getElementById('total-prelevements').textContent = '~' + total.toFixed(2) + '%';
+        }
+
+        function resetParams(type) {
+            if (type === 'standard') {
+                document.getElementById('taux-maladie').value = 0;
+                document.getElementById('taux-retraite-base').value = 6.9;
+                document.getElementById('taux-retraite-comp').value = 3.86;
+                document.getElementById('taux-chomage').value = 3.84;
+                document.getElementById('taux-csg-ded').value = 6.8;
+                document.getElementById('taux-csg-non-ded').value = 2.4;
+                document.getElementById('taux-crds').value = 0.5;
+                document.getElementById('assiette-csg').value = 98.25;
+                document.getElementById('taux-impot').value = 0;
+            } else if (type === 'etudiant') {
+                document.getElementById('taux-maladie').value = 0;
+                document.getElementById('taux-retraite-base').value = 0;
+                document.getElementById('taux-retraite-comp').value = 0;
+                document.getElementById('taux-chomage').value = 0;
+                document.getElementById('taux-csg-ded').value = 3.49;
+                document.getElementById('taux-csg-non-ded').value = 2.40;
+                document.getElementById('taux-crds').value = 0.50;
+                document.getElementById('assiette-csg').value = 98.25;
+                document.getElementById('taux-impot').value = 0;
+            }
+            updateTotauxParams();
+            showNotification('Paramètres réinitialisés', 'info');
+        }
+
+        // ============================================
+        // CALCUL PRINCIPAL
+        // ============================================
+
+        let modeEtudiant = false;
+
+        function toggleMode() {
+            modeEtudiant = !modeEtudiant;
+            const toggle = document.getElementById('mode-toggle');
+            const options = toggle.querySelectorAll('.mode-option');
+            const slider = toggle.querySelector('.mode-slider');
+            const desc = document.getElementById('mode-desc');
+            
+            if (modeEtudiant) {
+                options[0].classList.remove('active');
+                options[1].classList.add('active');
+                slider.style.transform = 'translateX(100%)';
+                desc.innerHTML = '🎓 Mode Étudiant Expert : taux réduits personnalisables';
+                desc.classList.add('etudiant');
+                resetParams('etudiant');
+            } else {
+                options[0].classList.add('active');
+                options[1].classList.remove('active');
+                slider.style.transform = 'translateX(0)';
+                desc.innerHTML = '👔 Mode Expert : personnalisez tous les taux de cotisations';
+                desc.classList.remove('etudiant');
+                resetParams('standard');
+            }
+        }
+
+        function calculerHeures() {
+            const salaireNetInput = document.getElementById('salaire-net');
+            const periode = document.getElementById('periode-paie').value;
+            const tauxSmic = parseFloat(document.getElementById('taux-smic').value) || 12.02;
+            
+            // Récupération des taux personnalisés
+            const tauxMaladie = (parseFloat(document.getElementById('taux-maladie').value) || 0) / 100;
+            const tauxRetraiteBase = (parseFloat(document.getElementById('taux-retraite-base').value) || 0) / 100;
+            const tauxRetraiteComp = (parseFloat(document.getElementById('taux-retraite-comp').value) || 0) / 100;
+            const tauxChomage = (parseFloat(document.getElementById('taux-chomage').value) || 0) / 100;
+            
+            const tauxCsgDed = (parseFloat(document.getElementById('taux-csg-ded').value) || 0) / 100;
+            const tauxCsgNonDed = (parseFloat(document.getElementById('taux-csg-non-ded').value) || 0) / 100;
+            const tauxCrds = (parseFloat(document.getElementById('taux-crds').value) || 0) / 100;
+            const assietteCsg = (parseFloat(document.getElementById('assiette-csg').value) || 98.25) / 100;
+            
+            const tauxImpot = (parseFloat(document.getElementById('taux-impot').value) || 0) / 100;
+
+            const emptyState = document.getElementById('empty-state');
+            const detailBreakdown = document.getElementById('detail-breakdown');
+            const ratesSummary = document.getElementById('rates-summary');
+            const resultMode = document.getElementById('result-mode');
+            
+            let salaireNet = parseFloat(salaireNetInput.value.replace(',', '.'));
+
+            if (isNaN(salaireNet) || salaireNet <= 0) {
+                shakeElement(salaireNetInput.parentElement);
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            detailBreakdown.style.display = 'block';
+            ratesSummary.style.display = 'block';
+            resultMode.textContent = modeEtudiant ? '🎓 Expert Étudiant' : '⚙️ Expert';
+
+            // Calcul du taux total de prélèvements
+            const totalCharges = tauxMaladie + tauxRetraiteBase + tauxRetraiteComp + tauxChomage;
+            const totalCsgCrds = (tauxCsgDed + tauxCsgNonDed + tauxCrds) * assietteCsg;
+            const totalPrelevements = totalCharges + totalCsgCrds + tauxImpot;
+
+            // Conversion en mensuel
+            let salaireNetMensuel;
+            const SEMAINES_PAR_MOIS = 4.33;
+            const MOIS_PAR_AN = 12;
+            
+            if (periode === 'semaine') {
+                salaireNetMensuel = salaireNet * SEMAINES_PAR_MOIS;
+            } else if (periode === 'annee') {
+                salaireNetMensuel = salaireNet / MOIS_PAR_AN;
+            } else {
+                salaireNetMensuel = salaireNet;
+            }
+
+            // Reconstruction du brut
+            const salaireBrutMensuel = salaireNetMensuel / (1 - totalPrelevements);
+            
+            // Calcul des heures
+            const heuresMois = salaireBrutMensuel / tauxSmic;
+            const heuresSemaine = heuresMois / SEMAINES_PAR_MOIS;
+            const heuresAnnee = heuresSemaine * 52;
+            const joursTravailles = heuresSemaine / 7;
+
+            // Affichage
+            document.getElementById('heures-semaine').textContent = heuresSemaine.toFixed(1) + ' h';
+            document.getElementById('jours-travailles').textContent = joursTravailles.toFixed(1) + ' jours (base 7h/j)';
+            
+            document.getElementById('detail-semaine').textContent = heuresSemaine.toFixed(1) + ' h';
+            document.getElementById('detail-mois').textContent = heuresMois.toFixed(1) + ' h';
+            document.getElementById('detail-annee').textContent = heuresAnnee.toFixed(0) + ' h';
+
+            // Détail du calcul
+            document.getElementById('breakdown-net').textContent = salaireNetMensuel.toLocaleString('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' €';
+            document.getElementById('breakdown-taux').textContent = (totalPrelevements * 100).toFixed(2) + ' %';
+            document.getElementById('breakdown-brut').textContent = salaireBrutMensuel.toLocaleString('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' €';
+            document.getElementById('breakdown-total').textContent = heuresMois.toFixed(1) + ' h/mois';
+
+            // Taux appliqués
+            const ratesGrid = document.getElementById('rates-grid');
+            ratesGrid.innerHTML = `
+                <div class="rate-item"><span>Maladie</span><strong>${(tauxMaladie*100).toFixed(2)}%</strong></div>
+                <div class="rate-item"><span>Retraite base</span><strong>${(tauxRetraiteBase*100).toFixed(2)}%</strong></div>
+                <div class="rate-item"><span>Retraite comp.</span><strong>${(tauxRetraiteComp*100).toFixed(2)}%</strong></div>
+                <div class="rate-item"><span>Chômage</span><strong>${(tauxChomage*100).toFixed(2)}%</strong></div>
+                <div class="rate-item"><span>CSG/CRDS</span><strong>${(totalCsgCrds*100).toFixed(2)}%</strong></div>
+                <div class="rate-item"><span>Impôt</span><strong>${(tauxImpot*100).toFixed(1)}%</strong></div>
+            `;
+
+            // Comparaison temps plein SMIC 2026
+            const heuresTempsPlein = 151.67;
+            const pctTempsPlein = (heuresMois / heuresTempsPlein) * 100;
+            const barFill = document.getElementById('bar-temps-plein');
+            const pctLabel = document.getElementById('pct-temps-plein');
+            const textComp = document.getElementById('text-comparaison');
+
+            barFill.style.width = Math.min(pctTempsPlein, 100) + '%';
+            barFill.style.background = pctTempsPlein < 50 ? 'linear-gradient(90deg, #ef476f, #f59e0b)' :
+                                        pctTempsPlein < 80 ? 'linear-gradient(90deg, #f59e0b, #3b82f6)' :
+                                        'linear-gradient(90deg, #a855f7, #6366f1)';
+            pctLabel.textContent = pctTempsPlein.toFixed(0) + '%';
+
+            if (pctTempsPlein < 50) {
+                textComp.textContent = 'Mi-temps ou moins (moins de 17h/semaine)';
+            } else if (pctTempsPlein < 80) {
+                textComp.textContent = 'Temps partiel (entre 17h et 28h/semaine)';
+            } else if (pctTempsPlein <= 105) {
+                textComp.textContent = 'Temps plein SMIC 2026 (~35h/semaine)';
+            } else {
+                textComp.textContent = 'Heures supplémentaires (plus de 35h/semaine)';
+            }
+
+            // Animations
+            document.querySelectorAll('.detail-item').forEach((el, i) => {
+                el.style.animation = 'none';
+                setTimeout(() => {
+                    el.style.animation = `slide-in-up 0.5s ease-out ${i * 0.1}s both`;
+                }, 10);
+            });
+        }
+
+        function rafraichirHeures() {
+            const btn = document.querySelector('.refresh-btn');
+            btn.classList.add('spinning');
+            setTimeout(() => btn.classList.remove('spinning'), 600);
+
+            document.getElementById('salaire-net').value = '';
+            document.getElementById('periode-paie').value = 'mois';
+            document.getElementById('profil-select').value = '';
+            
+            resetParams('standard');
+            
+            document.getElementById('heures-semaine').textContent = '-- h';
+            document.getElementById('jours-travailles').textContent = '-- jours';
+            document.getElementById('detail-semaine').textContent = '-- h';
+            document.getElementById('detail-mois').textContent = '-- h';
+            document.getElementById('detail-annee').textContent = '-- h';
+            
+            document.getElementById('detail-breakdown').style.display = 'none';
+            document.getElementById('rates-summary').style.display = 'none';
+            document.getElementById('empty-state').style.display = 'flex';
+            document.getElementById('result-mode').textContent = 'Expert';
+            
+            document.getElementById('bar-temps-plein').style.width = '0%';
+            document.getElementById('pct-temps-plein').textContent = '--%';
+            document.getElementById('text-comparaison').textContent = '--';
+
+            setTimeout(() => document.getElementById('salaire-net').focus(), 400);
+        }
+
+        function shakeElement(el) {
+            el.style.animation = 'shake 0.5s';
+            setTimeout(() => el.style.animation = '', 500);
+        }
+
+        function showNotification(message, type = 'info') {
+            const notif = document.createElement('div');
+            notif.className = `notification ${type}`;
+            notif.textContent = message;
+            document.body.appendChild(notif);
+            setTimeout(() => notif.remove(), 3000);
+        }
+
+        document.addEventListener('keypress', e => {
+            if (e.key === 'Enter') calculerHeures();
+        });
+
+        document.querySelectorAll('input, select').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.closest('.input-group')?.classList.add('focused');
+            });
+            input.addEventListener('blur', function() {
+                this.closest('.input-group')?.classList.remove('focused');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Calculateur - Outils Salariaux 2077</title>
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+    <!-- Scanlines overlay -->
+    <div class="scanlines"></div>
+
+    <!-- Particules cyberpunk -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Navigation -->
+    <nav class="dark-nav">
+        <a href="./accueil.html" class="logo">
+            <svg class="logo-icon" width="40" height="40" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 10px rgba(255, 0, 60, 0.8));">
+                <defs>
+                    <linearGradient id="accueilGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#ff003c;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#ff2a5c;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#00f0ff;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <rect x="5" y="5" width="50" height="50" rx="14" fill="url(#accueilGrad)"/>
+                <text x="30" y="38" font-family="Orbitron, sans-serif" font-size="24" font-weight="800" fill="white" text-anchor="middle">€</text>
+                <rect x="36" y="36" width="16" height="16" rx="4" fill="rgba(255,255,255,0.9)"/>
+                <rect x="38" y="38" width="12" height="2.5" rx="1" fill="#ff003c"/>
+                <rect x="38" y="42" width="5" height="4" rx="1" fill="#00f0ff"/>
+                <rect x="45" y="42" width="5" height="4" rx="1" fill="#00f0ff"/>
+                <rect x="38" y="48" width="5" height="2.5" rx="1" fill="#ff2a5c"/>
+                <rect x="45" y="48" width="5" height="2.5" rx="1" fill="#ff2a5c"/>
+            </svg>
+            <span>MonCalculateur</span>
+        </a>
+        <div class="nav-links">
+            <a href="#options" onclick="scrollToSection('options')" class="active">Commencer</a>
+            <a href="#comparison">Comparer</a>
+            <a href="#features">Fonctionnalités</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <button class="mobile-menu-btn" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#options" onclick="scrollToSection('options'); toggleMenu();">Commencer</a>
+        <a href="#comparison" onclick="scrollToSection('comparison'); toggleMenu();">Comparer</a>
+        <a href="#features" onclick="scrollToSection('features'); toggleMenu();">Fonctionnalités</a>
+        <a href="#contact" onclick="scrollToSection('contact'); toggleMenu();">Contact</a>
+    </div>
+
+    <!-- HERO CYBERPUNK -->
+    <section class="hero-fusion" id="options">
+        <div class="hero-bg-fusion">
+            <div class="orb-fusion orb-fusion-1"></div>
+            <div class="orb-fusion orb-fusion-2"></div>
+            <div class="orb-fusion orb-fusion-3"></div>
+        </div>
+
+        <div class="hero-fusion-content">
+            <!-- Partie Gauche : Texte et choix -->
+            <div class="hero-text-side">
+                <div class="hero-badge-fusion">
+                    <span>✨</span> 100% Gratuit — Données fiscales France 2077
+                </div>
+                
+                <h1 class="hero-title-fusion glitch" data-text="Calculez votre salaire en quelques secondes">Calculez votre salaire <span class="gradient-text">en quelques secondes</span></h1>
+                
+                <p class="hero-subtitle-fusion">
+                    Choisissez votre mode : précision maximale avec paramètres personnalisables, ou simplicité avec taux pré-configurés.
+                </p>
+
+                <div class="hero-stats-fusion">
+                    <div class="stat-item-fusion">
+                        <span class="stat-number-fusion counter" data-target="50000">50K+</span>
+                        <span class="stat-label-fusion">Calculs effectués</span>
+                    </div>
+                    <div class="stat-divider-fusion"></div>
+                    <div class="stat-item-fusion">
+                        <span class="stat-number-fusion">4.9★</span>
+                        <span class="stat-label-fusion">Note utilisateurs</span>
+                    </div>
+                </div>
+
+                <div class="hero-choices">
+                    <a href="calculateur-expert.html" class="choice-card expert wave-effect">
+                        <div class="choice-icon">🧮</div>
+                        <div class="choice-content">
+                            <div class="choice-title">
+                                Mode Expert
+                                <span class="choice-badge">⚙️ Personnalisable</span>
+                            </div>
+                            <div class="choice-desc">Charges, impôts et cotisations modifiables pour les pros</div>
+                        </div>
+                        <div class="choice-arrow">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </a>
+
+                    <a href="calculateur.html" class="choice-card simple wave-effect">
+                        <div class="choice-icon">⚡</div>
+                        <div class="choice-content">
+                            <div class="choice-title">
+                                Mode Simple
+                                <span class="choice-badge">🚀 Rapide</span>
+                            </div>
+                            <div class="choice-desc">Taux pré-remplis, résultat instantané, idéal pour tous</div>
+                        </div>
+                        <div class="choice-arrow">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Partie Droite : Image et cartes flottantes -->
+            <div class="hero-visual-side">
+                <div class="image-container-fusion">
+                    <div class="image-glow-fusion"></div>
+                    
+                    <div class="floating-card-fusion card-1 hologram">
+                        <span class="card-icon-fusion">💵</span>
+                        <div class="card-info-fusion">
+                            <span class="card-label-fusion">Net mensuel</span>
+                            <span class="card-value-fusion neon-breathe">2 354€</span>
+                        </div>
+                    </div>
+
+                    <div class="floating-card-fusion card-2 hologram">
+                        <span class="card-icon-fusion">📊</span>
+                        <div class="card-info-fusion">
+                            <span class="card-label-fusion">Charges</span>
+                            <span class="card-value-fusion neon-breathe">-21.5%</span>
+                        </div>
+                    </div>
+
+                    <img src="https://cdn.futura-sciences.com/sources/images/salaire_brut_salaire_net_2.jpeg" 
+                         alt="Calculateur de salaire" 
+                         class="hero-image-fusion">
+
+                    <div class="floating-card-fusion card-3 hologram">
+                        <span class="card-icon-fusion">🎯</span>
+                        <div class="card-info-fusion">
+                            <span class="card-label-fusion">Précision</span>
+                            <span class="card-value-fusion neon-breathe">99.9%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-indicator-fusion">
+            <div class="mouse-fusion">
+                <div class="wheel-fusion"></div>
+            </div>
+            <span>Scroll</span>
+        </div>
+    </section>
+
+    <!-- SECTION COMPARAISON -->
+    <section class="comparison-section" id="comparison">
+        <div class="comparison-container">
+            <h2 class="comparison-title">Quel mode choisir ?</h2>
+            <div class="comparison-grid">
+                <div class="comparison-card expert glow-border">
+                    <h3>🧮 Mode Expert</h3>
+                    <ul class="comparison-list">
+                        <li>✓ <strong>Charges sociales</strong> : modifiez chaque taux (retraite, chômage, maladie...)</li>
+                        <li>✓ <strong>Impôt sur le revenu</strong> : ajustez selon votre taux réel de prélèvement à la source</li>
+                        <li>✓ <strong>CSG/CRDS</strong> : paramétrez les taux de cotisations généralisées</li>
+                        <li>✓ <strong>Profils sauvegardables</strong> : enregistrez vos paramètres pour les réutiliser</li>
+                        <li>✓ <strong>4 calculateurs</strong> : salaire, heures, extra, semaine — tous personnalisables</li>
+                        <li>👤 <strong>Idéal pour</strong> : comptables, RH, freelances, utilisateurs avancés</li>
+                    </ul>
+                </div>
+                <div class="comparison-card simple glow-border">
+                    <h3>⚡ Mode Simple</h3>
+                    <ul class="comparison-list">
+                        <li>✓ <strong>Taux 2077 intégrés</strong> : 22% (extra), 32% (salarié standard), 18% (étudiant)</li>
+                        <li>✓ <strong>Profils prédéfinis</strong> : sélectionnez votre situation en un clic</li>
+                        <li>✓ <strong>Saisie minimale</strong> : entrez juste salaire ou heures, le reste est automatique</li>
+                        <li>✓ <strong>Résultat immédiat</strong> : brut ↔ net en moins de 3 secondes</li>
+                        <li>✓ <strong>4 calculateurs</strong> : mêmes outils, interface simplifiée</li>
+                        <li>👤 <strong>Idéal pour</strong> : grand public, étudiants, premier emploi, estimations rapides</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-dark">
+        <div class="section-header">
+            <span class="section-badge">Nos outils</span>
+            <h2>Tout ce dont vous avez besoin</h2>
+            <p class="section-subtitle">Des calculateurs précis et à jour pour tous les profils</p>
+        </div>
+        
+                <div class="features-grid-modern">
+            <div class="feature-card-dark feature-large hologram">
+                <div class="feature-glow"></div>
+                <div class="feature-icon-box">
+                    <span>🧮</span>
+                </div>
+                <h3>Calculateur Brut/Net</h3>
+                <p>Convertissez votre salaire brut en net instantanément. Prend en compte les charges sociales, l'impôt sur le revenu et les cotisations 2077.</p>
+                <ul class="feature-list">
+                    <li>✓ Mode Salarié & Étudiant</li>
+                    <li>✓ Taux actualisés 2077</li>
+                    <li>✓ Calcul par heure/jour/mois/an</li>
+                </ul>
+                <a href="calculateur.html" class="feature-link">Essayer →</a>
+            </div>
+
+            <div class="feature-card-dark feature-large hologram">
+                <div class="feature-glow"></div>
+                <div class="feature-icon-box">
+                    <span>⏰</span>
+                </div>
+                <h3>Décompte d'Heures</h3>
+                <p>Calculez vos heures de travail et convertissez-les en salaire. Idéal pour les intermittents, étudiants et travailleurs à temps partiel.</p>
+                <ul class="feature-list">
+                    <li>✓ Conversion Heures ↔ Salaire</li>
+                    <li>✓ Base 35h ou personnalisée</li>
+                    <li>✓ Export des résultats</li>
+                </ul>
+                <a href="calculateur-heures.html" class="feature-link">Essayer →</a>
+            </div>
+
+            <div class="feature-card-dark hologram">
+                <div class="feature-glow"></div>
+                <div class="feature-icon-box">
+                    <span>⚡</span>
+                </div>
+                <h3>Rapide</h3>
+                <p>Résultat instantané sans temps de chargement ni inscription requise.</p>
+            </div>
+
+            <div class="feature-card-dark hologram">
+                <div class="feature-glow"></div>
+                <div class="feature-icon-box">
+                    <span>🔒</span>
+                </div>
+                <h3>Confidentialité</h3>
+                <p>Aucune donnée stockée. Vos calculs restent sur votre appareil.</p>
+            </div>
+
+            <div class="feature-card-dark hologram">
+                <div class="feature-glow"></div>
+                <div class="feature-icon-box">
+                    <span>📱</span>
+                </div>
+                <h3>Responsive</h3>
+                <p>Fonctionne parfaitement sur mobile, tablette et ordinateur.</p>
+            </div>
+
+            <div class="feature-card-dark hologram">
+                <div class="feature-glow"></div>
+                <div class="feature-icon-box">
+                    <span>🔄</span>
+                </div>
+                <h3>Toujours à jour</h3>
+                <p>Taux fiscaux et sociaux mis à jour automatiquement chaque année.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="how-it-works">
+        <div class="section-header light">
+            <span class="section-badge dark">Comment ça marche</span>
+            <h2>Simple comme bonjour</h2>
+        </div>
+        
+        <div class="steps-container">
+            <div class="step hologram">
+                <div class="step-number">01</div>
+                <div class="step-content">
+                    <h3>Choisissez votre mode</h3>
+                    <p>Optez pour le mode "Expert" ou "Simple" selon vos besoins de précision.</p>
+                </div>
+            </div>
+            <div class="step-arrow">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </div>
+            <div class="step hologram">
+                <div class="step-number">02</div>
+                <div class="step-content">
+                    <h3>Renseignez vos données</h3>
+                    <p>Entrez votre taux horaire, vos heures travaillées et sélectionnez votre profil fiscal.</p>
+                </div>
+            </div>
+            <div class="step-arrow">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </div>
+            <div class="step hologram">
+                <div class="step-number">03</div>
+                <div class="step-content">
+                    <h3>Obtenez votre résultat</h3>
+                    <p>Visualisez immédiatement votre salaire net avec le détail des déductions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials-section">
+        <div class="section-header">
+            <span class="section-badge">Témoignages</span>
+            <h2>Ils utilisent MonCalculateur</h2>
+        </div>
+        
+        <div class="testimonials-grid">
+            <div class="testimonial-card hologram">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"Enfin un calculateur clair et précis ! J'utilise tous les mois pour vérifier ma fiche de paie."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">👩‍💼</div>
+                    <div class="author-info">
+                        <span class="author-name">Marie L.</span>
+                        <span class="author-role">Comptable, Paris</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card hologram">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"Parfait pour les étudiants ! Le mode étudiant m'aide à calculer mes revenus d'alternance."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">👨‍🎓</div>
+                    <div class="author-info">
+                        <span class="author-name">Thomas B.</span>
+                        <span class="author-role">Étudiant, Lyon</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card hologram">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"Simple, rapide et fiable. Je recommande à tous mes collègues freelances."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">👨‍💻</div>
+                    <div class="author-info">
+                        <span class="author-name">Alex K.</span>
+                        <span class="author-role">Développeur freelance</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="contact-section">
+        <div class="contact-container hologram">
+            <div class="contact-info">
+                <span class="section-badge">Contact</span>
+                <h2>Une question ?</h2>
+                <p>Nous sommes là pour vous aider. Envoyez-nous un message et nous vous répondrons dans les 24h.</p>
+                
+                <div class="contact-methods">
+                    <div class="contact-method">
+                        <span class="method-icon">📧</span>
+                        <div class="method-info">
+                            <span class="method-label">Email</span>
+                            <span class="method-value">diantalouaime242@gmail.fr</span>
+                        </div>
+                    </div>
+                    <div class="contact-method">
+                        <span class="method-icon">⏱️</span>
+                        <div class="method-info">
+                            <span class="method-label">Réponse</span>
+                            <span class="method-value">Sous 24 heures</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form class="contact-form" id="contact-form" action="https://formspree.io/f/mnjbnenk" method="POST">
+                <input type="hidden" name="_next" value="https://votresite.com/merci.html">
+                <input type="text" name="_gotcha" style="display:none">
+                
+                <div class="form-group">
+                    <label for="name">Nom complet</label>
+                    <input type="text" id="name" name="name" placeholder="Jean Dupont" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="jean@exemple.fr" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subject">Sujet</label>
+                    <select id="subject" name="subject" required>
+                        <option value="">Sélectionnez un sujet</option>
+                        <option value="question">Question sur les calculs</option>
+                        <option value="bug">Signaler un problème</option>
+                        <option value="suggestion">Suggestion d'amélioration</option>
+                        <option value="other">Autre</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="4" placeholder="Votre message..." required></textarea>
+                </div>
+                
+                <input type="hidden" name="_subject" value="Nouveau message - MonCalculateur">
+                
+                <button type="submit" class="btn-primary btn-glow btn-full wave-effect" id="submit-btn">
+                    <span id="btn-text">Envoyer le message</span>
+                    <svg id="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                    </svg>
+                    <svg id="btn-loading" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none; animation: spin 1s linear infinite;">
+                        <circle cx="12" cy="12" r="10" stroke-dasharray="60" stroke-dashoffset="20"/>
+                    </svg>
+                    <svg id="btn-success" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display: none;">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </button>
+                
+                <div id="form-status" class="form-status" style="display: none;"></div>
+            </form>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="cta-glass hologram">
+            <div class="cta-content">
+                <h2>Prêt à calculer votre salaire ?</h2>
+                <p>Rejoignez plus de 50 000 utilisateurs qui font confiance à MonCalculateur pour leurs simulations salariales.</p>
+                <div class="cta-buttons">
+                    <a href="#options" onclick="scrollToSection('options')" class="btn-primary btn-glow btn-large wave-effect">
+                        <span>Choisir mon mode</span>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="cta-decoration">
+                <div class="cta-circle c1"></div>
+                <div class="cta-circle c2"></div>
+                <div class="cta-circle c3"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="dark-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <svg class="logo-icon" width="32" height="32" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="accueilGradFooter" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ff003c;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#ff2a5c;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#00f0ff;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect x="5" y="5" width="50" height="50" rx="14" fill="url(#accueilGradFooter)"/>
+                        <text x="30" y="38" font-family="Orbitron, sans-serif" font-size="24" font-weight="800" fill="white" text-anchor="middle">€</text>
+                        <rect x="36" y="36" width="16" height="16" rx="4" fill="rgba(255,255,255,0.9)"/>
+                        <rect x="38" y="38" width="12" height="2.5" rx="1" fill="#ff003c"/>
+                        <rect x="38" y="42" width="5" height="4" rx="1" fill="#00f0ff"/>
+                        <rect x="45" y="42" width="5" height="4" rx="1" fill="#00f0ff"/>
+                    </svg>
+                    <span>MonCalculateur</span>
+                </div>
+                <p>Outils de calcul salarial professionnels et gratuits. Données fiscales France 2077.</p>
+                <div class="footer-socials">
+                    <a href="https://twitter.com" target="_blank" rel="noopener" class="social-link" title="Twitter">🐦</a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener" class="social-link" title="LinkedIn">💼</a>
+                    <a href="mailto:diantalouaime242@gmail.com" class="social-link" title="Email">✉️</a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Outils</h4>
+                <a href="./calculateur.html">Calculateur Salaire</a>
+                <a href="./calculateur-heures.html">Décompte Heures</a>
+                <a href="#features" onclick="scrollToSection('features')">Fonctionnalités</a>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Légal</h4>
+                <a href="./mentions-legales.html">Mentions légales</a>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Contact</h4>
+                <a href="#contact" onclick="scrollToSection('contact')">Nous contacter</a>
+                <a href="mailto:contact@moncalculateur.fr">Email</a>
+                <span class="footer-version">Version 2077.1</span>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2077 MonCalculateur. Fait avec ❤️ en France.</p>
+            <p class="footer-disclaimer">Données fournies à titre indicatif uniquement.</p>
+        </div>
+    </footer>
+
+    <!-- Script -->
+    <script src="main.js"></script>
+</body>
+</html>
